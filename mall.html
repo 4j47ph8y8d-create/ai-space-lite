@@ -313,7 +313,8 @@
             </div>
         </div>
     </div>
-</div> <script>
+</div>
+<script>
 // ============================================================
 //  全局配置
 // ============================================================
@@ -348,10 +349,7 @@ var mallRoles = [];
 var currentDetailProduct = null;
 var lastTriggeredProductId = null;
 var mallScrollTimeout = null;
-var isGiftMode = false;
-var giftTargetRole = null;
 var pendingAiGiftOrder = null;
-var selectedRoleForGift = null;
 
 // ============================================================
 //  工具函数
@@ -666,7 +664,6 @@ function purchaseProduct(product, qty, note, mode) {
     if (mode === 'gift') {
         selectTargetRoleSync().then(function(selected) {
             if (!selected) return;
-            selectedRoleForGift = selected;
             executePurchase(product, qty, note, mode, selected, totalPrice);
         });
         return;
@@ -749,13 +746,12 @@ function cancelOrderAndRefund(orderId) {
 function triggerHeartSpikeForGift(role, product, mode) {
     if (!role) return;
     var spikeAmount = mode === 'gift' ? MALL_CONFIG.heartSpikeOnGift : MALL_CONFIG.heartSpikeOnAiGift;
-    var keyword = '送给了你「' + product.name + '」';
     var newValue = 65 + spikeAmount + Math.floor(Math.random() * 10);
     var heartData = {
         value: Math.min(99, newValue),
         peakValue: Math.min(99, newValue),
         restingValue: 65,
-        recentTrigger: '💝 ' + keyword,
+        recentTrigger: '💝 收到了礼物「' + product.name + '」',
         signature: role.heartData ? role.heartData.signature : '今天也很想你 💕'
     };
     saveHeartDataToMain(role.id, heartData);
@@ -1019,7 +1015,8 @@ function showOrderList() {
             }
         };
     });
-} <script>
+}
+
 // ============================================================
 //  AI 一起逛模式
 // ============================================================
@@ -1153,7 +1150,6 @@ function showAiSpotDialog(product, role) {
         mallOrders.push(order);
         mallAiGiftReceived.push({ productId: product.id, productName: product.name, productImage: product.image, from: role.name, time: new Date().toISOString() });
 
-        // 弹出收货卡片
         pendingAiGiftOrder = order;
         showGiftReceiveDialog(order, role);
 
@@ -1257,7 +1253,6 @@ function showGiftReceiveDialog(order, role) {
     document.getElementById('giftReceiveNote').textContent = order.note || '✨ 一份心意，请查收';
     document.getElementById('giftReceiveAiName').textContent = role.name;
 
-    // 生成 AI 附带的话
     var apiKey = getApiKeyFromMain();
     if (apiKey) {
         var model = getModelFromMain();
@@ -1290,7 +1285,6 @@ function showGiftReceiveDialog(order, role) {
 
     document.getElementById('giftReceiveBtn').onclick = function() {
         overlay.classList.remove('active');
-        // 确认收货，更新订单状态
         if (pendingAiGiftOrder) {
             var orderRef = mallOrders.find(function(o) { return o.id === pendingAiGiftOrder.id; });
             if (orderRef) {
@@ -1299,12 +1293,10 @@ function showGiftReceiveDialog(order, role) {
                 saveMallData();
                 updateMallUI();
             }
-            // 触发心跳
             var roleRef = mallRoles.find(function(r) { return r.id === pendingAiGiftOrder.roleId; });
             if (roleRef) {
                 triggerHeartSpikeForGift(roleRef, { name: pendingAiGiftOrder.productName }, 'ai_gift');
                 addGiftToMemory(roleRef, { name: pendingAiGiftOrder.productName }, 'ai', pendingAiGiftOrder.note);
-                // 生成 AI 回复
                 triggerGiftChatReply(roleRef, { name: pendingAiGiftOrder.productName, price: 0 }, pendingAiGiftOrder.note);
             }
             showToast('💝 已确认收货！');
@@ -1375,14 +1367,12 @@ function exitMall() {
     if (mallShoppingTogether.isActive) {
         endShoppingTogether();
     }
-    // 如果有打开的弹窗，先关闭
     document.getElementById('mallDetailOverlay').classList.remove('active');
     document.getElementById('cartOverlay').classList.remove('active');
     document.getElementById('mallRechargeOverlay').classList.remove('active');
     document.getElementById('mallAiSpotOverlay').classList.remove('active');
     document.getElementById('mallRoleSelectOverlay').classList.remove('active');
     document.getElementById('giftReceiveOverlay').classList.remove('active');
-    // 跳回主应用
     window.location.href = 'index.html';
 }
 
@@ -1390,22 +1380,12 @@ function exitMall() {
 //  初始化
 // ============================================================
 function init() {
-    // 加载商城数据
     loadMallData();
-
-    // 加载角色数据（用于送礼和AI一起逛）
     loadRolesFromMain();
-
-    // 加载商品
     loadMallProducts();
-
-    // 更新 UI
     updateMallUI();
-
-    // 初始化滚动触发
     initMallScrollTrigger();
 
-    // 恢复 AI 一起逛状态
     if (mallShoppingTogether.isActive && mallShoppingTogether.roleId) {
         var role = mallRoles.find(function(r) { return r.id === mallShoppingTogether.roleId; });
         if (role) {
@@ -1424,7 +1404,6 @@ function init() {
             nameEl.textContent = role.name;
             bubble.classList.add('active');
         } else {
-            // 角色不存在，重置状态
             mallShoppingTogether.isActive = false;
             saveMallData();
         }
@@ -1440,20 +1419,16 @@ function init() {
 //  🏁 启动！
 // ============================================================
 document.addEventListener('DOMContentLoaded', function() {
-    // 退出商城
     document.getElementById('exitMallBtn').addEventListener('click', exitMall);
 
-    // 购物车
     document.getElementById('mallCartBtn').addEventListener('click', openCart);
     document.getElementById('cartCloseBtn').addEventListener('click', closeCart);
     document.getElementById('cartOverlay').addEventListener('click', function(e) {
         if (e.target === this) closeCart();
     });
 
-    // 余额点击充值
     document.getElementById('mallBalanceDisplay').addEventListener('click', openRecharge);
 
-    // 充值
     document.getElementById('rechargeConfirmBtn').addEventListener('click', function() {
         var amount = parseInt(document.getElementById('rechargeInput').value);
         if (!amount || amount <= 0) { showToast('⚠️ 请输入有效金额'); return; }
@@ -1469,22 +1444,18 @@ document.addEventListener('DOMContentLoaded', function() {
         btn.onclick = function() { document.getElementById('rechargeInput').value = btn.dataset.amount; };
     });
 
-    // AI 一起逛
     document.getElementById('mallInviteBtn').addEventListener('click', openRoleSelectDialog);
     document.getElementById('mallRoleSelectCancel').addEventListener('click', function() {
         document.getElementById('mallRoleSelectOverlay').classList.remove('active');
     });
     document.getElementById('mallAiEndBtn').addEventListener('click', endShoppingTogether);
 
-    // 商品详情返回
     document.getElementById('mallDetailBack').addEventListener('click', function() {
         document.getElementById('mallDetailOverlay').classList.remove('active');
     });
 
-    // 我的订单入口
     document.getElementById('mallOrderEntry').addEventListener('click', showOrderList);
 
-    // 初始化
     init();
 });
 </script>
