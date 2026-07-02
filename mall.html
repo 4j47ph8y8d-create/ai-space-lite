@@ -504,7 +504,7 @@ function loadMallProducts() {
         renderMallProducts();
         updateMallUI();
     }).catch(function(e) {
-        console.error('加载商品失败:', e);
+        console.warn('加载 products.json 失败，使用备用数据:', e);
         mallProducts = [
             { id: 'default_1', name: '纯白衬衫', price: 129, image: '', description: '新疆纯棉制造，柔软舒适', tag: '新品' },
             { id: 'default_2', name: '真丝睡裙', price: 169, image: '', description: '真蚕丝，柔软舒适，安稳睡眠', tag: '热销' },
@@ -512,7 +512,7 @@ function loadMallProducts() {
         ];
         renderMallProducts();
         updateMallUI();
-        showToast('📦 已加载备用商品数据');
+        showToast('📦 已加载备用商品数据（请检查 products.json）');
     });
 }
 
@@ -527,7 +527,7 @@ function renderMallProducts() {
     var html = '';
     mallProducts.forEach(function(p) {
         var tagHtml = p.tag ? '<span class="product-tag ' + getTagClass(p.tag) + '">' + p.tag + '</span>' : '';
-        var imgHtml = p.image ? '<img src="' + p.image + '" alt="' + p.name + '" loading="lazy" />' : '🛍️';
+        var imgHtml = p.image ? '<img src="' + p.image + '" alt="' + p.name + '" loading="lazy" onerror="this.style.display=\'none\';this.parentElement.textContent=\'🛍️\';" />' : '🛍️';
         html += '<div class="mall-product-card" data-id="' + p.id + '">' + tagHtml + '<div class="product-img">' + imgHtml + '</div><div class="product-name">' + p.name + '</div><div class="product-price">¥' + p.price + '</div></div>';
     });
     grid.innerHTML = html;
@@ -563,7 +563,7 @@ function openMallDetail(product) {
     var body = document.getElementById('mallDetailBody');
     document.getElementById('mallDetailTitle').textContent = product.name;
 
-    var imgHtml = product.image ? '<img src="' + product.image + '" alt="' + product.name + '" />' : '🛍️';
+    var imgHtml = product.image ? '<img src="' + product.image + '" alt="' + product.name + '" onerror="this.style.display=\'none\';this.parentElement.textContent=\'🛍️\';" />' : '🛍️';
     body.innerHTML = '<div class="detail-img">' + imgHtml + '</div><div class="detail-name">' + product.name + '</div><div class="detail-price">¥' + product.price + '</div><div class="detail-desc">' + (product.description || '暂无描述') + '</div><div class="detail-qty"><label>数量</label><button class="qty-btn" id="detailQtyMinus">−</button><span class="qty-num" id="detailQtyNum">1</span><button class="qty-btn" id="detailQtyPlus">+</button></div><div class="detail-note"><input type="text" id="detailNoteInput" placeholder="给TA的留言（选填）..." /></div>';
     overlay.classList.add('active');
 
@@ -849,7 +849,7 @@ function renderCart() {
     mallCart.forEach(function(item) {
         var subtotal = item.price * item.qty;
         total += subtotal;
-        var imgHtml = item.image ? '<img src="' + item.image + '" alt="' + item.name + '" />' : '🛍️';
+        var imgHtml = item.image ? '<img src="' + item.image + '" alt="' + item.name + '" onerror="this.style.display=\'none\';" />' : '🛍️';
         html += '<div class="cart-item"><div class="ci-img">' + imgHtml + '</div><div class="ci-info"><div class="ci-name">' + item.name + '</div><div class="ci-price">¥' + item.price + '</div></div><div class="ci-qty"><button class="ci-qty-btn" data-id="' + item.id + '" data-delta="-1">−</button><span class="qty-num">' + item.qty + '</span><button class="ci-qty-btn" data-id="' + item.id + '" data-delta="1">+</button></div><button class="ci-remove" data-id="' + item.id + '"><i class="fas fa-trash-alt"></i></button></div>';
     });
     list.innerHTML = html;
@@ -953,7 +953,7 @@ function closeRecharge() {
 function showOrderList() {
     var body = document.getElementById('mallBody');
     if (!body) return;
-    var html = '<div style="margin-bottom:12px;"><button class="meme-back-btn" id="orderBackBtn" style="background:none;border:none;color:#576b95;font-size:14px;cursor:pointer;padding:4px 8px;display:flex;align-items:center;gap:4px;"><i class="fas fa-arrow-left"></i> 返回商城</button></div>';
+    var html = '<div style="margin-bottom:12px;"><button class="meme-back-btn" onclick="backToMallHome()" style="background:none;border:none;color:#576b95;font-size:14px;cursor:pointer;padding:4px 8px;display:flex;align-items:center;gap:4px;"><i class="fas fa-arrow-left"></i> 返回商城</button></div>';
     html += '<div class="mall-order-list">';
 
     if (mallOrders.length === 0) {
@@ -976,16 +976,6 @@ function showOrderList() {
 
     html += '</div>';
     body.innerHTML = html;
-
-    var backBtn = document.getElementById('orderBackBtn');
-    if (backBtn) {
-        backBtn.addEventListener('click', function() {
-            renderMallProducts();
-            updateOrderCount();
-            var entry = document.getElementById('mallOrderEntry');
-            if (entry) entry.style.display = 'flex';
-        });
-    }
 
     body.querySelectorAll('.btn-refund').forEach(function(btn) {
         btn.onclick = function() {
@@ -1015,6 +1005,16 @@ function showOrderList() {
             }
         };
     });
+}
+
+// ============================================================
+//  返回商城主页
+// ============================================================
+function backToMallHome() {
+    renderMallProducts();
+    updateOrderCount();
+    var entry = document.getElementById('mallOrderEntry');
+    if (entry) entry.style.display = 'flex';
 }
 
 // ============================================================
@@ -1098,7 +1098,7 @@ function showAiSpotDialog(product, role) {
     nameEl.textContent = product.name;
     priceEl.textContent = '¥' + product.price;
     if (product.image) {
-        imgEl.innerHTML = '<img src="' + product.image + '" alt="' + product.name + '" style="width:100%;height:100%;object-fit:cover;" />';
+        imgEl.innerHTML = '<img src="' + product.image + '" alt="' + product.name + '" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display=\'none\';this.parentElement.textContent=\'🛍️\';" />';
     } else {
         imgEl.innerHTML = '🛍️';
         imgEl.style.display = 'flex';
