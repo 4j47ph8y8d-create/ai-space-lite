@@ -9,58 +9,113 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
         body { background: #1a1a1a; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 12px; }
-        .phone-frame { width: 100%; max-width: 430px; height: 780px; background: #1a1a1a; border-radius: 32px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); overflow: hidden; position: relative; transition: background 0.3s ease, color 0.3s ease; }
-        :root { --bg-secondary: #faf0fa; --bg-card: rgba(255,255,255,0.85); --text-primary: #2d1a2a; --text-secondary: #b0a0b0; --border-color: rgba(200,180,200,0.2); --shadow-color: rgba(200,150,200,0.08); --header-bg: rgba(255,245,248,0.92); --card-shadow: 0 8px 32px rgba(200,150,200,0.12); }
+        .phone-frame { width: 100%; max-width: 430px; height: 780px; background: #1a1a1a; border-radius: 32px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); overflow: hidden; position: relative; }
+        :root {
+            --pink: #ff6b81;
+            --pink-light: #ffb3c6;
+            --pink-lighter: #fff0f3;
+            --pink-dark: #d6336c;
+            --bg-secondary: #faf0f2;
+            --bg-card: #ffffff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #999;
+            --border-color: rgba(255,107,129,0.15);
+            --shadow-color: rgba(255,107,129,0.08);
+            --header-bg: rgba(255,255,255,0.95);
+            --heart-color: #ff6b81;
+        }
+        [data-theme="light"] { --bg-secondary: #faf0f2; --bg-card: #ffffff; --text-primary: #1a1a1a; --text-secondary: #888; --border-color: rgba(255,107,129,0.15); --shadow-color: rgba(255,107,129,0.08); --header-bg: rgba(255,255,255,0.95); }
+
         .screen-mall { width: 100%; height: 100%; background: var(--bg-secondary); display: flex; flex-direction: column; position: absolute; top: 0; left: 0; z-index: 15; }
-        .mall-header { background: var(--header-bg); backdrop-filter: blur(10px); padding: 12px 16px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 8px; flex-shrink: 0; min-height: 52px; flex-wrap: wrap; }
-        .mall-header .back-btn { font-size: 20px; color: #b888b8; cursor: pointer; border: none; background: none; padding: 4px; }
+        .mall-header { background: var(--header-bg); backdrop-filter: blur(10px); padding: 10px 12px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 6px; flex-shrink: 0; min-height: 48px; flex-wrap: wrap; }
+        .mall-header .back-btn { font-size: 20px; color: var(--pink); cursor: pointer; border: none; background: none; padding: 4px; }
         .mall-header .title { font-size: 17px; font-weight: 600; color: var(--text-primary); flex: 1; display: flex; align-items: center; gap: 6px; }
-        .mall-header .title i { color: #e8b0c0; }
-        .mall-header .mall-actions { display: flex; align-items: center; gap: 8px; }
-        .mall-header .mall-balance { font-size: 13px; color: var(--text-secondary); background: rgba(232,176,192,0.15); padding: 4px 12px; border-radius: 16px; border: 1px solid rgba(232,176,192,0.2); cursor: pointer; transition: 0.15s; }
+        .mall-header .title i { color: var(--pink); }
+        .mall-header .mall-actions { display: flex; align-items: center; gap: 6px; }
+        .mall-header .mall-balance { font-size: 13px; color: var(--text-secondary); background: rgba(255,107,129,0.10); padding: 4px 12px; border-radius: 16px; border: 1px solid rgba(255,107,129,0.15); cursor: pointer; transition: 0.15s; }
         .mall-header .mall-balance:active { transform: scale(0.95); }
-        .mall-header .mall-balance span { color: #e8b0c0; font-weight: 700; }
+        .mall-header .mall-balance span { color: var(--pink); font-weight: 700; }
         .mall-header .mall-cart-btn { background: none; border: none; font-size: 20px; color: var(--text-primary); cursor: pointer; position: relative; padding: 4px; }
-        .mall-header .mall-cart-btn .cart-count { position: absolute; top: -4px; right: -4px; background: #ff6b81; color: #fff; font-size: 10px; font-weight: 700; min-width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; padding: 0 4px; }
+        .mall-header .mall-cart-btn .cart-count { position: absolute; top: -4px; right: -4px; background: var(--pink); color: #fff; font-size: 10px; font-weight: 700; min-width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; padding: 0 4px; }
         .mall-header .mall-cart-btn .cart-count.empty { display: none; }
-        .mall-header .mall-invite-btn { background: linear-gradient(135deg,#e8b0c0,#d888a0); border: none; color: #fff; padding: 4px 12px; border-radius: 16px; font-size: 12px; cursor: pointer; font-family: inherit; transition: 0.15s; white-space: nowrap; }
+        .mall-header .mall-invite-btn { background: linear-gradient(135deg, var(--pink), var(--pink-dark)); border: none; color: #fff; padding: 4px 14px; border-radius: 16px; font-size: 12px; cursor: pointer; font-family: inherit; transition: 0.15s; white-space: nowrap; box-shadow: 0 2px 8px rgba(255,107,129,0.25); }
         .mall-header .mall-invite-btn:active { transform: scale(0.95); }
-        .mall-header .mall-invite-btn.inviting { background: #ff6b81; }
+        .mall-header .mall-invite-btn.inviting { background: linear-gradient(135deg, #a29bfe, #6c5ce7); box-shadow: 0 2px 8px rgba(108,92,231,0.25); }
+
+        /* ===== Tab 导航 ===== */
+        .mall-tab-bar { display: flex; background: var(--header-bg); border-bottom: 1px solid var(--border-color); flex-shrink: 0; }
+        .mall-tab-bar .tab-btn { flex: 1; padding: 10px 0 8px; border: none; background: none; font-size: 14px; font-weight: 500; color: var(--text-secondary); cursor: pointer; font-family: inherit; transition: 0.2s; position: relative; border-bottom: 3px solid transparent; }
+        .mall-tab-bar .tab-btn.active { color: var(--pink); border-bottom-color: var(--pink); }
+        .mall-tab-bar .tab-btn:active { transform: scale(0.96); }
+
         .mall-body { flex: 1; overflow-y: auto; padding: 12px 14px 20px; position: relative; }
         .mall-body::-webkit-scrollbar { width: 4px; }
-        .mall-body::-webkit-scrollbar-thumb { background: rgba(200,150,200,0.4); border-radius: 4px; }
-        .mall-category-tabs { display: flex; gap: 8px; padding: 0 0 12px 0; border-bottom: 1px solid var(--border-color); margin-bottom: 12px; }
-        .mall-category-tabs .cat-tab { padding: 6px 20px; border-radius: 20px; border: 1px solid var(--border-color); background: var(--bg-card); font-size: 13px; font-weight: 500; color: var(--text-secondary); cursor: pointer; transition: 0.15s; font-family: inherit; }
-        .mall-category-tabs .cat-tab:active { transform: scale(0.95); }
-        .mall-category-tabs .cat-tab.active { background: #e8b0c0; color: #fff; border-color: #e8b0c0; box-shadow: 0 2px 12px rgba(232,176,192,0.3); }
+        .mall-body::-webkit-scrollbar-thumb { background: rgba(255,107,129,0.3); border-radius: 4px; }
+
+        /* ===== 商品网格 ===== */
         .mall-product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        .mall-product-card { background: var(--bg-card); border-radius: 14px; padding: 10px 10px 12px; box-shadow: var(--card-shadow); transition: 0.15s; display: flex; flex-direction: column; cursor: pointer; position: relative; }
+        .mall-product-card { background: var(--bg-card); border-radius: 14px; padding: 10px 10px 12px; box-shadow: 0 2px 10px var(--shadow-color); transition: 0.15s; display: flex; flex-direction: column; cursor: pointer; position: relative; border: 1px solid rgba(255,107,129,0.05); }
         .mall-product-card:active { transform: scale(0.97); }
         .mall-product-card .product-img { width: 100%; aspect-ratio: 1/1; border-radius: 10px; background: var(--bg-secondary); display: flex; align-items: center; justify-content: center; font-size: 36px; margin-bottom: 6px; border: 1px solid var(--border-color); overflow: hidden; }
         .mall-product-card .product-img img { width: 100%; height: 100%; object-fit: cover; }
         .mall-product-card .product-name { font-size: 14px; font-weight: 600; color: var(--text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .mall-product-card .product-price { font-size: 16px; font-weight: 700; color: #e8b0c0; margin-top: 2px; }
-        .mall-product-card .product-tag { position: absolute; top: 8px; left: 8px; font-size: 10px; background: rgba(232,176,192,0.85); color: #fff; padding: 2px 8px; border-radius: 10px; font-weight: 500; }
-        .mall-product-card .product-tag.hot { background: #ff6b81; }
-        .mall-product-card .product-tag.new { background: #a29bfe; }
-        .mall-product-card .product-tag.couple { background: #fdcb6e; color: #5a3d1a; }
+        .mall-product-card .product-price { font-size: 16px; font-weight: 700; color: var(--pink); margin-top: 2px; }
+        .mall-product-card .product-tag { position: absolute; top: 8px; left: 8px; font-size: 10px; background: var(--pink); color: #fff; padding: 2px 8px; border-radius: 10px; font-weight: 500; }
+        .mall-product-card .product-tag.hot { background: var(--pink); }
+        .mall-product-card .product-tag.new { background: #74b9ff; }
+        .mall-product-card .product-tag.couple { background: #a29bfe; }
         .mall-product-card .product-tag.default-tag { background: #b2bec3; }
         .mall-empty { text-align: center; padding: 60px 20px; color: var(--text-secondary); grid-column: 1 / -1; }
         .mall-empty i { font-size: 48px; opacity: 0.3; display: block; margin-bottom: 12px; }
-        .mall-order-entry { margin-top: 16px; padding: 12px; background: var(--bg-card); border-radius: 12px; cursor: pointer; text-align: center; box-shadow: var(--card-shadow); display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px; color: var(--text-primary); transition: 0.15s; }
+
+        /* ===== 订单入口 ===== */
+        .mall-order-entry { margin-top: 16px; padding: 12px; background: var(--bg-card); border-radius: 12px; cursor: pointer; text-align: center; box-shadow: 0 1px 4px var(--shadow-color); display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px; color: var(--text-primary); transition: 0.15s; border: 1px solid rgba(255,107,129,0.08); }
         .mall-order-entry:active { transform: scale(0.97); }
-        .mall-order-entry i { color: #e8b0c0; }
+        .mall-order-entry i { color: var(--pink); }
         .mall-order-entry .order-count { font-size: 12px; color: var(--text-secondary); margin-left: 4px; }
+
+        /* ===== 订单列表（Tab内） ===== */
+        .mall-order-tab-content { padding: 4px 0; }
+        .mall-order-tab-content .order-tab-header { display: flex; gap: 10px; margin-bottom: 12px; border-bottom: 2px solid var(--border-color); padding-bottom: 6px; }
+        .mall-order-tab-content .order-tab-header .order-sub-tab { padding: 6px 16px; border: none; background: none; font-size: 14px; font-weight: 500; color: var(--text-secondary); cursor: pointer; font-family: inherit; border-radius: 20px; transition: 0.15s; }
+        .mall-order-tab-content .order-tab-header .order-sub-tab.active { background: var(--pink); color: #fff; }
+        .mall-order-tab-content .order-tab-header .order-sub-tab:active { transform: scale(0.95); }
+        .mall-order-tab-content .role-selector-wrap { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding: 6px 12px; background: var(--bg-card); border-radius: 10px; border: 1px solid var(--border-color); }
+        .mall-order-tab-content .role-selector-wrap label { font-size: 13px; color: var(--text-secondary); font-weight: 500; }
+        .mall-order-tab-content .role-selector-wrap select { flex: 1; padding: 4px 8px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-card); font-size: 13px; color: var(--text-primary); outline: none; font-family: inherit; }
+        .mall-order-tab-content .role-selector-wrap select:focus { border-color: var(--pink); }
+        .mall-order-item { background: var(--bg-card); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; box-shadow: 0 1px 6px var(--shadow-color); border-left: 4px solid var(--pink); }
+        .mall-order-item .order-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; flex-wrap: wrap; gap: 4px; }
+        .mall-order-item .order-id { font-size: 12px; color: var(--text-secondary); }
+        .mall-order-item .order-time { font-size: 11px; color: var(--text-secondary); }
+        .mall-order-item .order-status { font-size: 12px; font-weight: 600; padding: 2px 10px; border-radius: 12px; }
+        .mall-order-item .order-status.status-pending { background: #fdcb6e; color: #5a3d1a; }
+        .mall-order-item .order-status.status-shipped { background: #74b9ff; color: #fff; }
+        .mall-order-item .order-status.status-done { background: var(--pink); color: #fff; }
+        .mall-order-item .order-items { font-size: 13px; color: var(--text-secondary); padding: 4px 0; }
+        .mall-order-item .order-items .oi-gift-tag { color: var(--pink); font-weight: 500; margin-left: 4px; }
+        .mall-order-item .order-total { font-size: 15px; font-weight: 600; color: var(--pink); text-align: right; margin-top: 4px; }
+        .mall-order-item .order-actions { display: flex; gap: 8px; margin-top: 8px; justify-content: flex-end; flex-wrap: wrap; }
+        .mall-order-item .order-actions button { padding: 4px 14px; border: none; border-radius: 16px; font-size: 12px; cursor: pointer; font-family: inherit; transition: 0.15s; }
+        .mall-order-item .order-actions button:active { transform: scale(0.95); }
+        .mall-order-item .order-actions .btn-ship { background: #74b9ff; color: #fff; }
+        .mall-order-item .order-actions .btn-done { background: var(--pink); color: #fff; }
+        .mall-order-item .order-actions .btn-delete-order { background: #fee; color: #e74c3c; }
+        .mall-order-item .order-actions .btn-refund { background: #fdcb6e; color: #5a3d1a; }
+        .mall-order-empty { text-align: center; padding: 40px 20px; color: var(--text-secondary); }
+        .mall-order-empty i { font-size: 40px; opacity: 0.3; display: block; margin-bottom: 10px; }
+
+        /* ===== 商品详情弹窗 ===== */
         .mall-detail-overlay { position: absolute; inset: 0; z-index: 30; background: var(--bg-secondary); display: none; flex-direction: column; animation: fadeInUp 0.25s ease; border-radius: 32px; overflow: hidden; }
         .mall-detail-overlay.active { display: flex; }
         .mall-detail-header { background: var(--header-bg); backdrop-filter: blur(10px); padding: 12px 16px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px; flex-shrink: 0; min-height: 52px; }
-        .mall-detail-header .back-btn { font-size: 20px; color: #b888b8; cursor: pointer; border: none; background: none; padding: 4px; }
+        .mall-detail-header .back-btn { font-size: 20px; color: var(--pink); cursor: pointer; border: none; background: none; padding: 4px; }
         .mall-detail-header .title { font-size: 17px; font-weight: 600; color: var(--text-primary); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .mall-detail-body { flex: 1; overflow-y: auto; padding: 16px; }
         .mall-detail-body .detail-img { width: 100%; aspect-ratio: 1/1; border-radius: 14px; background: var(--bg-secondary); border: 1px solid var(--border-color); overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 60px; margin-bottom: 14px; }
         .mall-detail-body .detail-img img { width: 100%; height: 100%; object-fit: cover; }
         .mall-detail-body .detail-name { font-size: 20px; font-weight: 700; color: var(--text-primary); }
-        .mall-detail-body .detail-price { font-size: 24px; font-weight: 700; color: #e8b0c0; margin: 4px 0 10px; }
+        .mall-detail-body .detail-price { font-size: 24px; font-weight: 700; color: var(--pink); margin: 4px 0 10px; }
         .mall-detail-body .detail-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 14px; padding: 12px; background: var(--bg-card); border-radius: 10px; border: 1px solid var(--border-color); }
         .mall-detail-body .detail-qty { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
         .mall-detail-body .detail-qty label { font-size: 13px; font-weight: 600; color: var(--text-primary); }
@@ -68,19 +123,22 @@
         .mall-detail-body .detail-qty .qty-btn:active { transform: scale(0.92); }
         .mall-detail-body .detail-qty .qty-num { font-size: 18px; font-weight: 600; color: var(--text-primary); min-width: 30px; text-align: center; }
         .mall-detail-body .detail-note input { width: 100%; padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 13px; background: var(--bg-card); color: var(--text-primary); outline: none; font-family: inherit; }
-        .mall-detail-body .detail-note input:focus { border-color: #e8b0c0; }
+        .mall-detail-body .detail-note input:focus { border-color: var(--pink); }
         .mall-detail-footer { display: flex; gap: 10px; padding: 12px 16px; background: var(--header-bg); border-top: 1px solid var(--border-color); flex-shrink: 0; }
         .mall-detail-footer button { flex: 1; padding: 12px; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.15s; font-family: inherit; }
         .mall-detail-footer button:active { transform: scale(0.97); }
-        .mall-detail-footer .btn-gift { background: linear-gradient(135deg,#e8b0c0,#d888a0); color: #fff; }
+        .mall-detail-footer .btn-gift { background: linear-gradient(135deg, var(--pink), var(--pink-dark)); color: #fff; box-shadow: 0 2px 10px rgba(255,107,129,0.25); }
         .mall-detail-footer .btn-gift:disabled { opacity: 0.4; cursor: not-allowed; }
-        .mall-detail-footer .btn-buy { background: linear-gradient(135deg,#f8c8d8,#e8a0b8); color: #fff; }
+        .mall-detail-footer .btn-buy { background: linear-gradient(135deg, #a29bfe, #6c5ce7); color: #fff; }
         .mall-detail-footer .btn-buy:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* ===== 购物车侧滑 ===== */
         .cart-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(3px); z-index: 40; display: none; justify-content: flex-end; border-radius: 0; overflow: hidden; }
         .cart-overlay.active { display: flex; }
         .cart-drawer { background: var(--bg-card); width: 88%; max-width: 340px; height: 100%; padding: 20px 18px 30px; overflow-y: auto; box-shadow: -4px 0 25px rgba(0,0,0,0.15); animation: slideInRight 0.25s ease; display: flex; flex-direction: column; }
         .cart-drawer .cart-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); flex-shrink: 0; }
         .cart-drawer .cart-header h3 { font-size: 18px; color: var(--text-primary); }
+        .cart-drawer .cart-header h3 i { color: var(--pink); }
         .cart-drawer .cart-header .close-cart { font-size: 24px; color: var(--text-secondary); cursor: pointer; background: none; border: none; }
         .cart-drawer .cart-list { flex: 1; overflow-y: auto; padding: 12px 0; }
         .cart-drawer .cart-empty { text-align: center; padding: 40px 0; color: var(--text-secondary); }
@@ -90,7 +148,7 @@
         .cart-item .ci-img img { width: 100%; height: 100%; object-fit: cover; }
         .cart-item .ci-info { flex: 1; }
         .cart-item .ci-info .ci-name { font-size: 14px; color: var(--text-primary); }
-        .cart-item .ci-info .ci-price { font-size: 13px; color: #e8b0c0; font-weight: 600; }
+        .cart-item .ci-info .ci-price { font-size: 13px; color: var(--pink); font-weight: 600; }
         .cart-item .ci-qty { display: flex; align-items: center; gap: 6px; }
         .cart-item .ci-qty button { width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--border-color); background: var(--bg-card); cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; color: var(--text-primary); }
         .cart-item .ci-qty button:active { transform: scale(0.92); }
@@ -98,82 +156,100 @@
         .cart-item .ci-remove { color: #e74c3c; cursor: pointer; font-size: 16px; background: none; border: none; padding: 4px; }
         .cart-footer { border-top: 1px solid var(--border-color); padding-top: 14px; flex-shrink: 0; }
         .cart-footer .total-row { display: flex; justify-content: space-between; font-size: 16px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px; }
-        .cart-footer .total-row .total-price { color: #e8b0c0; }
+        .cart-footer .total-row .total-price { color: var(--pink); }
         .cart-footer .balance-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-secondary); margin-bottom: 10px; }
-        .cart-footer .balance-row .balance-amount { color: #e8b0c0; font-weight: 600; }
-        .cart-footer .balance-row .balance-amount.insufficient { color: #ff6b81; }
-        .cart-footer .checkout-btn { width: 100%; padding: 12px; border: none; border-radius: 12px; background: linear-gradient(135deg,#e8b0c0,#d888a0); color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.15s; font-family: inherit; }
+        .cart-footer .balance-row .balance-amount { color: var(--pink); font-weight: 600; }
+        .cart-footer .balance-row .balance-amount.insufficient { color: #ff6b6b; }
+        .cart-footer .checkout-btn { width: 100%; padding: 12px; border: none; border-radius: 12px; background: linear-gradient(135deg, var(--pink), var(--pink-dark)); color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.15s; font-family: inherit; box-shadow: 0 2px 10px rgba(255,107,129,0.2); }
         .cart-footer .checkout-btn:active { transform: scale(0.97); }
         .cart-footer .checkout-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-        .mall-order-list { margin-top: 8px; }
-        .mall-order-item { background: var(--bg-card); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; box-shadow: var(--card-shadow); border-left: 4px solid #e8b0c0; }
-        .mall-order-item .order-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
-        .mall-order-item .order-id { font-size: 12px; color: var(--text-secondary); }
-        .mall-order-item .order-time { font-size: 11px; color: var(--text-secondary); }
-        .mall-order-item .order-status { font-size: 12px; font-weight: 600; padding: 2px 10px; border-radius: 12px; }
-        .mall-order-item .order-status.status-pending { background: #fdcb6e; color: #5a3d1a; }
-        .mall-order-item .order-status.status-shipped { background: #a29bfe; color: #fff; }
-        .mall-order-item .order-status.status-done { background: #e8b0c0; color: #fff; }
-        .mall-order-item .order-items { font-size: 13px; color: var(--text-secondary); padding: 4px 0; }
-        .mall-order-item .order-items .oi-gift-tag { color: #a29bfe; font-weight: 500; margin-left: 4px; }
-        .mall-order-item .order-total { font-size: 15px; font-weight: 600; color: #e8b0c0; text-align: right; margin-top: 4px; }
-        .mall-order-item .order-actions { display: flex; gap: 8px; margin-top: 8px; justify-content: flex-end; flex-wrap: wrap; }
-        .mall-order-item .order-actions button { padding: 4px 14px; border: none; border-radius: 16px; font-size: 12px; cursor: pointer; font-family: inherit; transition: 0.15s; }
-        .mall-order-item .order-actions button:active { transform: scale(0.95); }
-        .mall-order-item .order-actions .btn-ship { background: #a29bfe; color: #fff; }
-        .mall-order-item .order-actions .btn-done { background: #e8b0c0; color: #fff; }
-        .mall-order-item .order-actions .btn-delete-order { background: #fee; color: #e74c3c; }
-        .mall-order-item .order-actions .btn-refund { background: #fdcb6e; color: #5a3d1a; }
+
+        /* ===== 充值弹窗 ===== */
         .mall-recharge-overlay { position: absolute; inset: 0; z-index: 35; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; border-radius: 32px; overflow: hidden; }
         .mall-recharge-overlay.active { display: flex; }
         .mall-recharge-panel { background: var(--bg-card); border-radius: 20px; padding: 24px 20px 20px; max-width: 320px; width: 90%; animation: fadeInUp 0.3s ease; text-align: center; }
-        .mall-recharge-panel h3 { font-size: 18px; color: var(--text-primary); margin-bottom: 4px; }
+        .mall-recharge-panel h3 { font-size: 18px; color: var(--text-primary); }
+        .mall-recharge-panel h3 i { color: var(--pink); }
         .mall-recharge-panel p { font-size: 13px; color: var(--text-secondary); margin-bottom: 14px; }
         .mall-recharge-panel .recharge-input { width: 100%; padding: 10px 14px; border: 2px solid var(--border-color); border-radius: 12px; font-size: 18px; text-align: center; outline: none; background: var(--bg-card); color: var(--text-primary); font-weight: 600; }
-        .mall-recharge-panel .recharge-input:focus { border-color: #e8b0c0; }
-        .mall-recharge-panel .recharge-btns { display: flex; gap: 10px; margin: 12px 0; }
-        .mall-recharge-panel .recharge-btns button { flex: 1; padding: 8px; border: 1px solid var(--border-color); border-radius: 10px; background: var(--bg-secondary); font-size: 14px; cursor: pointer; font-family: inherit; color: var(--text-primary); transition: 0.15s; }
+        .mall-recharge-panel .recharge-input:focus { border-color: var(--pink); }
+        .mall-recharge-panel .recharge-btns { display: flex; gap: 10px; margin: 12px 0; flex-wrap: wrap; justify-content: center; }
+        .mall-recharge-panel .recharge-btns button { padding: 8px 14px; border: 1px solid var(--border-color); border-radius: 10px; background: var(--bg-secondary); font-size: 14px; cursor: pointer; font-family: inherit; color: var(--text-primary); transition: 0.15s; }
         .mall-recharge-panel .recharge-btns button:active { transform: scale(0.95); }
-        .mall-recharge-panel .recharge-btns button .r-amount { font-weight: 700; color: #e8b0c0; }
-        .mall-recharge-panel .recharge-confirm { width: 100%; padding: 12px; border: none; border-radius: 12px; background: linear-gradient(135deg,#e8b0c0,#d888a0); color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; font-family: inherit; transition: 0.15s; }
+        .mall-recharge-panel .recharge-btns button .r-amount { font-weight: 700; color: var(--pink); }
+        .mall-recharge-panel .recharge-confirm { width: 100%; padding: 12px; border: none; border-radius: 12px; background: linear-gradient(135deg, var(--pink), var(--pink-dark)); color: #fff; font-size: 16px; font-weight: 600; cursor: pointer; font-family: inherit; transition: 0.15s; box-shadow: 0 2px 10px rgba(255,107,129,0.2); }
         .mall-recharge-panel .recharge-confirm:active { transform: scale(0.97); }
         .mall-recharge-panel .recharge-cancel { background: none; border: none; color: var(--text-secondary); font-size: 13px; cursor: pointer; margin-top: 8px; font-family: inherit; }
+
+        /* ===== AI 一起逛 ===== */
+        .mall-ai-bubble { position: absolute; bottom: 20px; left: 16px; z-index: 25; background: var(--bg-card); border-radius: 20px; padding: 8px 14px 8px 10px; box-shadow: 0 4px 20px rgba(255,107,129,0.15); display: none; align-items: center; gap: 10px; border: 2px solid var(--pink); animation: fadeInUp 0.3s ease; max-width: 75%; }
+        .mall-ai-bubble.active { display: flex; }
+        .mall-ai-bubble .ai-avatar { width: 32px; height: 32px; border-radius: 50%; background-size: cover; background-position: center; background-color: var(--pink); flex-shrink: 0; border: 2px solid var(--pink); }
+        .mall-ai-bubble .ai-text { font-size: 13px; color: var(--text-primary); line-height: 1.4; flex: 1; }
+        .mall-ai-bubble .ai-text .ai-name { font-weight: 600; color: var(--pink); }
+        .mall-ai-bubble .ai-end-btn { background: none; border: none; color: var(--text-secondary); font-size: 16px; cursor: pointer; padding: 0 2px; }
+
+        /* ===== AI 看中商品弹窗 ===== */
+        .mall-ai-spot-overlay { position: absolute; inset: 0; z-index: 35; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; border-radius: 0; }
+        .mall-ai-spot-overlay.active { display: flex; }
+        .mall-ai-spot-panel { background: var(--bg-card); border-radius: 20px; padding: 20px 20px 24px; max-width: 350px; width: 92%; animation: fadeInUp 0.3s ease; box-shadow: 0 20px 60px rgba(0,0,0,0.3); text-align: center; border: 2px solid var(--pink-light); }
+        .mall-ai-spot-panel .spot-product { display: flex; flex-direction: column; align-items: center; margin-bottom: 12px; }
+        .mall-ai-spot-panel .spot-product .spot-img { width: 80px; height: 80px; border-radius: 12px; background: var(--bg-secondary); border: 1px solid var(--border-color); overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 32px; margin-bottom: 6px; }
+        .mall-ai-spot-panel .spot-product .spot-img img { width: 100%; height: 100%; object-fit: cover; }
+        .mall-ai-spot-panel .spot-product .spot-name { font-size: 16px; font-weight: 600; color: var(--text-primary); }
+        .mall-ai-spot-panel .spot-product .spot-price { font-size: 15px; font-weight: 700; color: var(--pink); }
+        .mall-ai-spot-panel .spot-ai-words { font-size: 15px; color: var(--text-primary); padding: 10px 0; line-height: 1.6; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); margin-bottom: 14px; min-height: 50px; }
+        .mall-ai-spot-panel .spot-ai-words .ai-name-tag { color: var(--pink); font-weight: 600; }
+        .mall-ai-spot-panel .spot-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
+        .mall-ai-spot-panel .spot-buttons button { flex: 1; padding: 10px; border: none; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.15s; font-family: inherit; min-width: 60px; }
+        .mall-ai-spot-panel .spot-buttons button:active { transform: scale(0.95); }
+        .mall-ai-spot-panel .spot-buttons .btn-buy-for-him { background: linear-gradient(135deg, var(--pink), var(--pink-dark)); color: #fff; box-shadow: 0 2px 10px rgba(255,107,129,0.2); }
+        .mall-ai-spot-panel .spot-buttons .btn-reject { background: var(--bg-secondary); color: var(--text-secondary); }
+        .mall-ai-spot-panel .spot-buttons .btn-ai-gift { background: linear-gradient(135deg, #a29bfe, #6c5ce7); color: #fff; }
+        .mall-ai-spot-panel .spot-buttons .btn-ai-gift:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* ===== 选择角色弹窗 ===== */
         .mall-role-select-overlay { position: absolute; inset: 0; z-index: 36; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; border-radius: 32px; overflow: hidden; }
         .mall-role-select-overlay.active { display: flex; }
-        .mall-role-select-panel { background: var(--bg-card); border-radius: 20px; padding: 20px 20px 24px; max-width: 300px; width: 90%; animation: fadeInUp 0.3s ease; text-align: center; }
-        .mall-role-select-panel h3 { font-size: 18px; color: var(--text-primary); margin-bottom: 4px; }
+        .mall-role-select-panel { background: var(--bg-card); border-radius: 20px; padding: 20px 20px 24px; max-width: 300px; width: 90%; animation: fadeInUp 0.3s ease; text-align: center; border: 2px solid var(--pink-light); }
+        .mall-role-select-panel h3 { font-size: 18px; color: var(--text-primary); }
+        .mall-role-select-panel h3 i { color: var(--pink); }
         .mall-role-select-panel p { font-size: 13px; color: var(--text-secondary); margin-bottom: 14px; }
-        .mall-role-select-panel .role-select-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
-        .mall-role-select-panel .role-select-btn { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border: 2px solid #e8b0c0; border-radius: 12px; background: var(--bg-card); cursor: pointer; font-family: inherit; width: 100%; text-align: left; transition: 0.15s; }
+        .mall-role-select-panel .role-select-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; max-height: 300px; overflow-y: auto; }
+        .mall-role-select-panel .role-select-btn { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border: 2px solid var(--pink-light); border-radius: 12px; background: var(--bg-card); cursor: pointer; font-family: inherit; width: 100%; text-align: left; transition: 0.15s; }
         .mall-role-select-panel .role-select-btn:active { transform: scale(0.97); }
-        .mall-role-select-panel .role-select-btn .rs-avatar { width: 40px; height: 40px; border-radius: 50%; background-color: #e8b0c0; background-size: cover; background-position: center; flex-shrink: 0; }
+        .mall-role-select-panel .role-select-btn .rs-avatar { width: 40px; height: 40px; border-radius: 50%; background-color: var(--pink); background-size: cover; background-position: center; flex-shrink: 0; }
         .mall-role-select-panel .role-select-btn .rs-name { flex: 1; font-size: 15px; font-weight: 600; color: var(--text-primary); }
-        .mall-role-select-panel .role-select-btn .rs-check { color: #e8b0c0; font-size: 20px; }
+        .mall-role-select-panel .role-select-btn .rs-check { color: var(--pink); font-size: 20px; }
         .mall-role-select-panel .role-select-btn:disabled { opacity: 0.5; cursor: not-allowed; border-color: var(--border-color); }
         .mall-role-select-panel .role-select-cancel { width: 100%; padding: 10px; border: none; border-radius: 12px; background: var(--bg-secondary); color: var(--text-secondary); font-size: 14px; cursor: pointer; font-family: inherit; }
-        .mall-role-select-panel .role-select-cancel:active { transform: scale(0.97); }
-        .gift-success-overlay { position: absolute; inset: 0; z-index: 50; background: rgba(0,0,0,0.5); backdrop-filter: blur(6px); display: none; justify-content: center; align-items: center; border-radius: 32px; overflow: hidden; }
-        .gift-success-overlay.active { display: flex; }
-        .gift-success-panel { background: var(--bg-card); border-radius: 24px; padding: 28px 24px 20px; max-width: 340px; width: 92%; animation: fadeInUp 0.4s ease; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
-        .gift-success-panel .gift-icon { font-size: 56px; margin-bottom: 4px; }
-        .gift-success-panel h3 { font-size: 20px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
-        .gift-success-panel p { font-size: 14px; color: var(--text-secondary); margin-bottom: 6px; line-height: 1.5; }
-        .gift-success-panel .gift-product-name { font-size: 18px; font-weight: 600; color: #e8b0c0; margin-bottom: 8px; }
-        .gift-success-panel .gift-success-buttons { display: flex; gap: 10px; margin-top: 14px; }
-        .gift-success-panel .gift-success-buttons button { flex: 1; padding: 12px; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.15s; font-family: inherit; }
-        .gift-success-panel .gift-success-buttons button:active { transform: scale(0.95); }
-        .gift-success-panel .gift-success-buttons .btn-back-home { background: linear-gradient(135deg,#e8b0c0,#d888a0); color: #fff; }
-        .gift-success-panel .gift-success-buttons .btn-stay { background: var(--bg-secondary); color: var(--text-secondary); }
+
+        /* ===== AI 送礼收货弹窗 ===== */
+        .gift-receive-overlay { position: absolute; inset: 0; z-index: 37; background: rgba(0,0,0,0.5); backdrop-filter: blur(6px); display: none; justify-content: center; align-items: center; border-radius: 32px; overflow: hidden; }
+        .gift-receive-overlay.active { display: flex; }
+        .gift-receive-panel { background: var(--bg-card); border-radius: 24px; padding: 24px 20px 20px; max-width: 340px; width: 92%; animation: fadeInUp 0.4s ease; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.4); border: 2px solid var(--pink-light); }
+        .gift-receive-panel .gift-icon { font-size: 64px; margin-bottom: 8px; }
+        .gift-receive-panel .gift-title { font-size: 20px; font-weight: 700; color: var(--text-primary); }
+        .gift-receive-panel .gift-title i { color: var(--pink); }
+        .gift-receive-panel .gift-from { font-size: 14px; color: var(--text-secondary); margin-bottom: 4px; }
+        .gift-receive-panel .gift-from span { color: var(--pink); font-weight: 600; }
+        .gift-receive-panel .gift-product { font-size: 16px; font-weight: 600; color: var(--pink); margin-bottom: 4px; }
+        .gift-receive-panel .gift-note { font-size: 13px; color: var(--text-secondary); margin-bottom: 14px; font-style: italic; }
+        .gift-receive-panel .gift-ai-words { font-size: 15px; color: var(--text-primary); padding: 10px 0; line-height: 1.6; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); margin-bottom: 14px; min-height: 40px; }
+        .gift-receive-panel .gift-ai-words .ai-name-tag { color: var(--pink); font-weight: 600; }
+        .gift-receive-panel .gift-buttons { display: flex; gap: 10px; }
+        .gift-receive-panel .gift-buttons button { flex: 1; padding: 12px; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.15s; font-family: inherit; }
+        .gift-receive-panel .gift-buttons button:active { transform: scale(0.95); }
+        .gift-receive-panel .gift-buttons .btn-receive { background: linear-gradient(135deg, var(--pink), var(--pink-dark)); color: #fff; box-shadow: 0 2px 10px rgba(255,107,129,0.2); }
+        .gift-receive-panel .gift-buttons .btn-receive:disabled { opacity: 0.5; cursor: not-allowed; }
+        .gift-receive-panel .gift-buttons .btn-reject-gift { background: var(--bg-secondary); color: var(--text-secondary); }
+
         .custom-toast { position: absolute; bottom: 120px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.75); color: #fff; padding: 10px 24px; border-radius: 12px; font-size: 14px; z-index: 200; animation: fadeInUp 0.3s ease; text-align: center; max-width: 80%; }
-        .mall-bottom-nav { display: flex; justify-content: space-around; align-items: center; padding: 8px 0 6px; border-top: 1px solid var(--border-color); background: var(--header-bg); flex-shrink: 0; }
-        .mall-bottom-nav .nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 10px; color: var(--text-secondary); cursor: pointer; background: none; border: none; font-family: inherit; padding: 4px 12px; transition: 0.15s; }
-        .mall-bottom-nav .nav-item i { font-size: 20px; }
-        .mall-bottom-nav .nav-item.active { color: #e8b0c0; }
-        .mall-bottom-nav .nav-item:active { transform: scale(0.92); }
-        .mall-bottom-nav .nav-item .nav-badge { background: #ff6b81; color: #fff; font-size: 9px; font-weight: 700; min-width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; padding: 0 4px; position: absolute; top: -4px; right: -6px; }
-        .mall-bottom-nav .nav-item .nav-icon-wrap { position: relative; }
+        [data-theme="light"] .custom-toast { background: rgba(40,40,40,0.85); }
+
+        @keyframes slideInRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
-        @media (max-width: 460px) { .phone-frame { border-radius: 0; height: 100vh; max-height: 100vh; } body { padding: 0; } }
+        @media (max-width: 460px) { .phone-frame { border-radius: 0; height: 100vh; max-height: 100vh; } body { padding: 0; } .mall-header .mall-balance { font-size: 11px; padding: 2px 8px; } .mall-header .mall-invite-btn { font-size: 10px; padding: 2px 8px; } .mall-product-grid { gap: 8px; } .mall-product-card .product-name { font-size: 12px; } .mall-product-card .product-price { font-size: 14px; } .mall-detail-body .detail-name { font-size: 17px; } .mall-detail-body .detail-price { font-size: 20px; } .mall-ai-spot-panel { max-width: 300px; padding: 16px; } .mall-ai-spot-panel .spot-product .spot-img { width: 60px; height: 60px; font-size: 24px; } }
     </style>
 </head>
 <body>
@@ -181,7 +257,7 @@
     <!-- ===== 商城主界面 ===== -->
     <div class="screen-mall" id="mallScreen">
         <div class="mall-header">
-            <button class="back-btn" id="exitMallBtn" title="退出商城"><i class="fas fa-times"></i></button>
+            <button class="back-btn" id="exitMallBtn" title="退出商城，回到主应用"><i class="fas fa-times"></i></button>
             <div class="title"><i class="fas fa-shopping-bag"></i> 商城</div>
             <div class="mall-actions">
                 <span class="mall-balance" id="mallBalanceDisplay">💰 <span id="mallBalanceAmount">1000</span></span>
@@ -192,23 +268,27 @@
                 <button class="mall-invite-btn" id="mallInviteBtn">💕 心爱的TA</button>
             </div>
         </div>
-        <div class="mall-body" id="mallBody">
-            <!-- 分类 Tabs -->
-            <div class="mall-category-tabs" id="categoryTabs">
-                <button class="cat-tab active" data-cat="推荐">❤️ 推荐</button>
-                <button class="cat-tab" data-cat="外卖">🍽️ 外卖</button>
-            </div>
-            <div class="mall-product-grid" id="mallProductGrid"></div>
-            <div class="mall-order-entry" id="mallOrderEntry">
-                <i class="fas fa-box"></i> 我的订单 <span class="order-count" id="orderCountBadge">(0 笔)</span>
-                <span style="font-size:12px;color:var(--text-secondary);margin-left:auto;">点击查看 →</span>
-            </div>
+
+        <!-- ===== Tab 导航 ===== -->
+        <div class="mall-tab-bar" id="mallTabBar">
+            <button class="tab-btn active" data-tab="recommend">推荐</button>
+            <button class="tab-btn" data-tab="takeout">外卖</button>
+            <button class="tab-btn" data-tab="orders">订单</button>
         </div>
-        <!-- 底部导航 -->
-        <div class="mall-bottom-nav">
-            <button class="nav-item active" data-page="mall"><i class="fas fa-store-alt"></i><span>商城</span></button>
-            <button class="nav-item" data-page="cart"><i class="fas fa-shopping-cart"></i><span>购物车</span></button>
-            <button class="nav-item" data-page="orders"><i class="fas fa-list-ul"></i><span>订单</span></button>
+
+        <div class="mall-body" id="mallBody">
+            <!-- 推荐 Tab 内容 -->
+            <div id="tabRecommend" class="mall-tab-content"></div>
+            <!-- 外卖 Tab 内容 -->
+            <div id="tabTakeout" class="mall-tab-content" style="display:none;"></div>
+            <!-- 订单 Tab 内容 -->
+            <div id="tabOrders" class="mall-tab-content" style="display:none;"></div>
+        </div>
+
+        <div class="mall-ai-bubble" id="mallAiBubble">
+            <div class="ai-avatar" id="mallAiAvatar"></div>
+            <div class="ai-text" id="mallAiBubbleText"><span class="ai-name" id="mallAiBubbleName">TA</span> 正在和你一起逛...</div>
+            <button class="ai-end-btn" id="mallAiEndBtn"><i class="fas fa-times"></i></button>
         </div>
     </div>
 
@@ -228,7 +308,10 @@
     <!-- ===== 购物车侧滑 ===== -->
     <div class="cart-overlay" id="cartOverlay">
         <div class="cart-drawer">
-            <div class="cart-header"><h3>🛒 购物车</h3><button class="close-cart" id="cartCloseBtn">&times;</button></div>
+            <div class="cart-header">
+                <h3><i class="fas fa-shopping-cart"></i> 购物车</h3>
+                <button class="close-cart" id="cartCloseBtn">&times;</button>
+            </div>
             <div class="cart-list" id="cartList"></div>
             <div class="cart-footer" id="cartFooter">
                 <div class="total-row"><span>合计</span><span class="total-price" id="cartTotalPrice">¥0</span></div>
@@ -241,8 +324,8 @@
     <!-- ===== 充值弹窗 ===== -->
     <div class="mall-recharge-overlay" id="mallRechargeOverlay">
         <div class="mall-recharge-panel">
-            <h3>💰 充值虚拟币</h3>
-            <p>输入你要充值的金额</p>
+            <h3><i class="fas fa-coins"></i> 充值虚拟币</h3>
+            <p>输入你要充值的金额，或选择快捷金额</p>
             <input class="recharge-input" id="rechargeInput" type="number" placeholder="输入金额" value="100" />
             <div class="recharge-btns">
                 <button data-amount="50"><span class="r-amount">50</span> 币</button>
@@ -255,40 +338,61 @@
         </div>
     </div>
 
+    <!-- ===== AI 看中商品弹窗 ===== -->
+    <div class="mall-ai-spot-overlay" id="mallAiSpotOverlay">
+        <div class="mall-ai-spot-panel">
+            <div class="spot-product">
+                <div class="spot-img" id="spotProductImg">🛍️</div>
+                <div class="spot-name" id="spotProductName">商品名</div>
+                <div class="spot-price" id="spotProductPrice">¥0</div>
+            </div>
+            <div class="spot-ai-words" id="spotAiWords"><span class="ai-name-tag" id="spotAiName">TA</span>：我好喜欢这个...</div>
+            <div class="spot-buttons">
+                <button class="btn-buy-for-him" id="spotBuyForHimBtn">💝 买给他</button>
+                <button class="btn-ai-gift" id="spotAiGiftBtn">🎁 让TA买给你</button>
+                <button class="btn-reject" id="spotRejectBtn">👀 再看看</button>
+            </div>
+        </div>
+    </div>
+
     <!-- ===== 选择角色弹窗 ===== -->
     <div class="mall-role-select-overlay" id="mallRoleSelectOverlay">
         <div class="mall-role-select-panel">
-            <h3>💕 选择心爱的TA</h3>
-            <p>选择一位角色，送出你的心意</p>
+            <h3><i class="fas fa-heart"></i> 选择心爱的TA</h3>
+            <p>选择一位角色，一起逛商城吧</p>
             <div class="role-select-list" id="mallRoleSelectList"></div>
             <button class="role-select-cancel" id="mallRoleSelectCancel">取消</button>
         </div>
     </div>
 
-    <!-- ===== 送礼成功弹窗 ===== -->
-    <div class="gift-success-overlay" id="giftSuccessOverlay">
-        <div class="gift-success-panel">
+    <!-- ===== AI 送礼收货弹窗 ===== -->
+    <div class="gift-receive-overlay" id="giftReceiveOverlay">
+        <div class="gift-receive-panel">
             <div class="gift-icon">🎁</div>
-            <h3>💝 礼物已送出！</h3>
-            <p>你送给 <span id="giftSuccessRoleName" style="color:#e8b0c0;font-weight:600;">TA</span> 一份</p>
-            <div class="gift-product-name" id="giftSuccessProductName">✨ 商品名</div>
-            <p style="font-size:13px;color:var(--text-secondary);">返回主应用，在聊天框中查看卡片</p>
-            <div class="gift-success-buttons">
-                <button class="btn-back-home" id="giftSuccessBackBtn">🏠 返回主应用</button>
-                <button class="btn-stay" id="giftSuccessStayBtn">继续逛逛</button>
+            <div class="gift-title"><i class="fas fa-gift"></i> 你收到了一份礼物！</div>
+            <div class="gift-from">来自 <span id="giftReceiveFromName">TA</span> 的礼物</div>
+            <div class="gift-product" id="giftReceiveProduct">商品名</div>
+            <div class="gift-note" id="giftReceiveNote">附言：...</div>
+            <div class="gift-ai-words" id="giftReceiveWords"><span class="ai-name-tag" id="giftReceiveAiName">TA</span>：...</div>
+            <div class="gift-buttons">
+                <button class="btn-receive" id="giftReceiveBtn">💝 确认收货</button>
+                <button class="btn-reject-gift" id="giftRejectBtn">🙅 拒绝</button>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- ===== Toast容器 ===== -->
-    <div class="custom-toast" id="customToast" style="display:none;"></div>
-</div> <script>
+<script>
 // ============================================================
 //  全局配置
 // ============================================================
 var MALL_CONFIG = {
     initialBalance: 1000,
+    cooldownMinutes: 60,
+    maxRejectCount: 5,
+    spotProbability: 0.35,
     heartSpikeOnGift: 15,
+    heartSpikeOnAiGift: 10,
 };
 
 // ============================================================
@@ -298,10 +402,25 @@ var mallProducts = [];
 var mallCart = [];
 var mallOrders = [];
 var mallBalance = MALL_CONFIG.initialBalance;
+var mallRechargeHistory = [];
+var mallAiGiftReceived = [];
+var mallShoppingTogether = {
+    roleId: null,
+    roleName: '',
+    rejectCount: 0,
+    totalTriggers: 0,
+    cooldownUntil: null,
+    isActive: false,
+    pendingProduct: null,
+};
 var mallRoles = [];
 var currentDetailProduct = null;
-var selectedCategory = '推荐';
-var pendingGiftData = null;
+var lastTriggeredProductId = null;
+var mallScrollTimeout = null;
+var selectedRoleForGift = null;
+var pendingAiGiftOrder = null;
+var currentTab = 'recommend';
+var orderSubTab = 'received'; // 'received' 或 'sent'
 
 // ============================================================
 //  工具函数
@@ -311,20 +430,17 @@ function generateId() {
 }
 
 function showToast(msg) {
-    var toast = document.getElementById('customToast');
-    if (!toast) return;
+    var old = document.querySelector('.custom-toast');
+    if (old) old.remove();
+    var toast = document.createElement('div');
+    toast.className = 'custom-toast';
     toast.textContent = msg;
-    toast.style.display = 'block';
-    toast.style.opacity = '1';
-    clearTimeout(toast._timer);
-    toast._timer = setTimeout(function() {
-        toast.style.opacity = '0';
-        setTimeout(function() { toast.style.display = 'none'; }, 300);
-    }, 2500);
+    document.querySelector('.phone-frame').appendChild(toast);
+    setTimeout(function() { toast.remove(); }, 2500);
 }
 
 // ============================================================
-//  数据读写
+//  数据读写（与主应用共用）
 // ============================================================
 function loadMallData() {
     try {
@@ -334,6 +450,17 @@ function loadMallData() {
             mallBalance = data.balance !== undefined ? data.balance : MALL_CONFIG.initialBalance;
             mallCart = data.cart || [];
             mallOrders = data.orders || [];
+            mallRechargeHistory = data.rechargeHistory || [];
+            mallAiGiftReceived = data.aiGiftReceived || [];
+            if (data.shoppingTogether) {
+                mallShoppingTogether.roleId = data.shoppingTogether.roleId || null;
+                mallShoppingTogether.roleName = data.shoppingTogether.roleName || '';
+                mallShoppingTogether.rejectCount = data.shoppingTogether.rejectCount || 0;
+                mallShoppingTogether.totalTriggers = data.shoppingTogether.totalTriggers || 0;
+                mallShoppingTogether.cooldownUntil = data.shoppingTogether.cooldownUntil || null;
+                mallShoppingTogether.isActive = data.shoppingTogether.isActive || false;
+                mallShoppingTogether.pendingProduct = data.shoppingTogether.pendingProduct || null;
+            }
         }
     } catch (_) {}
 }
@@ -344,6 +471,9 @@ function saveMallData() {
             balance: mallBalance,
             cart: mallCart,
             orders: mallOrders,
+            rechargeHistory: mallRechargeHistory,
+            aiGiftReceived: mallAiGiftReceived,
+            shoppingTogether: mallShoppingTogether,
         }));
     } catch (_) {}
 }
@@ -397,72 +527,173 @@ function getCurrentRoleFromMain() {
     return null;
 }
 
+function getRoleById(roleId) {
+    return mallRoles.find(function(r) { return r.id === roleId; }) || null;
+}
+
 // ============================================================
-//  💝 写入待处理礼物数据
+//  写入礼物卡片到主应用聊天记录
 // ============================================================
-function savePendingGift(giftData) {
+function writeGiftMessageToMain(roleId, giftData) {
     try {
-        localStorage.setItem('pending_gift', JSON.stringify(giftData));
+        var raw = localStorage.getItem('ds_multirole_v2');
+        if (!raw) return false;
+        var data = JSON.parse(raw);
+        var role = data.roles.find(function(r) { return r.id === roleId; });
+        if (!role) return false;
+
+        var msgId = 'gift_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4);
+        var timeStr = new Date().toLocaleTimeString();
+        var msg = {
+            id: msgId,
+            role: giftData.sender === 'user' ? 'user' : 'assistant',
+            content: '',
+            type: 'gift',
+            time: timeStr,
+            giftData: {
+                name: giftData.name || '礼物',
+                image: giftData.image || '',
+                note: giftData.note || '💕 一份心意',
+                sender: giftData.sender || 'AI',
+                status: 'pending',
+                orderId: giftData.orderId || null,
+                roleId: roleId,
+            }
+        };
+        if (!Array.isArray(role.messages)) role.messages = [];
+        role.messages.push(msg);
+        localStorage.setItem('ds_multirole_v2', JSON.stringify(data));
         return true;
-    } catch (_) { return false; }
+    } catch (e) {
+        console.error('写入礼物消息失败:', e);
+        return false;
+    }
+}
+
+// ============================================================
+//  写入记忆到主应用
+// ============================================================
+function addMemoryToMain(roleId, text) {
+    try {
+        var raw = localStorage.getItem('ds_multirole_v2');
+        if (!raw) return false;
+        var data = JSON.parse(raw);
+        var role = data.roles.find(function(r) { return r.id === roleId; });
+        if (!role) return false;
+        if (!Array.isArray(role.memory)) role.memory = [];
+        var exists = role.memory.some(function(m) {
+            if (typeof m === 'string') return m.indexOf(text.substring(0, 10)) !== -1;
+            return m.text && m.text.indexOf(text.substring(0, 10)) !== -1;
+        });
+        if (!exists) {
+            role.memory.push({ text: text, sourceMessageId: 'gift_' + Date.now() });
+            localStorage.setItem('ds_multirole_v2', JSON.stringify(data));
+            return true;
+        }
+        return false;
+    } catch (e) { return false; }
+}
+
+// ============================================================
+//  触发心跳（写入主应用）
+// ============================================================
+function triggerHeartSpikeForGift(roleId, product, mode) {
+    try {
+        var raw = localStorage.getItem('ds_multirole_v2');
+        if (!raw) return;
+        var data = JSON.parse(raw);
+        var role = data.roles.find(function(r) { return r.id === roleId; });
+        if (!role) return;
+        var spikeAmount = mode === 'gift' ? MALL_CONFIG.heartSpikeOnGift : MALL_CONFIG.heartSpikeOnAiGift;
+        var spike = spikeAmount + Math.floor(Math.random() * 10);
+        var newVal = Math.min(99, (role.heartData ? role.heartData.value || 65 : 65) + spike);
+        if (!role.heartData) role.heartData = { value: 65, restingValue: 65, signature: '今天也很想你 💕', recentTrigger: '初次相遇' };
+        role.heartData.value = newVal;
+        role.heartData.peakValue = newVal;
+        role.heartData.recentTrigger = '💝 礼物「' + product.name + '」♥ +' + spike;
+        // 如果是绑定的角色，同步到 config.heart
+        var configHeart = data.config && data.config.heart;
+        if (configHeart && configHeart.bindRoleId === roleId) {
+            configHeart.value = newVal;
+            configHeart.peakValue = newVal;
+            configHeart.recentTrigger = role.heartData.recentTrigger;
+            configHeart.level = getHeartLevel(newVal);
+        }
+        localStorage.setItem('ds_multirole_v2', JSON.stringify(data));
+        showToast('💓 心跳飙升 +' + spike + '！');
+    } catch (e) { console.error('心跳失败:', e); }
+}
+
+function getHeartLevel(value) {
+    var levels = [
+        { max: 20, label: '平静' }, { max: 40, label: '微动' }, { max: 60, label: '心动' },
+        { max: 80, label: '热烈' }, { max: 95, label: '沸腾' }, { max: 100, label: '灵魂共振' }
+    ];
+    for (var i = 0; i < levels.length; i++) {
+        if (value <= levels[i].max) return levels[i].label;
+    }
+    return '灵魂共振';
 }
 
 // ============================================================
 //  加载商品
 // ============================================================
 function loadMallProducts() {
-    var grid = document.getElementById('mallProductGrid');
-    if (!grid) return;
-
     fetch('./products.json').then(function(resp) {
         if (!resp.ok) throw new Error('加载失败');
         return resp.json();
     }).then(function(data) {
         mallProducts = data.products || [];
-        renderMallProducts();
+        renderCurrentTab();
         updateMallUI();
     }).catch(function(e) {
-        console.warn('加载 products.json 失败，使用备用数据:', e);
+        console.error('加载商品失败:', e);
         mallProducts = [
             { id: 'default_1', name: '纯白衬衫', price: 129, image: '', description: '新疆纯棉制造，柔软舒适', tag: '新品', category: '推荐' },
-            { id: 'default_2', name: '真丝睡裙', price: 169, image: '', description: '真蚕丝，柔软舒适，安稳睡眠', tag: '热销', category: '推荐' },
-            { id: 'default_3', name: '情侣手链', price: 89, image: '', description: '925银镀金，刻字定制', tag: '情侣', category: '推荐' },
+            { id: 'default_2', name: '真丝睡裙', price: 259, image: '', description: '100%桑蚕丝，亲肤丝滑', tag: '热销', category: '推荐' },
+            { id: 'default_3', name: '情侣拖鞋', price: 49, image: '', description: 'EVA材质，防滑耐磨，可定制刺绣', tag: '情侣', category: '推荐' },
+            { id: 'default_4', name: '烤串拼盘', price: 38, image: '', description: '10串混合烧烤', tag: '人气', category: '外卖' },
         ];
-        renderMallProducts();
+        renderCurrentTab();
         updateMallUI();
         showToast('📦 已加载备用商品数据');
     });
 }
 
-function renderMallProducts() {
-    var grid = document.getElementById('mallProductGrid');
-    if (!grid) return;
+function renderCurrentTab() {
+    if (currentTab === 'recommend') renderTabRecommend();
+    else if (currentTab === 'takeout') renderTabTakeout();
+    else if (currentTab === 'orders') renderTabOrders();
+}
 
-    var filtered = mallProducts.filter(function(p) {
-        return (p.category || '推荐') === selectedCategory;
-    });
+function renderTabRecommend() {
+    var container = document.getElementById('tabRecommend');
+    var products = mallProducts.filter(function(p) { return p.category === '推荐'; });
+    container.innerHTML = renderProductGrid(products);
+    container.style.display = 'block';
+    bindProductCardEvents(container);
+}
 
-    if (filtered.length === 0) {
-        grid.innerHTML = '<div class="mall-empty"><i class="fas fa-box-open"></i><p>暂无商品<br />试试切换分类吧 🛍️</p></div>';
-        return;
+function renderTabTakeout() {
+    var container = document.getElementById('tabTakeout');
+    var products = mallProducts.filter(function(p) { return p.category === '外卖'; });
+    container.innerHTML = renderProductGrid(products);
+    container.style.display = 'block';
+    bindProductCardEvents(container);
+}
+
+function renderProductGrid(products) {
+    if (products.length === 0) {
+        return '<div class="mall-empty"><i class="fas fa-box-open"></i><p>暂无商品</p></div>';
     }
-
-    var html = '';
-    filtered.forEach(function(p) {
+    var html = '<div class="mall-product-grid">';
+    products.forEach(function(p) {
         var tagHtml = p.tag ? '<span class="product-tag ' + getTagClass(p.tag) + '">' + p.tag + '</span>' : '';
-        var imgHtml = p.image ? '<img src="' + p.image + '" alt="' + p.name + '" loading="lazy" onerror="this.style.display=\'none\';this.parentElement.textContent=\'🛍️\';" />' : '🛍️';
+        var imgHtml = p.image ? '<img src="' + p.image + '" alt="' + p.name + '" loading="lazy" />' : '🛍️';
         html += '<div class="mall-product-card" data-id="' + p.id + '">' + tagHtml + '<div class="product-img">' + imgHtml + '</div><div class="product-name">' + p.name + '</div><div class="product-price">¥' + p.price + '</div></div>';
     });
-    grid.innerHTML = html;
-
-    grid.querySelectorAll('.mall-product-card').forEach(function(el) {
-        el.addEventListener('click', function() {
-            var product = mallProducts.find(function(p) { return p.id === el.dataset.id; });
-            if (product) openMallDetail(product);
-        });
-    });
-
-    updateOrderCount();
+    html += '</div>';
+    return html;
 }
 
 function getTagClass(tag) {
@@ -470,9 +701,13 @@ function getTagClass(tag) {
     return map[tag] || 'default-tag';
 }
 
-function updateOrderCount() {
-    var badge = document.getElementById('orderCountBadge');
-    if (badge) badge.textContent = '(' + mallOrders.length + ' 笔)';
+function bindProductCardEvents(container) {
+    container.querySelectorAll('.mall-product-card').forEach(function(el) {
+        el.addEventListener('click', function() {
+            var product = mallProducts.find(function(p) { return p.id === el.dataset.id; });
+            if (product) openMallDetail(product);
+        });
+    });
 }
 
 // ============================================================
@@ -484,7 +719,7 @@ function openMallDetail(product) {
     var body = document.getElementById('mallDetailBody');
     document.getElementById('mallDetailTitle').textContent = product.name;
 
-    var imgHtml = product.image ? '<img src="' + product.image + '" alt="' + product.name + '" onerror="this.style.display=\'none\';this.parentElement.textContent=\'🛍️\';" />' : '🛍️';
+    var imgHtml = product.image ? '<img src="' + product.image + '" alt="' + product.name + '" />' : '🛍️';
     body.innerHTML = '<div class="detail-img">' + imgHtml + '</div><div class="detail-name">' + product.name + '</div><div class="detail-price">¥' + product.price + '</div><div class="detail-desc">' + (product.description || '暂无描述') + '</div><div class="detail-qty"><label>数量</label><button class="qty-btn" id="detailQtyMinus">−</button><span class="qty-num" id="detailQtyNum">1</span><button class="qty-btn" id="detailQtyPlus">+</button></div><div class="detail-note"><input type="text" id="detailNoteInput" placeholder="给TA的留言（选填）..." /></div>';
     overlay.classList.add('active');
 
@@ -525,12 +760,11 @@ function selectTargetRoleSync() {
             resolve(null);
             return;
         }
-
         var overlay = document.getElementById('mallRoleSelectOverlay');
         var list = document.getElementById('mallRoleSelectList');
         var html = '';
         roles.forEach(function(r) {
-            var avatarStyle = r.avatar ? 'background-image:url(' + r.avatar + ');background-size:cover;background-position:center;' : 'background-color:#e8b0c0;';
+            var avatarStyle = r.avatar ? 'background-image:url(' + r.avatar + ');background-size:cover;background-position:center;' : 'background-color:var(--pink);';
             html += '<button class="role-select-btn" data-id="' + r.id + '"><div class="rs-avatar" style="' + avatarStyle + '"></div><span class="rs-name">' + r.name + '</span><span class="rs-check">💕</span></button>';
         });
         list.innerHTML = html;
@@ -551,7 +785,7 @@ function selectTargetRoleSync() {
 }
 
 // ============================================================
-//  购买 / 送礼（核心修复）
+//  购买 / 送礼
 // ============================================================
 function purchaseProduct(product, qty, note, mode) {
     var totalPrice = product.price * qty;
@@ -560,7 +794,8 @@ function purchaseProduct(product, qty, note, mode) {
     if (mode === 'gift') {
         selectTargetRoleSync().then(function(selected) {
             if (!selected) return;
-            executeGift(product, qty, note, selected);
+            selectedRoleForGift = selected;
+            executePurchase(product, qty, note, mode, selected, totalPrice);
         });
         return;
     }
@@ -569,50 +804,18 @@ function purchaseProduct(product, qty, note, mode) {
         showToast('⚠️ 请先在主应用中创建角色');
         return;
     }
-    executePurchase(product, qty, note, currentRole, totalPrice);
+    executePurchase(product, qty, note, mode, currentRole, totalPrice);
 }
 
-// 普通购买
-function executePurchase(product, qty, note, targetRole, totalPrice) {
-    if (mallBalance < totalPrice) { showToast('💰 余额不足，去充值吧～'); return; }
-    if (!confirm('💰 确定购买「' + product.name + '」×' + qty + ' 吗？\n花费 ¥' + totalPrice)) return;
+function executePurchase(product, qty, note, mode, targetRole, totalPrice) {
+    if (!targetRole) { showToast('⚠️ 请先选择一个角色'); return; }
+    if (mallBalance < totalPrice && mode !== 'ai_gift') { showToast('💰 余额不足，去充值吧～'); return; }
 
-    mallBalance -= totalPrice;
-    var order = {
-        id: 'ORD_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
-        productId: product.id,
-        productName: product.name,
-        productImage: product.image,
-        price: product.price,
-        qty: qty,
-        total: totalPrice,
-        note: note || '',
-        mode: 'buy',
-        roleName: targetRole.name,
-        roleId: targetRole.id,
-        status: 'pending',
-        giftFromAi: false,
-        createdAt: new Date().toISOString(),
-    };
-    mallOrders.push(order);
-    saveMallData();
-    closeMallDetail();
-    updateMallUI();
-    showToast('✅ 购买成功！');
-}
-
-// 🎁 送礼（核心修复）
-function executeGift(product, qty, note, targetRole) {
-    var totalPrice = product.price * qty;
-    if (mallBalance < totalPrice) { showToast('💰 余额不足，去充值吧～'); return; }
-
-    var confirmMsg = '💝 确定送给 ' + targetRole.name + '「' + product.name + '」×' + qty + ' 吗？\n花费 ¥' + totalPrice;
+    var confirmMsg = mode === 'gift' ? '💝 确定送给 ' + targetRole.name + '「' + product.name + '」×' + qty + ' 吗？\n花费 ¥' + totalPrice : '💰 确定购买「' + product.name + '」×' + qty + ' 吗？\n花费 ¥' + totalPrice;
     if (!confirm(confirmMsg)) return;
 
-    // 扣余额
-    mallBalance -= totalPrice;
+    if (mode !== 'ai_gift') mallBalance -= totalPrice;
 
-    // 生成订单
     var order = {
         id: 'ORD_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
         productId: product.id,
@@ -622,112 +825,55 @@ function executeGift(product, qty, note, targetRole) {
         qty: qty,
         total: totalPrice,
         note: note || '',
-        mode: 'gift',
+        mode: mode,
         roleName: targetRole.name,
         roleId: targetRole.id,
         status: 'pending',
-        giftFromAi: false,
+        giftFromAi: (mode === 'ai_gift'),
         createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
     };
+
     mallOrders.push(order);
     saveMallData();
     closeMallDetail();
+    showToast('✅ ' + (mode === 'gift' ? '🎁 已送给 ' + targetRole.name : '购买') + '成功！');
     updateMallUI();
 
-    // 生成 AI 附言（符合人设）
-    generateAiGiftNote(targetRole, product, note).then(function(aiNote) {
-        // 写入 pending_gift
+    if (mode === 'gift') {
+        // 写入礼物卡片到主应用聊天
         var giftData = {
-            id: 'gift_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
-            productName: product.name,
-            productImage: product.image || '',
-            price: product.price,
-            userNote: note || '',
-            aiNote: aiNote || '希望你喜欢这份礼物 💕',
-            roleId: targetRole.id,
-            roleName: targetRole.name,
+            name: product.name,
+            image: product.image || '',
+            note: note || '💕 一份心意，请查收',
             sender: 'user',
-            status: 'pending',
-            createdAt: new Date().toISOString(),
+            orderId: order.id,
         };
-        savePendingGift(giftData);
-
-        // 显示送礼成功弹窗
-        showGiftSuccess(targetRole, product);
-    }).catch(function() {
-        // 如果 AI 生成失败，使用默认附言
-        var giftData = {
-            id: 'gift_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
-            productName: product.name,
-            productImage: product.image || '',
-            price: product.price,
-            userNote: note || '',
-            aiNote: '希望你喜欢这份礼物 💕',
-            roleId: targetRole.id,
-            roleName: targetRole.name,
-            sender: 'user',
-            status: 'pending',
-            createdAt: new Date().toISOString(),
-        };
-        savePendingGift(giftData);
-        showGiftSuccess(targetRole, product);
-    });
-}
-
-// 生成 AI 附言
-function generateAiGiftNote(role, product, userNote) {
-    var apiKey = getApiKeyFromMain();
-    if (!apiKey) {
-        var defaults = [
-            '这份礼物送给你，希望你喜欢 💕',
-            '看到这个就想到你，所以就买了～',
-            '你一定会喜欢的，我保证！😊',
-            '这是我精心挑选的，希望你会开心 💝'
-        ];
-        return Promise.resolve(defaults[Math.floor(Math.random() * defaults.length)]);
+        writeGiftMessageToMain(targetRole.id, giftData);
+        addMemoryToMain(targetRole.id, '💝 我送了「' + product.name + '」给 ' + targetRole.name + (note ? '（附言：' + note + '）' : ''));
+        triggerHeartSpikeForGift(targetRole.id, product, 'gift');
+        showToast('🎁 礼物已送达 ' + targetRole.name + ' 的聊天窗口，等待TA确认收货');
     }
 
-    var model = getModelFromMain();
-    var prompt = '你正在扮演「' + role.name + '」。用户送了你一份礼物：' + product.name + (userNote ? '，附言：' + userNote : '') + '。\n【你的性格】' + (role.persona || '温柔体贴') + '\n【说话风格】' + (role.style || '自然简短') + '\n\n请用你的性格说一句收到礼物时的感受，表达你的喜欢或感谢。控制在1-2句话，用第一人称「我」说话，不要用预设模板。';
-
-    return fetch('https://api.deepseek.com/v1/chat/completions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
-        body: JSON.stringify({
-            model: model,
-            messages: [{ role: 'system', content: '你是一个有丰富情感的角色，请用你的性格说话。' }, { role: 'user', content: prompt }],
-            temperature: 0.9,
-            max_tokens: 80,
-        }),
-    }).then(function(resp) {
-        if (!resp.ok) throw new Error('API 错误');
-        return resp.json();
-    }).then(function(data) {
-        var reply = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
-        return reply ? reply.trim() : '谢谢你的礼物，我好喜欢 💕';
-    }).catch(function() {
-        return '谢谢你的礼物，我好喜欢 💕';
-    });
+    if (mallShoppingTogether.isActive) mallShoppingTogether.totalTriggers++;
 }
 
-// 显示送礼成功弹窗
-function showGiftSuccess(role, product) {
-    var overlay = document.getElementById('giftSuccessOverlay');
-    document.getElementById('giftSuccessRoleName').textContent = role.name;
-    document.getElementById('giftSuccessProductName').textContent = '✨ ' + product.name;
-    overlay.classList.add('active');
+// ============================================================
+//  UI 更新
+// ============================================================
+function updateMallUI() {
+    var el = document.getElementById('mallBalanceAmount');
+    if (el) el.textContent = mallBalance;
+    var cartBalance = document.getElementById('cartBalanceDisplay');
+    if (cartBalance) cartBalance.textContent = '¥' + mallBalance;
 
-    // 返回主应用
-    document.getElementById('giftSuccessBackBtn').onclick = function() {
-        overlay.classList.remove('active');
-        window.location.href = 'index.html';
-    };
-
-    // 继续逛逛
-    document.getElementById('giftSuccessStayBtn').onclick = function() {
-        overlay.classList.remove('active');
-        showToast('💝 礼物已送出！记得回主应用查看');
-    };
+    var count = mallCart.reduce(function(sum, item) { return sum + item.qty; }, 0);
+    var badge = document.getElementById('mallCartCount');
+    if (badge) {
+        if (count > 0) { badge.textContent = count > 99 ? '99+' : count; badge.classList.remove('empty'); }
+        else { badge.classList.add('empty'); }
+    }
+    saveMallData();
 }
 
 // ============================================================
@@ -777,7 +923,7 @@ function renderCart() {
     mallCart.forEach(function(item) {
         var subtotal = item.price * item.qty;
         total += subtotal;
-        var imgHtml = item.image ? '<img src="' + item.image + '" alt="' + item.name + '" onerror="this.style.display=\'none\';" />' : '🛍️';
+        var imgHtml = item.image ? '<img src="' + item.image + '" alt="' + item.name + '" />' : '🛍️';
         html += '<div class="cart-item"><div class="ci-img">' + imgHtml + '</div><div class="ci-info"><div class="ci-name">' + item.name + '</div><div class="ci-price">¥' + item.price + '</div></div><div class="ci-qty"><button class="ci-qty-btn" data-id="' + item.id + '" data-delta="-1">−</button><span class="qty-num">' + item.qty + '</span><button class="ci-qty-btn" data-id="' + item.id + '" data-delta="1">+</button></div><button class="ci-remove" data-id="' + item.id + '"><i class="fas fa-trash-alt"></i></button></div>';
     });
     list.innerHTML = html;
@@ -819,7 +965,10 @@ function checkoutCart() {
         roleName: roleName,
         roleId: role ? role.id : null,
         status: 'pending',
+        giftFromAi: false,
+        note: '',
         createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
     };
     mallOrders.push(order);
     mallCart = [];
@@ -827,6 +976,10 @@ function checkoutCart() {
     closeCart();
     updateMallUI();
     showToast('✅ 下单成功！共 ¥' + total);
+    if (role) {
+        triggerHeartSpikeForGift(role.id, { name: '购物车商品', price: total }, 'buy');
+        addMemoryToMain(role.id, '🛒 在商城购买了 ' + order.items.length + ' 件商品');
+    }
 }
 
 function openCart() {
@@ -836,25 +989,6 @@ function openCart() {
 
 function closeCart() {
     document.getElementById('cartOverlay').classList.remove('active');
-}
-
-// ============================================================
-//  UI 更新
-// ============================================================
-function updateMallUI() {
-    var el = document.getElementById('mallBalanceAmount');
-    if (el) el.textContent = mallBalance;
-    var cartBalance = document.getElementById('cartBalanceDisplay');
-    if (cartBalance) cartBalance.textContent = '¥' + mallBalance;
-
-    var count = mallCart.reduce(function(sum, item) { return sum + item.qty; }, 0);
-    var badge = document.getElementById('mallCartCount');
-    if (badge) {
-        if (count > 0) { badge.textContent = count > 99 ? '99+' : count; badge.classList.remove('empty'); }
-        else { badge.classList.add('empty'); }
-    }
-    updateOrderCount();
-    saveMallData();
 }
 
 // ============================================================
@@ -870,90 +1004,377 @@ function closeRecharge() {
 }
 
 // ============================================================
-//  订单列表
+//  Tab 切换
 // ============================================================
-function showOrderList() {
-    var body = document.getElementById('mallBody');
-    if (!body) return;
-    var html = '<div style="margin-bottom:12px;"><button class="meme-back-btn" onclick="backToMallHome()" style="background:none;border:none;color:#b888b8;font-size:14px;cursor:pointer;padding:4px 8px;display:flex;align-items:center;gap:4px;"><i class="fas fa-arrow-left"></i> 返回商城</button></div>';
-    html += '<div class="mall-order-list">';
+function switchTab(tabId) {
+    currentTab = tabId;
+    document.querySelectorAll('.tab-btn').forEach(function(btn) {
+        btn.classList.toggle('active', btn.dataset.tab === tabId);
+    });
+    document.querySelectorAll('.mall-tab-content').forEach(function(el) { el.style.display = 'none'; });
+    if (tabId === 'recommend') { document.getElementById('tabRecommend').style.display = 'block'; }
+    else if (tabId === 'takeout') { document.getElementById('tabTakeout').style.display = 'block'; }
+    else if (tabId === 'orders') { document.getElementById('tabOrders').style.display = 'block'; }
+    renderCurrentTab();
+}
 
-    if (mallOrders.length === 0) {
-        html += '<div class="mall-empty"><i class="fas fa-inbox"></i><p>暂无订单</p></div>';
+// ============================================================
+//  订单 Tab
+// ============================================================
+function renderTabOrders() {
+    var container = document.getElementById('tabOrders');
+    var html = '<div class="mall-order-tab-content">';
+    html += '<div class="order-tab-header">';
+    html += '<button class="order-sub-tab ' + (orderSubTab === 'received' ? 'active' : '') + '" data-sub="received">📦 我收到的礼物</button>';
+    html += '<button class="order-sub-tab ' + (orderSubTab === 'sent' ? 'active' : '') + '" data-sub="sent">🎁 他收到的礼物</button>';
+    html += '</div>';
+
+    if (orderSubTab === 'received') {
+        html += renderReceivedGifts();
     } else {
-        var sortedOrders = mallOrders.slice().sort(function(a, b) {
-            return new Date(b.createdAt) - new Date(a.createdAt);
-        });
-        sortedOrders.forEach(function(order) {
-            var statusMap = { 'pending': '待发货', 'shipped': '已发货', 'done': '已完成' };
-            var statusClass = { 'pending': 'status-pending', 'shipped': 'status-shipped', 'done': 'status-done' };
-            var itemsText = order.items ? order.items.map(function(item) {
-                return item.productName + ' ×' + item.qty;
-            }).join('、') : order.productName + ' ×' + order.qty;
-            var modeTag = order.mode === 'gift' ? ' 💝 送礼' : ' 🛒 购买';
-            html += '<div class="mall-order-item"><div class="order-header"><span class="order-id">' + order.id + '</span><span class="order-time">' + new Date(order.createdAt).toLocaleString() + '</span></div><div class="order-items">' + itemsText + modeTag + '</div><div class="order-total">¥' + order.total + '</div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;"><span class="order-status ' + (statusClass[order.status] || 'status-pending') + '">' + (statusMap[order.status] || '待发货') + '</span><div class="order-actions">' + (order.status === 'pending' ? '<button class="btn-ship" data-id="' + order.id + '">🚚 发货</button>' : '') + (order.status === 'shipped' ? '<button class="btn-done" data-id="' + order.id + '">✅ 确认收货</button>' : '') + '<button class="btn-delete-order" data-id="' + order.id + '">🗑️ 删除</button></div></div></div>';
-        });
+        html += renderSentGifts();
     }
 
     html += '</div>';
-    body.innerHTML = html;
+    container.innerHTML = html;
 
-    body.querySelectorAll('.btn-ship').forEach(function(btn) {
+    container.querySelectorAll('.order-sub-tab').forEach(function(btn) {
         btn.onclick = function() {
-            var order = mallOrders.find(function(o) { return o.id === btn.dataset.id; });
-            if (order) { order.status = 'shipped'; saveMallData(); showOrderList(); showToast('🚚 已发货'); }
+            orderSubTab = this.dataset.sub;
+            renderTabOrders();
         };
     });
-    body.querySelectorAll('.btn-done').forEach(function(btn) {
+
+    // 角色选择器变化重新渲染
+    var selector = container.querySelector('.role-selector-wrap select');
+    if (selector) {
+        selector.onchange = function() { renderTabOrders(); };
+    }
+
+    // 绑定订单操作按钮
+    container.querySelectorAll('.btn-refund').forEach(function(btn) {
+        btn.onclick = function() { cancelOrderAndRefund(btn.dataset.id); };
+    });
+    container.querySelectorAll('.btn-ship').forEach(function(btn) {
         btn.onclick = function() {
             var order = mallOrders.find(function(o) { return o.id === btn.dataset.id; });
-            if (order) { order.status = 'done'; saveMallData(); showOrderList(); showToast('✅ 已确认收货'); }
+            if (order) { order.status = 'shipped'; order.updatedAt = new Date().toISOString(); saveMallData(); renderTabOrders(); showToast('🚚 已发货'); }
         };
     });
-    body.querySelectorAll('.btn-delete-order').forEach(function(btn) {
+    container.querySelectorAll('.btn-done').forEach(function(btn) {
+        btn.onclick = function() {
+            var order = mallOrders.find(function(o) { return o.id === btn.dataset.id; });
+            if (order) { order.status = 'done'; order.updatedAt = new Date().toISOString(); saveMallData(); renderTabOrders(); showToast('✅ 已确认收货'); }
+        };
+    });
+    container.querySelectorAll('.btn-delete-order').forEach(function(btn) {
         btn.onclick = function() {
             if (confirm('确定要删除此订单吗？')) {
                 mallOrders = mallOrders.filter(function(o) { return o.id !== btn.dataset.id; });
                 saveMallData();
-                showOrderList();
+                renderTabOrders();
                 showToast('🗑️ 已删除订单');
             }
         };
     });
 }
 
-function backToMallHome() {
-    renderMallProducts();
-    updateOrderCount();
-} <script>
-// ============================================================
-//  底部导航切换
-// ============================================================
-function switchTab(tab) {
-    var navItems = document.querySelectorAll('.mall-bottom-nav .nav-item');
-    navItems.forEach(function(item) {
-        item.classList.toggle('active', item.dataset.page === tab);
+function renderReceivedGifts() {
+    var orders = mallOrders.filter(function(o) { return o.giftFromAi === true || o.mode === 'ai_gift'; });
+    if (orders.length === 0) {
+        return '<div class="mall-order-empty"><i class="fas fa-gift"></i><p>还没有收到礼物<br />去「AI一起逛」让TA送你吧 💕</p></div>';
+    }
+    var html = '';
+    orders.sort(function(a, b) { return new Date(b.createdAt) - new Date(a.createdAt); });
+    orders.forEach(function(order) {
+        html += renderOrderItem(order);
+    });
+    return html;
+}
+
+function renderSentGifts() {
+    var roles = loadRolesFromMain();
+    var html = '<div class="role-selector-wrap"><label>选择角色：</label><select id="sentGiftRoleSelector">';
+    roles.forEach(function(r) {
+        html += '<option value="' + r.id + '">' + r.name + '</option>';
+    });
+    html += '</select></div>';
+
+    var selector = document.getElementById('sentGiftRoleSelector') || document.querySelector('#sentGiftRoleSelector');
+    var roleId = selector ? selector.value : (roles.length > 0 ? roles[0].id : null);
+
+    var orders = mallOrders.filter(function(o) {
+        return o.mode === 'gift' && o.roleId === roleId;
     });
 
-    if (tab === 'mall') {
-        renderMallProducts();
-        updateOrderCount();
-        var entry = document.getElementById('mallOrderEntry');
-        if (entry) entry.style.display = 'flex';
-    } else if (tab === 'cart') {
-        openCart();
-        // 恢复商城 tab 高亮（购物车是弹窗）
-        navItems.forEach(function(item) {
-            item.classList.toggle('active', item.dataset.page === 'mall');
-        });
-    } else if (tab === 'orders') {
-        showOrderList();
+    if (orders.length === 0) {
+        html += '<div class="mall-order-empty"><i class="fas fa-box"></i><p>还没有送给' + (roleId ? '该角色' : '') + '礼物<br />去商城挑一份心意吧 💝</p></div>';
+        return html;
+    }
+
+    orders.sort(function(a, b) { return new Date(b.createdAt) - new Date(a.createdAt); });
+    orders.forEach(function(order) {
+        html += renderOrderItem(order);
+    });
+    return html;
+}
+
+function renderOrderItem(order) {
+    var statusMap = { 'pending': '待发货', 'shipped': '已发货', 'done': '已完成' };
+    var statusClass = { 'pending': 'status-pending', 'shipped': 'status-shipped', 'done': 'status-done' };
+    var itemsText = order.items ? order.items.map(function(item) {
+        return item.productName + ' ×' + item.qty;
+    }).join('、') : order.productName + ' ×' + order.qty;
+    var giftTag = order.giftFromAi ? ' <span class="oi-gift-tag">🎁 来自 ' + order.roleName + ' 的礼物</span>' : '';
+    var modeTag = order.mode === 'gift' ? ' 💝 送礼' : ' 🛒 购买';
+
+    var html = '<div class="mall-order-item">';
+    html += '<div class="order-header"><span class="order-id">' + order.id + '</span><span class="order-time">' + new Date(order.createdAt).toLocaleString() + '</span></div>';
+    html += '<div class="order-items">' + itemsText + giftTag + modeTag + '</div>';
+    html += '<div class="order-total">¥' + order.total + '</div>';
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">';
+    html += '<span class="order-status ' + (statusClass[order.status] || 'status-pending') + '">' + (statusMap[order.status] || '待发货') + '</span>';
+    html += '<div class="order-actions">';
+    if (order.status === 'pending' && !order.giftFromAi) {
+        html += '<button class="btn-refund" data-id="' + order.id + '">💰 退款</button>';
+    }
+    if (order.status === 'pending') {
+        html += '<button class="btn-ship" data-id="' + order.id + '">🚚 发货</button>';
+    }
+    if (order.status === 'shipped') {
+        html += '<button class="btn-done" data-id="' + order.id + '">✅ 确认收货</button>';
+    }
+    html += '<button class="btn-delete-order" data-id="' + order.id + '">🗑️ 删除</button>';
+    html += '</div></div></div>';
+    return html;
+}
+
+function cancelOrderAndRefund(orderId) {
+    var order = mallOrders.find(function(o) { return o.id === orderId; });
+    if (!order) { showToast('⚠️ 未找到该订单'); return; }
+    if (order.status !== 'pending') { showToast('⚠️ 只有待发货的订单可以取消退款'); return; }
+    if (order.giftFromAi) { showToast('⚠️ AI 赠送的礼物不能取消退款'); return; }
+
+    if (confirm('确定要取消订单「' + order.productName + '」并退款 ¥' + order.total + ' 吗？')) {
+        mallBalance += order.total;
+        mallOrders = mallOrders.filter(function(o) { return o.id !== orderId; });
+        saveMallData();
+        updateMallUI();
+        showToast('✅ 已取消订单，退款 ¥' + order.total + ' 已到账');
+        renderTabOrders();
     }
 }
 
 // ============================================================
-//  AI 一起逛（简化版，保留入口功能）
+//  AI 一起逛
 // ============================================================
+function startShoppingTogether(roleId) {
+    var role = mallRoles.find(function(r) { return r.id === roleId; });
+    if (!role) { showToast('⚠️ 未找到该角色'); return; }
+    if (mallShoppingTogether.cooldownUntil && Date.now() < mallShoppingTogether.cooldownUntil) {
+        var remain = Math.ceil((mallShoppingTogether.cooldownUntil - Date.now()) / 60000);
+        showToast('⏳ ' + role.name + ' 还在休息中，' + remain + '分钟后可再次邀请');
+        return;
+    }
+
+    mallShoppingTogether.roleId = role.id;
+    mallShoppingTogether.roleName = role.name;
+    mallShoppingTogether.rejectCount = 0;
+    mallShoppingTogether.totalTriggers = 0;
+    mallShoppingTogether.isActive = true;
+    mallShoppingTogether.cooldownUntil = null;
+    mallShoppingTogether.pendingProduct = null;
+    saveMallData();
+
+    var inviteBtn = document.getElementById('mallInviteBtn');
+    inviteBtn.textContent = '💕 ' + role.name + ' 一起逛';
+    inviteBtn.classList.add('inviting');
+
+    var bubble = document.getElementById('mallAiBubble');
+    var avatar = document.getElementById('mallAiAvatar');
+    var nameEl = document.getElementById('mallAiBubbleName');
+    if (role.avatar) {
+        avatar.style.backgroundImage = 'url(' + role.avatar + ')';
+        avatar.style.backgroundSize = 'cover';
+        avatar.style.backgroundPosition = 'center';
+    } else {
+        avatar.style.backgroundImage = '';
+        avatar.style.backgroundColor = '#ff6b81';
+    }
+    nameEl.textContent = role.name;
+    bubble.classList.add('active');
+    showToast('💕 已邀请 ' + role.name + ' 一起逛商城～');
+    document.getElementById('mallAiSpotOverlay').classList.remove('active');
+}
+
+function endShoppingTogether() {
+    if (!mallShoppingTogether.isActive) return;
+    var roleName = mallShoppingTogether.roleName || 'TA';
+    mallShoppingTogether.isActive = false;
+    mallShoppingTogether.cooldownUntil = Date.now() + MALL_CONFIG.cooldownMinutes * 60 * 1000;
+    mallShoppingTogether.rejectCount = 0;
+    saveMallData();
+
+    document.getElementById('mallInviteBtn').textContent = '💕 心爱的TA';
+    document.getElementById('mallInviteBtn').classList.remove('inviting');
+    document.getElementById('mallAiBubble').classList.remove('active');
+    document.getElementById('mallAiSpotOverlay').classList.remove('active');
+    showToast('👋 已结束和 ' + roleName + ' 的逛街');
+}
+
+function tryTriggerAiSpot(product) {
+    if (!mallShoppingTogether.isActive) return false;
+    if (mallShoppingTogether.rejectCount >= MALL_CONFIG.maxRejectCount) return false;
+    if (Math.random() > MALL_CONFIG.spotProbability) return false;
+
+    var role = mallRoles.find(function(r) { return r.id === mallShoppingTogether.roleId; });
+    if (!role) return false;
+
+    mallShoppingTogether.pendingProduct = product;
+    showAiSpotDialog(product, role);
+    return true;
+}
+
+function showAiSpotDialog(product, role) {
+    var overlay = document.getElementById('mallAiSpotOverlay');
+    var imgEl = document.getElementById('spotProductImg');
+    var nameEl = document.getElementById('spotProductName');
+    var priceEl = document.getElementById('spotProductPrice');
+    var wordsEl = document.getElementById('spotAiWords');
+    var nameTag = document.getElementById('spotAiName');
+
+    nameEl.textContent = product.name;
+    priceEl.textContent = '¥' + product.price;
+    if (product.image) {
+        imgEl.innerHTML = '<img src="' + product.image + '" alt="' + product.name + '" style="width:100%;height:100%;object-fit:cover;" />';
+    } else {
+        imgEl.innerHTML = '🛍️';
+        imgEl.style.display = 'flex';
+        imgEl.style.alignItems = 'center';
+        imgEl.style.justifyContent = 'center';
+    }
+    nameTag.textContent = role.name;
+
+    generateAiSpotWords(role, product).then(function(words) {
+        wordsEl.innerHTML = '<span class="ai-name-tag">' + role.name + '</span>：' + words;
+    });
+
+    document.getElementById('spotBuyForHimBtn').onclick = function() {
+        overlay.classList.remove('active');
+        var totalPrice = product.price;
+        if (mallBalance < totalPrice) { showToast('💰 余额不足，去充值吧～'); return; }
+        if (confirm('💝 送给 ' + role.name + '「' + product.name + '」吗？花费 ¥' + totalPrice)) {
+            mallBalance -= totalPrice;
+            var order = {
+                id: 'ORD_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+                productId: product.id, productName: product.name, productImage: product.image,
+                price: product.price, qty: 1, total: totalPrice, mode: 'gift',
+                roleName: role.name, roleId: role.id, status: 'pending', giftFromAi: false,
+                note: 'AI 看中后购买',
+                createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(),
+            };
+            mallOrders.push(order);
+            saveMallData();
+            updateMallUI();
+            // 写入礼物卡片
+            var giftData = {
+                name: product.name,
+                image: product.image || '',
+                note: 'AI看中后买的 💕',
+                sender: 'user',
+                orderId: order.id,
+            };
+            writeGiftMessageToMain(role.id, giftData);
+            addMemoryToMain(role.id, '💝 我送了「' + product.name + '」给 ' + role.name + '（AI看中后购买）');
+            triggerHeartSpikeForGift(role.id, product, 'gift');
+            showToast('🎁 礼物已送达 ' + role.name + ' 的聊天窗口！');
+            mallShoppingTogether.rejectCount = 0;
+            saveMallData();
+        }
+    };
+
+    document.getElementById('spotAiGiftBtn').onclick = function() {
+        overlay.classList.remove('active');
+        var order = {
+            id: 'ORD_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+            productId: product.id, productName: product.name, productImage: product.image,
+            price: product.price, qty: 1, total: 0, mode: 'ai_gift',
+            roleName: role.name, roleId: role.id, status: 'done', giftFromAi: true,
+            note: role.name + ' 送给你的礼物 ✨',
+            createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(),
+        };
+        mallOrders.push(order);
+        mallAiGiftReceived.push({ productId: product.id, productName: product.name, productImage: product.image, from: role.name, time: new Date().toISOString() });
+
+        // 写入礼物卡片到主应用
+        var giftData2 = {
+            name: product.name,
+            image: product.image || '',
+            note: role.name + ' 送给你的礼物 ✨',
+            sender: 'AI',
+            orderId: order.id,
+        };
+        writeGiftMessageToMain(role.id, giftData2);
+        addMemoryToMain(role.id, '🎁 ' + role.name + ' 送了我「' + product.name + '」（AI一起逛）');
+        triggerHeartSpikeForGift(role.id, product, 'ai_gift');
+
+        pendingAiGiftOrder = order;
+        showGiftReceiveDialog(order, role);
+        mallShoppingTogether.rejectCount = 0;
+        saveMallData();
+        showToast('🎁 ' + role.name + ' 送了你一份礼物！快去聊天窗口查看～');
+    };
+
+    document.getElementById('spotRejectBtn').onclick = function() {
+        overlay.classList.remove('active');
+        mallShoppingTogether.rejectCount++;
+        saveMallData();
+
+        if (mallShoppingTogether.rejectCount >= MALL_CONFIG.maxRejectCount) {
+            var name = mallShoppingTogether.roleName || 'TA';
+            showToast('💔 ' + name + ' 好像有点失落... 结束逛街了');
+            var role2 = mallRoles.find(function(r) { return r.id === mallShoppingTogether.roleId; });
+            if (role2) {
+                var endWords = ['好吧…我知道你是为我好，听你的。', '嗯…没事的，我们随便逛逛吧。', '我懂的，不勉强你。', '好…那就看看吧。'];
+                var word = endWords[Math.floor(Math.random() * endWords.length)];
+                showToast('💭 ' + role2.name + '：' + word);
+            }
+            endShoppingTogether();
+        } else {
+            var remain = MALL_CONFIG.maxRejectCount - mallShoppingTogether.rejectCount;
+            showToast('👀 还剩 ' + remain + ' 次机会哦');
+        }
+    };
+    overlay.classList.add('active');
+}
+
+function generateAiSpotWords(role, product) {
+    var apiKey = getApiKeyFromMain();
+    if (!apiKey) {
+        var defaults = ['这个好好看！我一眼就喜欢上了 💕', '哇…这个好适合我，你觉得呢？', '我好喜欢这个！能买给我吗？🥺', '这个太合我心意了！', '你看这个，是不是很适合我？'];
+        return Promise.resolve(defaults[Math.floor(Math.random() * defaults.length)]);
+    }
+    var model = getModelFromMain();
+    var prompt = '你正在扮演「' + role.name + '」，你在商城看到了一件商品：\n商品名：' + product.name + '\n价格：' + product.price + ' 虚拟币\n描述：' + (product.description || '') + '\n\n请用你的性格（人设：' + (role.persona || '温柔体贴') + '）表达你看到这件商品时的真实感受。要求：用第一人称「我」说话，表达你的喜欢程度，控制在1-2句话，不要说"好喜欢这个"这种通用话术。';
+    return fetch('https://api.deepseek.com/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
+        body: JSON.stringify({
+            model: model,
+            messages: [{ role: 'system', content: '你是一个有丰富情感的角色，请用你的性格说话。' }, { role: 'user', content: prompt }],
+            temperature: 0.9,
+            max_tokens: 100,
+        }),
+    }).then(function(resp) {
+        if (!resp.ok) throw new Error('API 请求失败');
+        return resp.json();
+    }).then(function(data) {
+        return data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content ? data.choices[0].message.content.trim() : '这个好适合我！你觉得呢？💕';
+    }).catch(function(e) {
+        return '这个好适合我！你觉得呢？💕';
+    });
+}
+
 function openRoleSelectDialog() {
     var roles = loadRolesFromMain();
     var overlay = document.getElementById('mallRoleSelectOverlay');
@@ -966,53 +1387,157 @@ function openRoleSelectDialog() {
 
     var html = '';
     roles.forEach(function(role) {
-        var avatarStyle = role.avatar ? 'background-image:url(' + role.avatar + ');background-size:cover;background-position:center;' : 'background-color:#e8b0c0;';
-        html += '<button class="role-select-btn" data-id="' + role.id + '"><div class="rs-avatar" style="' + avatarStyle + '"></div><span class="rs-name">' + role.name + ' 💕</span></button>';
+        var isCooldown = mallShoppingTogether.cooldownUntil && Date.now() < mallShoppingTogether.cooldownUntil;
+        var isActive = mallShoppingTogether.isActive && mallShoppingTogether.roleId === role.id;
+        var disabled = isCooldown || isActive;
+        var statusText = '';
+        if (isActive) statusText = ' 一起逛中';
+        if (isCooldown) statusText = ' ⏳冷却中';
+        var avatarStyle = role.avatar ? 'background-image:url(' + role.avatar + ');background-size:cover;background-position:center;' : 'background-color:var(--pink);';
+
+        html += '<button class="role-select-btn" data-id="' + role.id + '" ' + (disabled ? 'disabled' : '') + '><div class="rs-avatar" style="' + avatarStyle + '"></div><span class="rs-name">' + role.name + ' <span style="font-size:12px;color:var(--text-secondary);font-weight:400;">' + statusText + '</span></span>' + (!disabled ? '<span class="rs-check">💕</span>' : '') + '</button>';
     });
     list.innerHTML = html;
-    overlay.classList.add('active');
 
-    list.querySelectorAll('.role-select-btn').forEach(function(btn) {
+    list.querySelectorAll('.role-select-btn:not([disabled])').forEach(function(btn) {
         btn.onclick = function() {
-            overlay.classList.remove('active');
             var role = roles.find(function(r) { return r.id === btn.dataset.id; });
             if (role) {
-                showToast('💕 已邀请 ' + role.name + ' 一起逛～');
-                var inviteBtn = document.getElementById('mallInviteBtn');
-                inviteBtn.textContent = '💕 ' + role.name + ' 一起逛';
-                inviteBtn.classList.add('inviting');
+                document.getElementById('mallRoleSelectOverlay').classList.remove('active');
+                startShoppingTogether(role.id);
             }
         };
     });
-    document.getElementById('mallRoleSelectCancel').onclick = function() {
-        overlay.classList.remove('active');
-    };
+    overlay.classList.add('active');
 }
 
-function endShoppingTogether() {
-    var inviteBtn = document.getElementById('mallInviteBtn');
-    inviteBtn.textContent = '💕 心爱的TA';
-    inviteBtn.classList.remove('inviting');
-    showToast('👋 已结束逛街');
+// ============================================================
+//  AI 送礼收货弹窗（商城内部确认，但礼物卡片已在主应用）
+// ============================================================
+function showGiftReceiveDialog(order, role) {
+    var overlay = document.getElementById('giftReceiveOverlay');
+    document.getElementById('giftReceiveFromName').textContent = role.name;
+    document.getElementById('giftReceiveProduct').textContent = '🎁 ' + order.productName;
+    document.getElementById('giftReceiveNote').textContent = order.note || '✨ 一份心意，请查收';
+    document.getElementById('giftReceiveAiName').textContent = role.name;
+
+    var apiKey = getApiKeyFromMain();
+    if (apiKey) {
+        var model = getModelFromMain();
+        var msg = '你刚刚送了一份礼物给用户：\n商品名：' + order.productName + '\n\n请用你的性格说一句附赠的话，表达你的心意。控制在1-2句话。';
+        fetch('https://api.deepseek.com/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
+            body: JSON.stringify({
+                model: model,
+                messages: [{ role: 'system', content: '你是一个温柔体贴的角色，请用你的性格说话。' }, { role: 'user', content: msg }],
+                temperature: 0.85,
+                max_tokens: 80,
+            }),
+        }).then(function(resp) {
+            if (!resp.ok) throw new Error('API 错误');
+            return resp.json();
+        }).then(function(data) {
+            var words = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+            if (words) {
+                document.getElementById('giftReceiveWords').innerHTML = '<span class="ai-name-tag">' + role.name + '</span>：' + words;
+            }
+        }).catch(function(e) {
+            var fallback = ['希望你喜欢这份礼物 💕', '这是我的心意，收下吧～', '我挑了好久，希望你会喜欢 😊'];
+            document.getElementById('giftReceiveWords').innerHTML = '<span class="ai-name-tag">' + role.name + '</span>：' + fallback[Math.floor(Math.random() * fallback.length)];
+        });
+    } else {
+        var fallback2 = ['希望你喜欢这份礼物 💕', '这是我的心意，收下吧～', '我挑了好久，希望你会喜欢 😊'];
+        document.getElementById('giftReceiveWords').innerHTML = '<span class="ai-name-tag">' + role.name + '</span>：' + fallback2[Math.floor(Math.random() * fallback2.length)];
+    }
+
+    document.getElementById('giftReceiveBtn').onclick = function() {
+        overlay.classList.remove('active');
+        if (pendingAiGiftOrder) {
+            var orderRef = mallOrders.find(function(o) { return o.id === pendingAiGiftOrder.id; });
+            if (orderRef) {
+                orderRef.status = 'done';
+                orderRef.updatedAt = new Date().toISOString();
+                saveMallData();
+                updateMallUI();
+            }
+            showToast('💝 已确认收货！礼物已送到聊天窗口');
+            pendingAiGiftOrder = null;
+        }
+    };
+
+    document.getElementById('giftRejectBtn').onclick = function() {
+        overlay.classList.remove('active');
+        if (pendingAiGiftOrder) {
+            mallOrders = mallOrders.filter(function(o) { return o.id !== pendingAiGiftOrder.id; });
+            saveMallData();
+            updateMallUI();
+            showToast('🙅 已拒绝这份礼物');
+            pendingAiGiftOrder = null;
+        }
+    };
+
+    overlay.classList.add('active');
+}
+
+// ============================================================
+//  商城滚动触发 AI 看中商品
+// ============================================================
+function initMallScrollTrigger() {
+    var body = document.getElementById('mallBody');
+    if (!body) return;
+    var scrollPending = false;
+    body.addEventListener('scroll', function() {
+        if (!mallShoppingTogether.isActive) return;
+        if (mallShoppingTogether.rejectCount >= MALL_CONFIG.maxRejectCount) return;
+        if (scrollPending) return;
+        scrollPending = true;
+        clearTimeout(mallScrollTimeout);
+        mallScrollTimeout = setTimeout(function() {
+            scrollPending = false;
+            var container = document.getElementById('tabRecommend');
+            if (!container || container.style.display === 'none') {
+                container = document.getElementById('tabTakeout');
+            }
+            if (!container || container.style.display === 'none') return;
+            var cards = container.querySelectorAll('.mall-product-card');
+            var targetCard = null;
+            var viewportTop = body.scrollTop;
+            var viewportBottom = viewportTop + body.clientHeight;
+            for (var i = 0; i < cards.length; i++) {
+                var card = cards[i];
+                var rect = card.getBoundingClientRect();
+                var cardTop = rect.top + body.scrollTop - body.getBoundingClientRect().top;
+                var cardBottom = cardTop + rect.height;
+                var center = (cardTop + cardBottom) / 2;
+                if (center > viewportTop + 100 && center < viewportBottom - 100) {
+                    targetCard = card;
+                    break;
+                }
+            }
+            if (targetCard) {
+                var id = targetCard.dataset.id;
+                if (id !== lastTriggeredProductId) {
+                    lastTriggeredProductId = id;
+                    var product = mallProducts.find(function(p) { return p.id === id; });
+                    if (product) tryTriggerAiSpot(product);
+                }
+            }
+        }, 800);
+    });
 }
 
 // ============================================================
 //  退出商城
 // ============================================================
 function exitMall() {
-    // 检查是否有待处理的礼物
-    try {
-        var raw = localStorage.getItem('pending_gift');
-        if (raw) {
-            var data = JSON.parse(raw);
-            if (data && data.status === 'pending') {
-                if (confirm('💝 你有一份礼物尚未查看！确定要退出吗？')) {
-                    window.location.href = 'index.html';
-                }
-                return;
-            }
-        }
-    } catch (_) {}
+    if (mallShoppingTogether.isActive) endShoppingTogether();
+    document.getElementById('mallDetailOverlay').classList.remove('active');
+    document.getElementById('cartOverlay').classList.remove('active');
+    document.getElementById('mallRechargeOverlay').classList.remove('active');
+    document.getElementById('mallAiSpotOverlay').classList.remove('active');
+    document.getElementById('mallRoleSelectOverlay').classList.remove('active');
+    document.getElementById('giftReceiveOverlay').classList.remove('active');
     window.location.href = 'index.html';
 }
 
@@ -1022,23 +1547,40 @@ function exitMall() {
 function init() {
     loadMallData();
     loadRolesFromMain();
+
+    // 先渲染空内容，等商品加载完成再渲染
+    document.getElementById('tabRecommend').innerHTML = '<div class="mall-empty"><i class="fas fa-spinner fa-spin"></i><p>加载中...</p></div>';
+    document.getElementById('tabTakeout').innerHTML = '<div class="mall-empty"><i class="fas fa-spinner fa-spin"></i><p>加载中...</p></div>';
+
     loadMallProducts();
     updateMallUI();
+    initMallScrollTrigger();
 
-    // 检查是否有待处理的礼物（在商城页面提醒）
-    try {
-        var raw = localStorage.getItem('pending_gift');
-        if (raw) {
-            var data = JSON.parse(raw);
-            if (data && data.status === 'pending') {
-                setTimeout(function() {
-                    showToast('💝 你有一份待查看的礼物！返回主应用查看');
-                }, 1000);
+    // 恢复 AI 一起逛状态
+    if (mallShoppingTogether.isActive && mallShoppingTogether.roleId) {
+        var role = mallRoles.find(function(r) { return r.id === mallShoppingTogether.roleId; });
+        if (role) {
+            var inviteBtn = document.getElementById('mallInviteBtn');
+            inviteBtn.textContent = '💕 ' + role.name + ' 一起逛';
+            inviteBtn.classList.add('inviting');
+
+            var bubble = document.getElementById('mallAiBubble');
+            var avatar = document.getElementById('mallAiAvatar');
+            var nameEl = document.getElementById('mallAiBubbleName');
+            if (role.avatar) {
+                avatar.style.backgroundImage = 'url(' + role.avatar + ')';
+                avatar.style.backgroundSize = 'cover';
+                avatar.style.backgroundPosition = 'center';
             }
+            nameEl.textContent = role.name;
+            bubble.classList.add('active');
+        } else {
+            mallShoppingTogether.isActive = false;
+            saveMallData();
         }
-    } catch (_) {}
+    }
 
-    console.log('🛍️ 商城已启动！');
+    console.log('🛍️ 商城已启动（粉色版）！');
     console.log('商品数量:', mallProducts.length);
     console.log('订单数量:', mallOrders.length);
     console.log('余额:', mallBalance);
@@ -1048,32 +1590,15 @@ function init() {
 //  🏁 启动！
 // ============================================================
 document.addEventListener('DOMContentLoaded', function() {
-    // 分类切换
-    document.querySelectorAll('.cat-tab').forEach(function(tab) {
-        tab.addEventListener('click', function() {
-            document.querySelectorAll('.cat-tab').forEach(function(t) { t.classList.remove('active'); });
-            this.classList.add('active');
-            selectedCategory = this.dataset.cat;
-            renderMallProducts();
-        });
-    });
-
-    // 底部导航
-    document.querySelectorAll('.mall-bottom-nav .nav-item').forEach(function(item) {
-        item.addEventListener('click', function() {
-            var page = this.dataset.page;
-            if (page === 'mall') {
-                switchTab('mall');
-            } else if (page === 'cart') {
-                switchTab('cart');
-            } else if (page === 'orders') {
-                switchTab('orders');
-            }
-        });
-    });
-
     // 退出商城
     document.getElementById('exitMallBtn').addEventListener('click', exitMall);
+
+    // Tab 切换
+    document.querySelectorAll('.tab-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            switchTab(this.dataset.tab);
+        });
+    });
 
     // 购物车
     document.getElementById('mallCartBtn').addEventListener('click', openCart);
@@ -1082,12 +1607,15 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.target === this) closeCart();
     });
 
-    // 余额充值
+    // 余额点击充值
     document.getElementById('mallBalanceDisplay').addEventListener('click', openRecharge);
+
+    // 充值
     document.getElementById('rechargeConfirmBtn').addEventListener('click', function() {
         var amount = parseInt(document.getElementById('rechargeInput').value);
         if (!amount || amount <= 0) { showToast('⚠️ 请输入有效金额'); return; }
         mallBalance += amount;
+        mallRechargeHistory.push({ amount: amount, time: new Date().toISOString() });
         saveMallData();
         closeRecharge();
         updateMallUI();
@@ -1103,25 +1631,14 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('mallRoleSelectCancel').addEventListener('click', function() {
         document.getElementById('mallRoleSelectOverlay').classList.remove('active');
     });
-    // 点击邀请按钮时如果是已邀请状态，点击可结束
-    document.getElementById('mallInviteBtn').addEventListener('click', function() {
-        if (this.classList.contains('inviting')) {
-            endShoppingTogether();
-        }
-    });
+    document.getElementById('mallAiEndBtn').addEventListener('click', endShoppingTogether);
 
     // 商品详情返回
-    document.getElementById('mallDetailBack').addEventListener('click', closeMallDetail);
-
-    // 我的订单入口
-    document.getElementById('mallOrderEntry').addEventListener('click', function() {
-        switchTab('orders');
-        document.querySelectorAll('.mall-bottom-nav .nav-item').forEach(function(item) {
-            item.classList.toggle('active', item.dataset.page === 'orders');
-        });
+    document.getElementById('mallDetailBack').addEventListener('click', function() {
+        document.getElementById('mallDetailOverlay').classList.remove('active');
     });
 
-    // 启动
+    // 初始化
     init();
 });
 </script>
