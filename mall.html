@@ -841,7 +841,7 @@ function executePurchase(product, qty, note, mode, targetRole, totalPrice) {
     updateMallUI();
 
     if (mode === 'gift') {
-        // 写入礼物卡片到主应用聊天
+        // 【关键修改】将附言传入礼物卡片
         var giftData = {
             name: product.name,
             image: product.image || '',
@@ -854,6 +854,9 @@ function executePurchase(product, qty, note, mode, targetRole, totalPrice) {
         triggerHeartSpikeForGift(targetRole.id, product, 'gift');
         showToast('🎁 礼物已送达 ' + targetRole.name + ' 的聊天窗口，等待TA确认收货');
     }
+
+    if (mallShoppingTogether.isActive) mallShoppingTogether.totalTriggers++;
+}
 
     if (mallShoppingTogether.isActive) mallShoppingTogether.totalTriggers++;
 }
