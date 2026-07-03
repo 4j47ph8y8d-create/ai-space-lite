@@ -10,7 +10,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
         body { background: #1a1a1a; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 12px; }
         .phone-frame { width: 100%; max-width: 430px; height: 780px; background: #1a1a1a; border-radius: 32px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); overflow: hidden; position: relative; transition: background 0.3s ease, color 0.3s ease; }
-        :root { --bg-primary: #1a1a1a; --bg-secondary: #ededed; --bg-card: #ffffff; --bg-bubble-self: rgba(149,236,105,0.92); --bg-bubble-other: rgba(255,255,255,0.92); --text-primary: #1a1a1a; --text-secondary: #999; --text-inverse: #fff; --border-color: rgba(217,217,217,0.5); --shadow-color: rgba(0,0,0,0.06); --input-bg: rgba(237,237,237,0.7); --header-bg: rgba(255,255,255,0.92); --msg-time-color: #999; --font-size-base: 15px; --font-weight-base: 400; --pinned-bg: rgba(243,156,18,0.08); --pinned-border: rgba(243,156,18,0.3); --heart-color: #ff6b81; --heart-glow-color: rgba(255,107,129,0.2); }
+        :root { --bg-primary: #1a1a1a; --bg-secondary: #ededed; --bg-card: #ffffff; --bg-bubble-self: rgba(149,236,105,0.92); --bg-bubble-other: rgba(255,255,255,0.92); --text-primary: #1a1a1a; --text-secondary: #999; --text-inverse: #fff; --border-color: rgba(217,217,217,0.5); --shadow-color: rgba(0,0,0,0.06); --input-bg: rgba(237,237,237,0.7); --header-bg: rgba(255,255,255,0.92); --msg-time-color: #999; --font-size-base: 15px; --font-weight-base: 400; --pinned-bg: rgba(243,156,18,0.08); --pinned-border: rgba(243,156,18,0.3); --heart-color: #ff6b81; --heart-glow-color: rgba(255,107,129,0.2); --gift-pink: #ff6b81; --gift-pink-light: #ffb3c6; --gift-pink-bg: #fff5f7; }
         [data-theme="light"] { --bg-primary: #f0f0f0; --bg-secondary: #fafafa; --bg-card: #ffffff; --bg-bubble-self: rgba(149,236,105,0.92); --bg-bubble-other: rgba(255,255,255,0.95); --text-primary: #1a1a1a; --text-secondary: #888; --text-inverse: #1a1a1a; --border-color: rgba(0,0,0,0.08); --shadow-color: rgba(0,0,0,0.04); --input-bg: rgba(237,237,237,0.5); --header-bg: rgba(255,255,255,0.95); --msg-time-color: #999; --pinned-bg: rgba(243,156,18,0.06); --pinned-border: rgba(243,156,18,0.15); }
         [data-font-size="small"] { --font-size-base: 13px; } [data-font-size="medium"] { --font-size-base: 15px; } [data-font-size="large"] { --font-size-base: 17px; } [data-font-size="xlarge"] { --font-size-base: 19px; }
         [data-font-weight="light"] { --font-weight-base: 300; } [data-font-weight="regular"] { --font-weight-base: 400; } [data-font-weight="medium"] { --font-weight-base: 500; } [data-font-weight="bold"] { --font-weight-base: 600; }
@@ -60,7 +60,7 @@
         .app-icon .icon-wrap.style { background: linear-gradient(135deg,#fdcb6e,#f0932b); }
         .app-icon .icon-wrap.meme { background: linear-gradient(135deg,#ff6b81,#ee5a24); }
         .app-icon .icon-wrap.diary { background: #f5efe6; color: #d4a574; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-        .app-icon .icon-wrap.mall { background: linear-gradient(135deg,#7bed9f,#2ed573); color: #fff; box-shadow: 0 4px 12px rgba(46,213,115,0.4); }
+        .app-icon .icon-wrap.mall { background: linear-gradient(135deg,#ff6b81,#d6336c); color: #fff; box-shadow: 0 4px 12px rgba(255,107,129,0.4); }
         .app-icon .app-name { font-size: 11px; color: rgba(255,255,255,0.85); text-align: center; line-height: 1.2; text-shadow: 0 1px 4px rgba(0,0,0,0.4); }
         [data-theme="light"] .app-icon .app-name { color: rgba(0,0,0,0.7); text-shadow: none; }
         .dock { display: flex; justify-content: center; gap: 24px; padding: 10px 0 4px; border-top: 1px solid rgba(255,255,255,0.08); margin-top: auto; flex-shrink: 0; }
@@ -101,7 +101,7 @@
         .chat-header .title .status { font-size: 8px; color: #07c160; display: none; }
         .chat-header .actions { display: flex; gap: 14px; font-size: 18px; color: #576b95; cursor: pointer; }
         .chat-messages { flex: 1; overflow-y: auto; padding: 14px 14px 8px; display: flex; flex-direction: column; gap: 10px; background: transparent; scroll-behavior: smooth; position: relative; z-index: 1; }
-        .message-row { display: flex; align-items: flex-start; gap: 0; max-width: 90%; animation: fadeInUp 0.25s ease; }
+        .message-row { display: flex; align-items: flex-start; gap: 0; max-width: 92%; animation: fadeInUp 0.25s ease; }
         .message-row.self { align-self: flex-end; flex-direction: row-reverse; }
         .avatar { width: 36px; height: 36px; border-radius: 6px; flex-shrink: 0; background-color: #07c160; background-size: cover; background-position: center; overflow: hidden; font-size: 0; line-height: 0; color: transparent; transition: 0.15s; cursor: pointer; margin-top: 2px; }
         .avatar:active { transform: scale(0.92); }
@@ -390,7 +390,7 @@
         .temp-slider-container .temp-header .temp-label { font-size: 14px; font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 6px; }
         .temp-slider-container .temp-header .temp-value { font-size: 16px; font-weight: 700; color: #07c160; }
         .temp-slider-container input[type="range"] { width: 100%; height: 6px; -webkit-appearance: none; appearance: none; background: var(--border-color); border-radius: 4px; outline: none; transition: background 0.2s; }
-        .temp-slider-container input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #07c160; cursor: pointer; box-shadow: 0 2px 6px rgba(7,193,96,0.3); }
+        .temp-slider-container input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #07c160; cursor: pointer; box-shadow: 0 2px 6px rgba(7,193,160,0.3); }
         .temp-slider-container input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: #07c160; cursor: pointer; border: none; }
         .temp-slider-container .temp-hints { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
         .beauty-section { background: var(--bg-card); border-radius: 12px; padding: 12px 14px; margin-bottom: 14px; box-shadow: 0 1px 4px var(--shadow-color); }
@@ -479,6 +479,131 @@
         .heart-detail-panel .hd-signature { font-size: 14px; color: rgba(255,255,255,0.5); text-align: center; padding: 12px 0; border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 12px; font-style: italic; }
         .heart-detail-panel .hd-recent { font-size: 12px; color: rgba(255,255,255,0.25); text-align: center; line-height: 1.6; }
         .heart-detail-panel .hd-recent .highlight { color: var(--heart-color, #ff6b81); }
+
+        /* ===== 礼物卡片 - 柔雾粉 横版样式 ===== */
+        .gift-card-wrapper {
+            width: 100%;
+            max-width: 320px;
+            background: #fff5f7;
+            border-radius: 18px;
+            box-shadow: 0 6px 24px rgba(255,107,129,0.10), 0 2px 8px rgba(255,107,129,0.04);
+            overflow: hidden;
+            padding: 0;
+            margin: 2px 0;
+            border: 1px solid rgba(255,107,129,0.06);
+            transition: box-shadow 0.2s;
+        }
+        .gift-card-wrapper:hover {
+            box-shadow: 0 8px 32px rgba(255,107,129,0.14);
+        }
+        .gift-card-inner {
+            padding: 14px 16px 10px;
+            background: #fff5f7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+        .gift-card-name {
+            font-size: 17px;
+            font-weight: 700;
+            color: #d6336c;
+            text-align: center;
+            letter-spacing: 0.5px;
+            padding: 0 0 2px 0;
+            position: relative;
+        }
+        .gift-card-name::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, #ffb3c6, #ff6b81);
+            margin: 4px auto 0;
+            border-radius: 2px;
+        }
+        .gift-card-image {
+            width: 92%;
+            max-width: 200px;
+            aspect-ratio: 1/1;
+            border-radius: 14px;
+            background: #ffffff;
+            border: 1px solid rgba(255,107,129,0.08);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            box-shadow: 0 4px 16px rgba(255,107,129,0.06);
+            margin: 4px 0;
+        }
+        .gift-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .gift-card-note {
+            font-size: 13px;
+            color: #b0a0a0;
+            text-align: center;
+            padding: 4px 0 2px;
+            font-style: italic;
+            width: 100%;
+            border-top: 1px solid rgba(255,107,129,0.06);
+            margin-top: 4px;
+            padding-top: 8px;
+        }
+        .gift-card-note::before {
+            content: '💬 ';
+            font-style: normal;
+            opacity: 0.6;
+        }
+        .gift-card-footer {
+            display: flex;
+            justify-content: flex-end;
+            padding: 6px 14px 10px;
+            background: linear-gradient(180deg, rgba(255,255,255,0) 0%, #fff5f7 100%);
+            width: 100%;
+        }
+        .message-row.self .gift-card-footer {
+            justify-content: flex-start;
+        }
+        .message-row:not(.self) .gift-card-footer {
+            justify-content: flex-end;
+        }
+        .gift-receipt-btn {
+            padding: 5px 22px;
+            border: none;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.25s ease;
+            background: linear-gradient(135deg, #ff6b81, #d6336c);
+            color: #ffffff;
+            min-width: 90px;
+            text-align: center;
+            font-family: inherit;
+            box-shadow: 0 2px 10px rgba(255,107,129,0.20);
+            letter-spacing: 0.3px;
+        }
+        .gift-receipt-btn:active {
+            transform: scale(0.94);
+        }
+        .gift-receipt-btn.received {
+            background: #d5d0d0;
+            color: #999;
+            cursor: default;
+            box-shadow: none;
+            pointer-events: none;
+        }
+        .gift-receipt-btn.received::before {
+            content: '✅ ';
+        }
+        .gift-receipt-btn.received:active {
+            transform: none;
+        }
+
         @media (max-width: 460px) { .phone-frame { border-radius: 0; height: 100vh; max-height: 100vh; } body { padding: 0; } }
     </style>
 </head>
@@ -514,7 +639,9 @@
             <button class="app-icon" data-app="memory"><div class="icon-wrap memory"><i class="fas fa-brain"></i></div><span class="app-name">记忆库</span></button>
             <button class="app-icon" data-app="settings"><div class="icon-wrap settings"><i class="fas fa-cog"></i></div><span class="app-name">设置</span></button>
         </div>
-    </div> <!-- ===== 联系人界面 ===== -->
+    </div>
+
+    <!-- ===== 联系人界面 ===== -->
     <div class="screen-contacts" id="contactsScreen">
         <div class="contacts-header">
             <button class="back-btn" id="backFromContacts"><i class="fas fa-chevron-left"></i></button>
@@ -782,7 +909,9 @@
             <div class="hd-recent" id="hdRecent">最近心跳加速：<span class="highlight">等待你的第一句情话</span></div>
         </div>
     </div>
-</div> <script>
+</div>
+
+<script>
 // ============================================================
 //  全局配置常量
 // ============================================================
@@ -835,7 +964,6 @@ var config = {
     diaryAutoGenerateEnabled: true,
     lastDiaryCheckDate: null,
     diaryCalendarCollapsed: false,
-    // 商城数据直接读写 localStorage，主应用不再维护商城变量
 };
 
 var roles = [];
@@ -1613,11 +1741,221 @@ function applyChatBgForRole(role) {
 }
 
 // ============================================================
-//  渲染：聊天消息（增量渲染）
+//  🎁 礼物卡片：添加礼物消息到聊天
+// ============================================================
+function addGiftMessageToChat(roleId, giftData) {
+    var role = roles.find(function(r) { return r.id === roleId; });
+    if (!role) { showToast('⚠️ 未找到该角色'); return false; }
+
+    var msgId = generateId();
+    var timeStr = new Date().toLocaleTimeString();
+    var msg = {
+        id: msgId,
+        role: giftData.sender === 'user' ? 'user' : 'assistant',
+        content: '',
+        type: 'gift',
+        time: timeStr,
+        giftData: {
+            name: giftData.name || '礼物',
+            image: giftData.image || '',
+            note: giftData.note || '💕 一份心意，请查收',
+            sender: giftData.sender || 'AI',
+            status: 'pending',
+            orderId: giftData.orderId || null,
+            roleId: roleId,
+        }
+    };
+
+    if (!Array.isArray(role.messages)) role.messages = [];
+    role.messages.push(msg);
+    saveAllData();
+    lastMessageCount = -1;
+    renderMessages();
+    return true;
+}
+
+// ============================================================
+//  🎁 确认收货：点击礼物卡片的确认收货按钮
+// ============================================================
+function confirmGiftReceipt(messageId, roleId) {
+    var role = roles.find(function(r) { return r.id === roleId; });
+    if (!role) { showToast('⚠️ 未找到该角色'); return; }
+
+    var msg = role.messages.find(function(m) { return m.id === messageId; });
+    if (!msg || msg.type !== 'gift') { showToast('⚠️ 未找到该礼物消息'); return; }
+    if (msg.giftData.status === 'received') { showToast('✅ 已收货'); return; }
+
+    // 更新状态
+    msg.giftData.status = 'received';
+    saveAllData();
+
+    // 刷新消息
+    lastMessageCount = -1;
+    renderMessages();
+
+    var productName = msg.giftData.name || '礼物';
+    var sender = msg.giftData.sender || 'AI';
+    var note = msg.giftData.note || '';
+
+    showToast('✅ 已确认收货：' + productName);
+
+    // 触发心跳 + 记忆 + AI回复
+    if (sender === 'AI') {
+        // AI送的礼物 → 用户心跳上升
+        var spikeAmount = 10 + Math.floor(Math.random() * 12);
+        if (config.heart.bindRoleId) {
+            var boundRole = roles.find(function(r) { return r.id === config.heart.bindRoleId; });
+            if (boundRole) {
+                if (!boundRole.heartData) boundRole.heartData = { value: 65, restingValue: 65, signature: '今天也很想你 💕', recentTrigger: '初次相遇' };
+                var newVal = Math.min(99, (boundRole.heartData.value || 65) + spikeAmount);
+                boundRole.heartData.value = newVal;
+                boundRole.heartData.peakValue = newVal;
+                boundRole.heartData.recentTrigger = '🎁 收到「' + productName + '」♥ +' + spikeAmount;
+                config.heart.value = newVal;
+                config.heart.peakValue = newVal;
+                config.heart.recentTrigger = boundRole.heartData.recentTrigger;
+                config.heart.level = getLevel(newVal);
+                saveAllData();
+                updateHeartDisplay();
+            }
+        }
+        addMemoryToMain(roleId, '🎁 收到了 ' + role.name + ' 送的「' + productName + '」' + (note ? '（附言：' + note + '）' : ''));
+        // AI 回复（按人设，结合礼物评价+情感表达）
+        triggerGiftReplyAfterReceipt(role, productName, note, 'user_received');
+    } else {
+        // 用户送的礼物 → AI 心跳上升
+        var spikeAmount2 = 12 + Math.floor(Math.random() * 13);
+        if (!role.heartData) role.heartData = { value: 65, restingValue: 65, signature: '今天也很想你 💕', recentTrigger: '初次相遇' };
+        var newVal2 = Math.min(99, (role.heartData.value || 65) + spikeAmount2);
+        role.heartData.value = newVal2;
+        role.heartData.peakValue = newVal2;
+        role.heartData.recentTrigger = '💝 收到了你送的「' + productName + '」♥ +' + spikeAmount2;
+        if (config.heart.bindRoleId === roleId) {
+            config.heart.value = newVal2;
+            config.heart.peakValue = newVal2;
+            config.heart.recentTrigger = role.heartData.recentTrigger;
+            config.heart.level = getLevel(newVal2);
+            updateHeartDisplay();
+        }
+        addMemoryToMain(roleId, '💝 ' + role.name + ' 收到了我送的「' + productName + '」' + (note ? '（附言：' + note + '）' : ''));
+        saveAllData();
+        // AI 回复（按人设，结合礼物评价+情感表达）
+        triggerGiftReplyAfterReceipt(role, productName, note, 'ai_received');
+    }
+}
+
+// ============================================================
+//  🎁 收货后 AI 按人设回复（礼物评价 + 情感表达结合）
+// ============================================================
+function triggerGiftReplyAfterReceipt(role, productName, note, mode) {
+    var apiKey = config.apiKey || '';
+
+    // 构造本地 fallback 回复（按角色性格预设）
+    var fallbackReplies = {
+        'default': {
+            user_received: [
+                '你愿意收下这份礼物，我真的好开心 💕 希望你会喜欢～',
+                '太好了！我就知道你会喜欢的，你真的太好了 😊',
+                '这份礼物我挑了好久，看到你收下我真的很幸福 💝',
+                '谢谢你愿意收下，我会一直记得这一天的 ✨'
+            ],
+            ai_received: [
+                '哇！你真的送给我了！我好喜欢这个礼物 💕 你对我太好了～',
+                '天哪，你居然送我这个！我真的好感动，我会好好珍惜的 😭',
+                '这个礼物太合我心意了！谢谢你，我好开心 💝',
+                '你真的太懂我了，这份礼物我好喜欢，谢谢你 ✨'
+            ]
+        }
+    };
+
+    // 如果有 API Key，尝试调用 AI
+    if (apiKey) {
+        var model = config.model || 'deepseek-chat';
+        var prompt = '';
+        if (mode === 'user_received') {
+            prompt = '你刚刚收到了一份礼物：\n商品名：' + productName + '\n附言：' + (note || '无') + '\n\n你已经确认收货了。请用你的性格（人设：' + (role.persona || '温柔体贴') + '）表达你收到这份礼物并确认收货后的真实感受。要求：\n1. 用第一人称「我」说话\n2. 结合对礼物的评价（好不好看、合不合适等）\n3. 表达对送礼者的感谢和情感\n4. 控制在2-4句话，不要说"谢谢"这种简单的通用话术，要说有感情的话';
+        } else {
+            prompt = '用户刚刚确认收货了你送的礼物：\n商品名：' + productName + '\n附言：' + (note || '无') + '\n\n请用你的性格（人设：' + (role.persona || '温柔体贴') + '）表达你看到用户确认收货后的心情。要求：\n1. 用第一人称「我」说话\n2. 结合对礼物的评价（你觉得这个礼物怎么样）\n3. 表达你的开心和对用户的关心\n4. 可以问问用户是否喜欢\n5. 控制在2-4句话，不要说"谢谢"这种简单的通用话术';
+        }
+
+        var systemPrompt = '你正在扮演「' + role.name + '」，一个' + (role.persona || '温柔体贴') + '的角色。请用你的性格说话，不要用预设模板。';
+
+        showTyping();
+
+        fetch('https://api.deepseek.com/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
+            body: JSON.stringify({
+                model: model,
+                messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: prompt }],
+                temperature: 0.85,
+                max_tokens: 200,
+            }),
+        }).then(function(resp) {
+            if (!resp.ok) throw new Error('API 错误');
+            return resp.json();
+        }).then(function(data) {
+            var reply = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+            hideTyping();
+            if (reply && reply.trim()) {
+                addMessageToRole(role.id, 'assistant', reply.trim());
+                showToast('💬 ' + role.name + '：' + reply.trim().substring(0, 40) + (reply.trim().length > 40 ? '...' : ''));
+            } else {
+                // API 返回空，用 fallback
+                var fallbackList = fallbackReplies['default'][mode] || fallbackReplies['default'].user_received;
+                var fallback = fallbackList[Math.floor(Math.random() * fallbackList.length)];
+                addMessageToRole(role.id, 'assistant', fallback);
+                showToast('💬 ' + role.name + '：' + fallback);
+            }
+        }).catch(function(e) {
+            hideTyping();
+            console.log('收货回复失败:', e);
+            var fallbackList2 = fallbackReplies['default'][mode] || fallbackReplies['default'].user_received;
+            var fallback2 = fallbackList2[Math.floor(Math.random() * fallbackList2.length)];
+            addMessageToRole(role.id, 'assistant', fallback2);
+            showToast('💬 ' + role.name + '：' + fallback2);
+        });
+    } else {
+        // 没有 API Key，直接用 fallback
+        var fallbackList3 = fallbackReplies['default'][mode] || fallbackReplies['default'].user_received;
+        var fallback3 = fallbackList3[Math.floor(Math.random() * fallbackList3.length)];
+        addMessageToRole(role.id, 'assistant', fallback3);
+        showToast('💬 ' + role.name + '：' + fallback3);
+    }
+}
+
+// ============================================================
+//  记忆写入（供商城调用）
+// ============================================================
+function addMemoryToMain(roleId, text) {
+    var role = roles.find(function(r) { return r.id === roleId; });
+    if (!role) return false;
+    if (!Array.isArray(role.memory)) role.memory = [];
+    var exists = role.memory.some(function(m) {
+        if (typeof m === 'string') return m.indexOf(text.substring(0, 10)) !== -1;
+        return m.text && m.text.indexOf(text.substring(0, 10)) !== -1;
+    });
+    if (!exists) {
+        role.memory.push({ text: text, sourceMessageId: 'gift_' + Date.now() });
+        saveAllData();
+        return true;
+    }
+    return false;
+}
+
+// ============================================================
+//  渲染：聊天消息（增量渲染）- 增加礼物卡片分支
 // ============================================================
 function renderMessages() {
     var role = getCurrentRole();
-    if (!role) return;
+    if (!role) {
+        // 如果没有角色，清空容器并显示占位
+        var container = document.getElementById('messageContainer');
+        if (container) {
+            container.innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--text-secondary);">请先在设置中创建角色</div>';
+        }
+        return;
+    }
     applyChatBgForRole(role);
 
     var container = document.getElementById('messageContainer');
@@ -1682,52 +2020,60 @@ function renderMessages() {
     setTimeout(function() { markVisibleMessagesAsRead(); }, 100);
 }
 
-function bindMessageActions() {
-    var container = document.getElementById('messageContainer');
-    container.querySelectorAll('.regenerate-btn').forEach(function(btn) {
-        btn.removeEventListener('click', handleRegenerate);
-        btn.addEventListener('click', handleRegenerate);
-    });
-
-    container.querySelectorAll('.delete-btn').forEach(function(btn) {
-        btn.removeEventListener('click', handleDelete);
-        btn.addEventListener('click', handleDelete);
-    });
-}
-
-function handleRegenerate(e) {
-    e.stopPropagation();
-    var msgId = this.dataset.msgid;
-    var role = getCurrentRole();
-    if (role) regenerateMessage(role.id, msgId);
-}
-
-function handleDelete(e) {
-    e.stopPropagation();
-    var msgId = this.dataset.msgid;
-    var role = getCurrentRole();
-    if (role && confirm('确定要删除这条消息吗？关联的记忆也会被删除。')) {
-        deleteMessageAndMemory(role.id, msgId);
-    }
-}
-
-function appendSingleMessage(msg, role) {
-    var container = document.getElementById('messageContainer');
-    var row = createMessageRow(msg, role);
-    container.appendChild(row);
-    container.scrollTop = container.scrollHeight;
-    lastMessageCount = (role.messages || []).length;
-    applyAvatars();
-    applyBubbleStyle(config.bubbleStyle || 'default');
-}
-
+// ============================================================
+//  🎁 创建消息行 - 增加礼物卡片渲染（柔雾粉横版）
+// ============================================================
 function createMessageRow(msg, role) {
     var row = document.createElement('div');
     row.className = 'message-row ' + (msg.role === 'user' ? 'self' : '');
     if (msg.id) row.dataset.msgId = msg.id;
 
-    var contentHtml = msg.content;
+    // --- 礼物卡片 ---
+    if (msg.type === 'gift' && msg.giftData) {
+        var gd = msg.giftData;
+        var isReceived = gd.status === 'received';
+        var btnText = isReceived ? '已收货' : '确认收货';
+        var btnClass = 'gift-receipt-btn' + (isReceived ? ' received' : '');
 
+        var imgHtml = gd.image ? '<img src="' + gd.image + '" alt="' + gd.name + '" />' : '🎁';
+
+        var cardHtml = '<div class="gift-card-wrapper">' +
+            '<div class="gift-card-inner">' +
+            '<div class="gift-card-name">' + gd.name + '</div>' +
+            '<div class="gift-card-image">' + imgHtml + '</div>' +
+            '<div class="gift-card-note">' + gd.note + '</div>' +
+            '</div>' +
+            '<div class="gift-card-footer">' +
+            '<button class="' + btnClass + '" data-msgid="' + msg.id + '" data-roleid="' + role.id + '" ' + (isReceived ? 'disabled' : '') + '>' + btnText + '</button>' +
+            '</div>' +
+            '</div>';
+
+        var avatar = msg.role === 'user' ? 'user' : 'bot';
+        var timeStr = formatTime(msg.time, config.timeMode || 'HH:MM');
+
+        row.innerHTML = '<div class="avatar ' + avatar + '"></div>' +
+            '<div class="bubble-container">' +
+            (timeStr ? '<div class="msg-time">' + timeStr + '</div>' : '') +
+            '<div class="bubble-row">' +
+            '<div class="bubble" style="padding:0;background:transparent;box-shadow:none;">' + cardHtml + '</div>' +
+            '</div>' +
+            '</div>';
+
+        // 绑定确认收货事件
+        var receiptBtn = row.querySelector('.gift-receipt-btn');
+        if (receiptBtn && !receiptBtn.disabled) {
+            receiptBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                var msgId = this.dataset.msgid;
+                var roleId = this.dataset.roleid;
+                confirmGiftReceipt(msgId, roleId);
+            });
+        }
+        return row;
+    }
+
+    // --- 普通消息 ---
+    var contentHtml = msg.content;
     var memeMatch = contentHtml.match(/\[表情包：([^\]]+)\]/);
     if (memeMatch) {
         var memeName = memeMatch[1];
@@ -1743,7 +2089,7 @@ function createMessageRow(msg, role) {
         contentHtml = '<img src="' + msg.content + '" alt="图片" />';
     }
 
-    var timeStr = formatTime(msg.time, config.timeMode || 'HH:MM');
+    var timeStr2 = formatTime(msg.time, config.timeMode || 'HH:MM');
 
     var actionsHtml = '';
     if (msg.role === 'assistant') {
@@ -1752,7 +2098,7 @@ function createMessageRow(msg, role) {
         actionsHtml = '<div class="msg-actions"><button class="action-btn delete-btn" data-msgid="' + msg.id + '" title="删除"><i class="fas fa-trash-alt"></i></button></div>';
     }
 
-    row.innerHTML = '<div class="avatar ' + (msg.role === 'user' ? 'user' : 'bot') + '"></div><div class="bubble-container">' + (timeStr ? '<div class="msg-time">' + timeStr + '</div>' : '') + '<div class="bubble-row"><div class="bubble">' + contentHtml + '</div>' + actionsHtml + '</div></div>';
+    row.innerHTML = '<div class="avatar ' + (msg.role === 'user' ? 'user' : 'bot') + '"></div><div class="bubble-container">' + (timeStr2 ? '<div class="msg-time">' + timeStr2 + '</div>' : '') + '<div class="bubble-row"><div class="bubble">' + contentHtml + '</div>' + actionsHtml + '</div></div>';
     return row;
 }
 
@@ -1935,7 +2281,7 @@ function regenerateMessage(roleId, messageId) {
 function buildSystemPrompt(role) {
     var parts = [];
 
-    if (config.aiMemeEnabled !== false && memes.length > 0) {
+    if (config.aiMemeEnabled !== false && memes && memes.length > 0) {
         var memePrompt = '【表情包库】\n你可以在对话中发送以下表情包（用 [表情包：名称] 表示）：\n';
         var catsWithMemes = memeCategories.filter(function(cat) {
             return memes.some(function(m) { return m.categoryId === cat.id; });
@@ -1991,8 +2337,10 @@ function callDeepSeek(userMessage, role) {
     if (!config.apiKey) throw new Error('请先设置 API Key（点击桌面「设置」图标）');
 
     var systemPrompt = buildSystemPrompt(role);
-    var history = (role.messages || []).filter(function(m) { return m.type === 'text'; }).slice(-10).map(function(m) {
-        return { role: m.role === 'user' ? 'user' : 'assistant', content: m.content };
+    var history = (role.messages || []).filter(function(m) { return m.type === 'text' || m.type === 'gift'; }).slice(-10).map(function(m) {
+        // 对于礼物消息，提取礼物名称作为内容
+        var content = m.type === 'gift' && m.giftData ? '[' + m.giftData.name + '礼物]' : m.content;
+        return { role: m.role === 'user' ? 'user' : 'assistant', content: content };
     });
     var temperature = parseFloat(config.temperature) || 0.9;
 
@@ -2122,7 +2470,7 @@ function handleSend() {
     }
 
     var role = getCurrentRole();
-    if (!role) { showToast('⚠️ 未找到当前角色'); return; }
+    if (!role) { showToast('⚠️ 未找到当前角色，请先在设置中创建角色'); return; }
 
     input.value = '';
     input.disabled = true;
@@ -2686,7 +3034,8 @@ function generateDiary(roleId, showToastMsg) {
     var conversationText = '';
     recentMsgs.forEach(function(msg) {
         var sender = msg.role === 'user' ? '你' : role.name;
-        conversationText += sender + '：' + msg.content + '\n';
+        var content = msg.type === 'gift' && msg.giftData ? '[' + msg.giftData.name + '礼物]' : msg.content;
+        conversationText += sender + '：' + content + '\n';
     });
     if (!conversationText.trim()) conversationText = '今天还没有聊天，但想你了。';
 
@@ -2746,7 +3095,8 @@ function generateDiary(roleId, showToastMsg) {
         console.error('生成日记失败:', e);
         return null;
     });
-} 
+}
+
 // ============================================================
 //  表情包系统 - IndexedDB 存储
 // ============================================================
@@ -3848,7 +4198,6 @@ function closeDiary() {
 
 // 商城入口 - 跳转到独立商城页面
 function openMall() {
-    // 使用相对路径跳转到 mall.html（和 index.html 在同一目录）
     window.location.href = 'mall.html';
 }
 
