@@ -480,181 +480,9 @@
         .heart-detail-panel .hd-recent { font-size: 12px; color: rgba(255,255,255,0.25); text-align: center; line-height: 1.6; }
         .heart-detail-panel .hd-recent .highlight { color: var(--heart-color, #ff6b81); }
         @media (max-width: 460px) { .phone-frame { border-radius: 0; height: 100vh; max-height: 100vh; } body { padding: 0; } }
-
-        /* ============================================================
-           🎁 送礼卡片样式（INS 风 · 仅聊天界面新增）
-           ============================================================ */
-        .gift-card-ins {
-            background: #ffffff;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-            max-width: 320px;
-            margin: 4px 0;
-            border: 1px solid rgba(0,0,0,0.04);
-            transition: opacity 0.3s ease, filter 0.3s ease;
-        }
-        .gift-card-ins.confirmed {
-            opacity: 0.6;
-            filter: grayscale(0.6);
-            pointer-events: none;
-        }
-        .gift-card-ins.confirmed .gift-confirm-btn {
-            display: none;
-        }
-        .gift-card-ins.confirmed .gift-confirm-badge {
-            display: block !important;
-        }
-        .gift-card-ins .gift-confirm-badge {
-            display: none;
-            font-size: 12px;
-            color: #2ed573;
-            font-weight: 600;
-            padding: 4px 12px;
-            background: rgba(46,213,115,0.1);
-            border-radius: 12px;
-            margin-left: auto;
-        }
-        .gift-card-ins .gift-img-area {
-            width: 100%;
-            aspect-ratio: 16 / 9;
-            background: #f5f5f5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            cursor: pointer;
-            position: relative;
-        }
-        .gift-card-ins .gift-img-area img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .gift-card-ins .gift-img-area .gift-placeholder {
-            font-size: 48px;
-            color: #ccc;
-        }
-        .gift-card-ins .gift-img-area .gift-img-hint {
-            position: absolute;
-            bottom: 8px;
-            right: 10px;
-            font-size: 10px;
-            color: rgba(255,255,255,0.6);
-            background: rgba(0,0,0,0.3);
-            padding: 2px 8px;
-            border-radius: 10px;
-            backdrop-filter: blur(4px);
-        }
-        .gift-card-ins .gift-info {
-            padding: 12px 14px 10px;
-        }
-        .gift-card-ins .gift-info .gift-name {
-            font-size: 15px;
-            font-weight: 600;
-            color: #1a1a1a;
-        }
-        .gift-card-ins .gift-info .gift-price {
-            font-size: 13px;
-            color: #ff6b81;
-            font-weight: 600;
-            margin-top: 1px;
-        }
-        .gift-card-ins .gift-info .gift-divider {
-            height: 1px;
-            background: #f0f0f0;
-            margin: 8px 0;
-        }
-        .gift-card-ins .gift-info .gift-ai-note {
-            font-size: 13px;
-            color: #666;
-            line-height: 1.5;
-            font-style: italic;
-            padding: 2px 0;
-        }
-        .gift-card-ins .gift-info .gift-ai-note .ai-name {
-            font-style: normal;
-            font-weight: 600;
-            color: #ff6b81;
-        }
-        .gift-card-ins .gift-info .gift-user-note {
-            font-size: 12px;
-            color: #999;
-            line-height: 1.4;
-            margin-top: 4px;
-            padding: 4px 8px;
-            background: #f8f8f8;
-            border-radius: 6px;
-            border-left: 3px solid #ff6b81;
-        }
-        .gift-card-ins .gift-actions {
-            padding: 8px 14px 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border-top: 1px solid #f0f0f0;
-        }
-        .gift-card-ins .gift-actions .gift-confirm-btn {
-            flex: 1;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 20px;
-            background: linear-gradient(135deg, #ff6b81, #ee5a24);
-            color: #fff;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.15s;
-            font-family: inherit;
-        }
-        .gift-card-ins .gift-actions .gift-confirm-btn:active {
-            transform: scale(0.95);
-        }
-        .gift-card-ins .gift-actions .gift-confirm-btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-        .gift-card-ins .gift-actions .gift-time {
-            font-size: 10px;
-            color: #ccc;
-            margin-left: auto;
-        }
-
-        /* 图片全屏预览遮罩 */
-        .gift-image-preview-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 9999;
-            background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(12px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            cursor: pointer;
-        }
-        .gift-image-preview-overlay.active {
-            display: flex;
-        }
-        .gift-image-preview-overlay img {
-            max-width: 100%;
-            max-height: 90vh;
-            border-radius: 12px;
-            object-fit: contain;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-            animation: fadeInUp 0.3s ease;
-        }
-        .gift-image-preview-overlay .close-hint {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: rgba(255,255,255,0.3);
-            font-size: 12px;
-            letter-spacing: 2px;
-        }
     </style>
-</head> <body>
+</head>
+<body>
 <div class="phone-frame" id="app">
     <!-- ===== 桌面 ===== -->
     <div class="screen-launcher" id="launcherScreen">
@@ -686,9 +514,7 @@
             <button class="app-icon" data-app="memory"><div class="icon-wrap memory"><i class="fas fa-brain"></i></div><span class="app-name">记忆库</span></button>
             <button class="app-icon" data-app="settings"><div class="icon-wrap settings"><i class="fas fa-cog"></i></div><span class="app-name">设置</span></button>
         </div>
-    </div>
-
-    <!-- ===== 联系人界面 ===== -->
+    </div> <!-- ===== 联系人界面 ===== -->
     <div class="screen-contacts" id="contactsScreen">
         <div class="contacts-header">
             <button class="back-btn" id="backFromContacts"><i class="fas fa-chevron-left"></i></button>
@@ -956,12 +782,6 @@
             <div class="hd-recent" id="hdRecent">最近心跳加速：<span class="highlight">等待你的第一句情话</span></div>
         </div>
     </div>
-
-    <!-- ===== 🎁 图片全屏预览遮罩 ===== -->
-    <div class="gift-image-preview-overlay" id="giftImagePreview">
-        <img id="giftPreviewImg" src="" alt="礼物图片" />
-        <span class="close-hint">✦ 点击关闭 ✦</span>
-    </div>
 </div> <script>
 // ============================================================
 //  全局配置常量
@@ -1015,6 +835,7 @@ var config = {
     diaryAutoGenerateEnabled: true,
     lastDiaryCheckDate: null,
     diaryCalendarCollapsed: false,
+    // 商城数据直接读写 localStorage，主应用不再维护商城变量
 };
 
 var roles = [];
@@ -1037,10 +858,6 @@ var memeDeleteMode = false;
 var memeSelectedForDelete = [];
 var heartBeatInterval = null;
 var lastMessageCount = -1;
-
-// 礼物相关变量
-var pendingGiftData = null;
-var giftHistory = [];
 
 // ============================================================
 //  工具函数
@@ -1202,45 +1019,51 @@ function loadAllData() {
         if (!role.heartData.restingValue) role.heartData.restingValue = 65;
         if (!role.heartData.value) role.heartData.value = 65;
     });
-
-    // 加载礼物历史
-    loadGiftHistory();
 }
 
-// 礼物历史读写
-function loadGiftHistory() {
+// 商城数据读写函数（主应用只提供读写接口，不维护商城变量）
+function getMallBalance() {
     try {
-        var raw = localStorage.getItem('gift_history');
-        if (raw) { giftHistory = JSON.parse(raw); }
-        else { giftHistory = []; }
-    } catch (_) { giftHistory = []; }
+        var data = JSON.parse(localStorage.getItem('mall_data') || '{}');
+        return data.balance !== undefined ? data.balance : 1000;
+    } catch (_) { return 1000; }
 }
 
-function saveGiftHistory() {
+function setMallBalance(value) {
     try {
-        localStorage.setItem('gift_history', JSON.stringify(giftHistory));
+        var data = JSON.parse(localStorage.getItem('mall_data') || '{}');
+        data.balance = value;
+        localStorage.setItem('mall_data', JSON.stringify(data));
     } catch (_) {}
 }
 
-// 读取待处理的礼物
-function checkPendingGift() {
+function getMallOrders() {
     try {
-        var raw = localStorage.getItem('pending_gift');
-        if (raw) {
-            var data = JSON.parse(raw);
-            if (data && data.status === 'pending') {
-                pendingGiftData = data;
-                return true;
-            }
-        }
-    } catch (_) {}
-    return false;
+        var data = JSON.parse(localStorage.getItem('mall_data') || '{}');
+        return data.orders || [];
+    } catch (_) { return []; }
 }
 
-function clearPendingGift() {
+function setMallOrders(orders) {
     try {
-        localStorage.removeItem('pending_gift');
-        pendingGiftData = null;
+        var data = JSON.parse(localStorage.getItem('mall_data') || '{}');
+        data.orders = orders;
+        localStorage.setItem('mall_data', JSON.stringify(data));
+    } catch (_) {}
+}
+
+function getMallCart() {
+    try {
+        var data = JSON.parse(localStorage.getItem('mall_data') || '{}');
+        return data.cart || [];
+    } catch (_) { return []; }
+}
+
+function setMallCart(cart) {
+    try {
+        var data = JSON.parse(localStorage.getItem('mall_data') || '{}');
+        data.cart = cart;
+        localStorage.setItem('mall_data', JSON.stringify(data));
     } catch (_) {}
 }
 
@@ -1821,11 +1644,7 @@ function renderMessages() {
         updateChatTitle();
         attachLongPressEvents();
         bindMessageActions();
-        // 检查是否有待处理的礼物
-        setTimeout(function() { 
-            markVisibleMessagesAsRead();
-            checkAndRenderPendingGift();
-        }, 200);
+        setTimeout(function() { markVisibleMessagesAsRead(); }, 100);
         return;
     }
 
@@ -1860,10 +1679,7 @@ function renderMessages() {
     updateChatTitle();
     attachLongPressEvents();
     bindMessageActions();
-    setTimeout(function() { 
-        markVisibleMessagesAsRead();
-        checkAndRenderPendingGift();
-    }, 200);
+    setTimeout(function() { markVisibleMessagesAsRead(); }, 100);
 }
 
 function bindMessageActions() {
@@ -1912,33 +1728,27 @@ function createMessageRow(msg, role) {
 
     var contentHtml = msg.content;
 
-    // 检查是否是礼物卡片消息（特殊渲染）
-    if (msg.type === 'gift_card') {
-        var giftData = msg.giftData || {};
-        contentHtml = renderGiftCardHTML(giftData, msg.id);
-    } else {
-        var memeMatch = contentHtml.match(/\[表情包：([^\]]+)\]/);
-        if (memeMatch) {
-            var memeName = memeMatch[1];
-            var meme = memes.find(function(m) { return m.name === memeName; });
-            if (meme && meme.imageData) {
-                contentHtml = contentHtml.replace(/\[表情包：[^\]]+\]/, '<img src="' + meme.imageData + '" style="max-width:180px;max-height:180px;border-radius:12px;display:block;margin-top:6px;" alt="' + memeName + '" />');
-            } else {
-                contentHtml = contentHtml.replace(/\[表情包：[^\]]+\]/, '');
-            }
+    var memeMatch = contentHtml.match(/\[表情包：([^\]]+)\]/);
+    if (memeMatch) {
+        var memeName = memeMatch[1];
+        var meme = memes.find(function(m) { return m.name === memeName; });
+        if (meme && meme.imageData) {
+            contentHtml = contentHtml.replace(/\[表情包：[^\]]+\]/, '<img src="' + meme.imageData + '" style="max-width:180px;max-height:180px;border-radius:12px;display:block;margin-top:6px;" alt="' + memeName + '" />');
+        } else {
+            contentHtml = contentHtml.replace(/\[表情包：[^\]]+\]/, '');
         }
+    }
 
-        if (msg.type === 'image') {
-            contentHtml = '<img src="' + msg.content + '" alt="图片" />';
-        }
+    if (msg.type === 'image') {
+        contentHtml = '<img src="' + msg.content + '" alt="图片" />';
     }
 
     var timeStr = formatTime(msg.time, config.timeMode || 'HH:MM');
 
     var actionsHtml = '';
-    if (msg.role === 'assistant' && msg.type !== 'gift_card') {
+    if (msg.role === 'assistant') {
         actionsHtml = '<div class="msg-actions"><button class="action-btn regenerate-btn" data-msgid="' + msg.id + '" title="重新生成"><i class="fas fa-sync-alt"></i></button><button class="action-btn delete-btn" data-msgid="' + msg.id + '" title="删除"><i class="fas fa-trash-alt"></i></button></div>';
-    } else if (msg.role === 'user' && msg.type !== 'gift_card') {
+    } else if (msg.role === 'user') {
         actionsHtml = '<div class="msg-actions"><button class="action-btn delete-btn" data-msgid="' + msg.id + '" title="删除"><i class="fas fa-trash-alt"></i></button></div>';
     }
 
@@ -1946,255 +1756,178 @@ function createMessageRow(msg, role) {
     return row;
 }
 
-// ============================================================
-//  🎁 送礼卡片渲染
-// ============================================================
-function renderGiftCardHTML(giftData, msgId) {
-    var isConfirmed = giftData.status === 'confirmed';
-    var confirmedClass = isConfirmed ? 'confirmed' : '';
-    var imgHtml = giftData.image ? '<img src="' + giftData.image + '" alt="' + giftData.productName + '" onclick="openGiftImagePreview(\'' + giftData.image + '\')" />' : '<span class="gift-placeholder">🛍️</span>';
-    var confirmBtnHtml = !isConfirmed ? '<button class="gift-confirm-btn" data-msgid="' + msgId + '" data-giftid="' + giftData.id + '">💝 确认收货</button>' : '';
-    var badgeHtml = isConfirmed ? '<span class="gift-confirm-badge">✅ 已确认</span>' : '';
-    var timeHtml = giftData.createdAt ? '<span class="gift-time">' + new Date(giftData.createdAt).toLocaleTimeString().slice(0, 5) + '</span>' : '';
-
-    return '<div class="gift-card-ins ' + confirmedClass + '" data-giftid="' + giftData.id + '">' +
-        '<div class="gift-img-area" onclick="openGiftImagePreview(\'' + (giftData.image || '') + '\')">' + imgHtml + '<span class="gift-img-hint">📷 点击放大</span></div>' +
-        '<div class="gift-info">' +
-            '<div class="gift-name">' + giftData.productName + '</div>' +
-            '<div class="gift-price">¥' + giftData.price + '</div>' +
-            '<div class="gift-divider"></div>' +
-            '<div class="gift-ai-note"><span class="ai-name">' + (giftData.roleName || 'TA') + '</span>：' + (giftData.aiNote || '一份心意，请查收 💕') + '</div>' +
-            (giftData.userNote ? '<div class="gift-user-note">💬 ' + giftData.userNote + '</div>' : '') +
-        '</div>' +
-        '<div class="gift-actions">' +
-            confirmBtnHtml +
-            badgeHtml +
-            timeHtml +
-        '</div>' +
-    '</div>';
-}
-
-// ============================================================
-//  检查并渲染待处理的礼物
-// ============================================================
-function checkAndRenderPendingGift() {
+function applyAvatars() {
     var role = getCurrentRole();
     if (!role) return;
-    
-    // 检查是否有待处理的礼物
-    if (!checkPendingGift()) return;
-    
-    var giftData = pendingGiftData;
-    
-    // 检查这个礼物是否已经在这个角色的聊天记录里
-    var alreadyExists = role.messages.some(function(msg) {
-        return msg.type === 'gift_card' && msg.giftData && msg.giftData.id === giftData.id;
-    });
-    
-    if (alreadyExists) {
-        // 如果已经存在，检查是否需要更新状态
-        var existingMsg = role.messages.find(function(msg) {
-            return msg.type === 'gift_card' && msg.giftData && msg.giftData.id === giftData.id;
-        });
-        if (existingMsg && existingMsg.giftData.status !== giftData.status) {
-            existingMsg.giftData.status = giftData.status;
-            saveAllData();
-            lastMessageCount = -1;
-            renderMessages();
+
+    document.querySelectorAll('.avatar.bot').forEach(function(el) {
+        if (role.avatar) {
+            el.style.backgroundImage = 'url(' + role.avatar + ')';
+            el.style.backgroundSize = 'cover';
+            el.style.backgroundPosition = 'center';
+            el.classList.add('has-image');
+        } else {
+            el.style.backgroundImage = '';
+            el.style.backgroundSize = '';
+            el.style.backgroundPosition = '';
+            el.classList.remove('has-image');
+            el.style.backgroundColor = '#07c160';
         }
-        return;
-    }
-    
-    // 将礼物作为 AI 消息添加到聊天记录
-    var msgId = generateId();
-    role.messages.push({
-        id: msgId,
-        role: 'assistant',
-        type: 'gift_card',
-        content: '🎁 ' + giftData.roleName + ' 送给你一份礼物',
-        giftData: {
-            id: giftData.id,
-            productName: giftData.productName,
-            image: giftData.image || '',
-            price: giftData.price || 0,
-            aiNote: giftData.aiNote || '一份心意，请查收 💕',
-            userNote: giftData.userNote || '',
-            roleName: giftData.roleName || 'TA',
-            roleId: giftData.roleId || '',
-            status: giftData.status || 'pending',
-            createdAt: giftData.createdAt || new Date().toISOString()
-        },
-        time: new Date().toLocaleTimeString()
     });
-    
-    // 清除待处理礼物
-    clearPendingGift();
-    saveAllData();
-    lastMessageCount = -1;
-    renderMessages();
-    
-    // 滚动到底部
-    var container = document.getElementById('messageContainer');
-    if (container) {
-        setTimeout(function() {
-            container.scrollTop = container.scrollHeight;
-        }, 200);
-    }
-    
-    showToast('🎁 你收到了 ' + (giftData.roleName || 'TA') + ' 的礼物！');
+
+    document.querySelectorAll('.avatar.user').forEach(function(el) {
+        if (config.userAvatar) {
+            el.style.backgroundImage = 'url(' + config.userAvatar + ')';
+            el.style.backgroundSize = 'cover';
+            el.style.backgroundPosition = 'center';
+            el.classList.add('has-image');
+        } else {
+            el.style.backgroundImage = '';
+            el.style.backgroundSize = '';
+            el.style.backgroundPosition = '';
+            el.classList.remove('has-image');
+            el.style.backgroundColor = '#576b95';
+        }
+    });
 }
 
-// ============================================================
-//  确认收货
-// ============================================================
-function confirmGift(messageId, giftId) {
+function applyFontSettings() {
+    var fontSize = config.fontSize || 'medium';
+    var fontWeight = config.fontWeight || 'regular';
+    document.documentElement.setAttribute('data-font-size', fontSize);
+    document.documentElement.setAttribute('data-font-weight', fontWeight);
+}
+
+function updateChatTitle() {
+    var chatRoleName = document.getElementById('chatRoleName');
     var role = getCurrentRole();
-    if (!role) { showToast('⚠️ 未找到当前角色'); return; }
-    
-    // 查找礼物消息
-    var msgIndex = role.messages.findIndex(function(msg) {
-        return msg.id === messageId && msg.type === 'gift_card';
-    });
-    
-    if (msgIndex === -1) { showToast('⚠️ 未找到礼物消息'); return; }
-    
-    var msg = role.messages[msgIndex];
-    if (msg.giftData.status === 'confirmed') {
-        showToast('✅ 已经确认过了');
-        return;
+    if (role) {
+        chatRoleName.textContent = role.name;
+        chatRoleName.classList.remove('typing');
+    } else {
+        chatRoleName.textContent = 'DeepSeek';
+        chatRoleName.classList.remove('typing');
     }
-    
-    // 更新状态为已确认
-    msg.giftData.status = 'confirmed';
+}
+
+function showTyping() {
+    var container = document.getElementById('messageContainer');
+    var el = document.getElementById('typingIndicator');
+    if (!el) {
+        var newEl = document.createElement('div');
+        newEl.className = 'typing-indicator';
+        newEl.id = 'typingIndicator';
+        newEl.innerHTML = '<div class="avatar bot"></div><div class="typing-dots"><span></span><span></span><span></span></div>';
+        container.appendChild(newEl);
+        container.scrollTop = container.scrollHeight;
+        applyAvatars();
+        applyBubbleStyle(config.bubbleStyle || 'default');
+    }
+    document.getElementById('chatRoleName').textContent = '对方正在输入…';
+    document.getElementById('chatRoleName').classList.add('typing');
+}
+
+function hideTyping() {
+    var el = document.getElementById('typingIndicator');
+    if (el) el.remove();
+    var role = getCurrentRole();
+    if (role) {
+        document.getElementById('chatRoleName').textContent = role.name;
+        document.getElementById('chatRoleName').classList.remove('typing');
+    }
+}
+
+function markVisibleMessagesAsRead() {
+    var role = getCurrentRole();
+    if (!role) return;
+    var container = document.getElementById('messageContainer');
+    var rows = container.querySelectorAll('.message-row');
+    var containerRect = container.getBoundingClientRect();
+
+    rows.forEach(function(row) {
+        var msgId = row.dataset.msgId;
+        if (!msgId) return;
+        if (readMessages.has(msgId)) return;
+        var rowRect = row.getBoundingClientRect();
+        if (rowRect.top < containerRect.bottom && rowRect.bottom > containerRect.top) {
+            readMessages.add(msgId);
+            if (config.unreadCount && config.unreadCount[role.id] > 0) {
+                config.unreadCount[role.id] = Math.max(0, config.unreadCount[role.id] - 1);
+                saveAllData();
+                renderContacts();
+            }
+        }
+    });
+}
+
+function deleteMessageAndMemory(roleId, messageId) {
+    var role = roles.find(function(r) { return r.id === roleId; });
+    if (!role) return;
+    var msgIndex = role.messages.findIndex(function(m) { return m.id === messageId; });
+    if (msgIndex === -1) return;
+    role.messages.splice(msgIndex, 1);
+    if (Array.isArray(role.memory)) {
+        role.memory = role.memory.filter(function(mem) {
+            if (!mem.sourceMessageId) return true;
+            return mem.sourceMessageId !== messageId;
+        });
+    }
     saveAllData();
     lastMessageCount = -1;
     renderMessages();
-    
-    // 保存到礼物历史
-    giftHistory.push({
-        id: msg.giftData.id,
-        productName: msg.giftData.productName,
-        image: msg.giftData.image,
-        price: msg.giftData.price,
-        roleName: msg.giftData.roleName,
-        roleId: msg.giftData.roleId,
-        userNote: msg.giftData.userNote,
-        aiNote: msg.giftData.aiNote,
-        sender: 'ai',  // AI 送的
-        status: 'confirmed',
-        confirmedAt: new Date().toISOString(),
-        createdAt: msg.giftData.createdAt || new Date().toISOString()
-    });
-    saveGiftHistory();
-    
-    showToast('💝 已确认收货！');
-    
-    // 触发心跳
-    var targetRole = roles.find(function(r) { return r.id === msg.giftData.roleId; });
-    if (targetRole) {
-        triggerHeartSpikeForGift(targetRole, msg.giftData.productName);
+    renderContacts();
+    renderRoleManager();
+    renderMemoryScreen();
+}
+
+function regenerateMessage(roleId, messageId) {
+    var role = roles.find(function(r) { return r.id === roleId; });
+    if (!role) { showToast('⚠️ 未找到该角色'); return; }
+    var msgIndex = role.messages.findIndex(function(m) { return m.id === messageId; });
+    if (msgIndex === -1) { showToast('⚠️ 未找到该消息'); return; }
+    if (role.messages[msgIndex].role !== 'assistant') { showToast('⚠️ 只能重新生成 AI 的回复'); return; }
+
+    var userMsgIndex = -1;
+    for (var i = msgIndex - 1; i >= 0; i--) {
+        if (role.messages[i].role === 'user') { userMsgIndex = i; break; }
     }
-    
-    // 模拟打字效果，然后 AI 回复
+    if (userMsgIndex === -1) { showToast('⚠️ 未找到对应的用户消息'); return; }
+
+    var userMessage = role.messages[userMsgIndex].content;
+    if (Array.isArray(role.memory)) {
+        role.memory = role.memory.filter(function(mem) {
+            if (!mem.sourceMessageId) return true;
+            return mem.sourceMessageId !== messageId;
+        });
+    }
+    role.messages.splice(msgIndex, 1);
+    saveAllData();
+    lastMessageCount = -1;
+    renderMessages();
     showTyping();
-    var delay = 2000 + Math.random() * 2000; // 2-4 秒
-    
-    setTimeout(function() {
-        generateGiftConfirmReply(role, msg.giftData).then(function(reply) {
-            hideTyping();
-            if (reply) {
-                addMessageToRole(role.id, 'assistant', reply);
-                lastMessageCount = -1;
-                renderMessages();
-            }
-        }).catch(function() {
-            hideTyping();
-            var fallback = getFallbackConfirmReply(role, msg.giftData);
-            addMessageToRole(role.id, 'assistant', fallback);
+
+    callDeepSeek(userMessage, role).then(function(reply) {
+        hideTyping();
+        var segments = config.splitEnabled !== false ? splitReplyIntoMessages(reply) : [reply];
+        var idx = 0;
+        function sendNext() {
+            if (idx >= segments.length) { renderContacts(); return; }
+            addMessageToRole(role.id, 'assistant', segments[idx]);
             lastMessageCount = -1;
             renderMessages();
-        });
-    }, delay);
-}
-
-function triggerHeartSpikeForGift(role, productName) {
-    if (!role.heartData) {
-        role.heartData = { value: 65, restingValue: 65, peakValue: 65, signature: '今天也很想你 💕', recentTrigger: '初次相遇' };
-    }
-    var spikeAmount = 10 + Math.floor(Math.random() * 10);
-    var newValue = Math.min(99, (role.heartData.value || 65) + spikeAmount);
-    role.heartData.value = newValue;
-    role.heartData.peakValue = newValue;
-    role.heartData.recentTrigger = '💝 收到了礼物「' + productName + '」';
-    
-    if (config.heart.bindRoleId === role.id) {
-        config.heart.value = newValue;
-        config.heart.peakValue = newValue;
-        config.heart.level = getLevel(newValue);
-        config.heart.recentTrigger = '💝 收到了礼物「' + productName + '」';
-        config.heart.spikeActive = true;
-        if (config.heart.recoveryTimer) clearTimeout(config.heart.recoveryTimer);
-        config.heart.recoveryTimer = setTimeout(function() { recoverHeartRate(role); }, 60000 + Math.random() * 60000);
-        var heartWrap = document.getElementById('heartWrap');
-        if (heartWrap) {
-            heartWrap.classList.add('spike');
-            setTimeout(function() { heartWrap.classList.remove('spike'); }, 1500);
+            document.getElementById('messageContainer').scrollTop = document.getElementById('messageContainer').scrollHeight;
+            idx++;
+            setTimeout(sendNext, 600);
         }
-    }
-    saveAllData();
-    updateHeartDisplay();
-    showToast('💓 心跳飙升 +' + spikeAmount + '！');
-}
-
-function generateGiftConfirmReply(role, giftData) {
-    var apiKey = config.apiKey;
-    if (!apiKey) {
-        return Promise.resolve(getFallbackConfirmReply(role, giftData));
-    }
-    
-    var systemPrompt = '你正在扮演「' + role.name + '」这个角色。\n【人设】' + (role.persona || '温柔体贴的AI伴侣') + '\n【背景】' + (role.background || '生活在充满爱的世界里') + '\n【说话风格】' + (role.style || '温柔细腻，像真人聊天') + '\n\n用户刚刚确认收到了你送的礼物「' + giftData.productName + '」。请用你的性格回应，表达你的开心和关心。要求：用第一人称「我」说话，控制在2-4句话，自然流畅。';
-    
-    return fetch('https://api.deepseek.com/v1/chat/completions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
-        body: JSON.stringify({
-            model: config.model || 'deepseek-chat',
-            messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: '我刚收到了你送的「' + giftData.productName + '」，好喜欢！你有什么想对我说的吗？' }],
-            temperature: 0.85,
-            max_tokens: 200,
-        }),
-    }).then(function(resp) {
-        if (!resp.ok) throw new Error('API 错误');
-        return resp.json();
-    }).then(function(data) {
-        var reply = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
-        return reply || getFallbackConfirmReply(role, giftData);
+        sendNext();
+        if (document.getElementById('chatScreen').classList.contains('open')) clearUnreadForRole(role.id);
+    }).catch(function(e) {
+        hideTyping();
+        addMessageToRole(role.id, 'assistant', '💔 ' + e.message);
+        lastMessageCount = -1;
+        renderMessages();
     });
 }
-
-function getFallbackConfirmReply(role, giftData) {
-    var replies = [
-        '你收到了！太好了，我就知道你会喜欢这个 💕',
-        '看到你喜欢，我比什么都开心 😊',
-        '这份礼物我挑了好久，你值得最好的 💝',
-        '你喜欢就好，下次我再送你更好的 ✨',
-        '收到就好～ 我一直在等你确认呢 💕'
-    ];
-    return replies[Math.floor(Math.random() * replies.length)];
-}
-
-// 图片全屏预览
-function openGiftImagePreview(imageUrl) {
-    if (!imageUrl) { showToast('📷 这张礼物没有图片'); return; }
-    var overlay = document.getElementById('giftImagePreview');
-    var img = document.getElementById('giftPreviewImg');
-    img.src = imageUrl;
-    overlay.classList.add('active');
-}
-
-document.getElementById('giftImagePreview').addEventListener('click', function() {
-    this.classList.remove('active');
-});
 
 // ============================================================
 //  DeepSeek API 调用
@@ -2464,12 +2197,6 @@ function onTouchStart(e) {
         if (idx >= msgs.length) return;
         var msg = msgs[idx];
         if (!msg) return;
-
-        // 礼物卡片不显示引用菜单
-        if (msg.type === 'gift_card') {
-            hideLongpressMenu();
-            return;
-        }
 
         var senderName = msg.role === 'user' ? '我' : (role ? role.name : '对方');
         var preview = msg.content.length > 50 ? msg.content.substring(0, 50) + '…' : msg.content;
@@ -3019,7 +2746,7 @@ function generateDiary(roleId, showToastMsg) {
         console.error('生成日记失败:', e);
         return null;
     });
-} <script>
+} 
 // ============================================================
 //  表情包系统 - IndexedDB 存储
 // ============================================================
@@ -4121,6 +3848,7 @@ function closeDiary() {
 
 // 商城入口 - 跳转到独立商城页面
 function openMall() {
+    // 使用相对路径跳转到 mall.html（和 index.html 在同一目录）
     window.location.href = 'mall.html';
 }
 
@@ -4283,33 +4011,6 @@ function updateHeartColor(color) {
     var hdValue = document.getElementById('hdValue');
     if (hdValue) { hdValue.style.color = color; }
 }
-
-// 确认收货事件绑定（在消息渲染后绑定）
-function bindGiftConfirmButtons() {
-    document.querySelectorAll('.gift-confirm-btn').forEach(function(btn) {
-        btn.removeEventListener('click', handleGiftConfirm);
-        btn.addEventListener('click', handleGiftConfirm);
-    });
-}
-
-function handleGiftConfirm(e) {
-    e.stopPropagation();
-    var msgId = this.dataset.msgid;
-    var giftId = this.dataset.giftid;
-    if (msgId && giftId) {
-        confirmGift(msgId, giftId);
-    }
-}
-
-// 在渲染消息后调用
-var origRenderMessages = renderMessages;
-renderMessages = function() {
-    origRenderMessages();
-    // 绑定礼物确认按钮
-    setTimeout(function() {
-        bindGiftConfirmButtons();
-    }, 100);
-};
 
 // ============================================================
 //  🚀 初始化入口
