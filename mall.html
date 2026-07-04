@@ -8,7 +8,6 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <title>造梦 · 商城</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet" />
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
         body { background: #1a1a1a; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 12px; }
@@ -166,7 +165,6 @@
 </head>
 <body>
 <div class="phone-frame" id="app">
-    <!-- ===== 商城主界面 ===== -->
     <div class="screen-mall" id="mallScreen">
         <div class="mall-header">
             <button class="back-btn" id="exitMallBtn"><i class="fas fa-times"></i></button>
@@ -347,6 +345,100 @@ function getModelFromMain() {
         }
     } catch (_) {}
     return 'deepseek-chat';
+}
+
+// ============================================================
+//  ⭐ 新增：直接操作 localStorage 插入礼物消息和AI回复
+// ============================================================
+function addGiftMessageToRoleDirect(roleId, direction, giftData) {
+    try {
+        var raw = localStorage.getItem('ds_multirole_v2');
+        if (!raw) { showToast('⚠️ 未找到主应用数据'); return false; }
+        var data = JSON.parse(raw);
+        var r = data.roles.find(function(ro) { return ro.id === roleId; });
+        if (!r) { showToast('⚠️ 未找到该角色'); return false; }
+
+        var msgId = 'id_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4);
+        var timeStr = new Date().toLocaleTimeString();
+        var msg = {
+            id: msgId,
+            role: direction === 'sent' ? 'user' : 'assistant',
+            type: 'gift',
+            time: timeStr,
+            giftData: {
+                productName: giftData.productName || '礼物',
+                price: giftData.price || 0,
+                desc: giftData.desc || '',
+                note: giftData.note || '一份心意',
+                roleId: direction === 'sent' ? giftData.targetRoleId : roleId,
+                roleName: direction === 'sent' ? (giftData.targetRoleName || 'TA') : r.name,
+                targetRoleName: direction === 'sent' ? r.name : '你',
+                status: direction === 'sent' ? 'done' : 'pending',
+            }
+        };
+        if (!Array.isArray(r.messages)) r.messages = [];
+        r.messages.push(msg);
+
+        if (direction === 'received') {
+            if (!data.config) data.config = {};
+            if (!data.config.unreadCount) data.config.unreadCount = {};
+            data.config.unreadCount[roleId] = (data.config.unreadCount[roleId] || 0) + 1;
+        }
+
+        // 心跳飙升（收到礼物时）
+        if (direction === 'received') {
+            if (!r.heartData) r.heartData = { value: 65, restingValue: 65, signature: '今天也很想你 💕', recentTrigger: '初次相遇' };
+            var spikeVal = Math.min(99, (r.heartData.value || 65) + 10 + Math.floor(Math.random() * 5));
+            r.heartData.value = spikeVal;
+            r.heartData.peakValue = spikeVal;
+            r.heartData.recentTrigger = '🎁 收到了「' + giftData.productName + '」';
+            if (data.config.heart && data.config.heart.bindRoleId === roleId) {
+                data.config.heart.value = spikeVal;
+                data.config.heart.peakValue = spikeVal;
+                data.config.heart.recentTrigger = '🎁 收到了「' + giftData.productName + '」';
+            }
+            if (!Array.isArray(r.memory)) r.memory = [];
+            r.memory.push({ text: '🎁 ' + r.name + ' 送了我「' + giftData.productName + '」', sourceMessageId: msgId });
+        }
+
+        localStorage.setItem('ds_multirole_v2', JSON.stringify(data));
+        return true;
+    } catch (e) {
+        console.error('插入礼物消息失败:', e);
+        return false;
+    }
+}
+
+function addReplyToRoleDirect(roleId, replyText) {
+    try {
+        var raw = localStorage.getItem('ds_multirole_v2');
+        if (!raw) return false;
+        var data = JSON.parse(raw);
+        var r = data.roles.find(function(ro) { return ro.id === roleId; });
+        if (!r) return false;
+
+        var msgId = 'id_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4);
+        var timeStr = new Date().toLocaleTimeString();
+        var msg = {
+            id: msgId,
+            role: 'assistant',
+            type: 'text',
+            content: replyText,
+            time: timeStr
+        };
+        if (!Array.isArray(r.messages)) r.messages = [];
+        r.messages.push(msg);
+
+        if (!data.config) data.config = {};
+        if (!data.config.unreadCount) data.config.unreadCount = {};
+        data.config.unreadCount[roleId] = (data.config.unreadCount[roleId] || 0) + 1;
+
+        localStorage.setItem('ds_multirole_v2', JSON.stringify(data));
+        return true;
+    } catch (e) {
+        console.error('插入回复失败:', e);
+        return false;
+    }
 }
 
 // ============================================================
@@ -600,7 +692,7 @@ function openDetail(product) {
 function closeDetail() { document.getElementById('mallDetailOverlay').classList.remove('active'); }
 
 // ============================================================
-//  购买 / 送礼
+//  购买 / 送礼（⭐ 修改：直接操作 localStorage）
 // ============================================================
 function selectTargetRoleSync() {
     return new Promise(function(resolve) {
@@ -664,24 +756,30 @@ function executePurchase(product, qty, note, mode, targetRole, totalPrice) {
     updateUI();
     showToast('🎁 已送给 ' + targetRole.name + '！');
 
-    if (window.addGiftMessageToRole) {
-        var giftData = {
-            productName: product.name,
-            price: product.price,
-            desc: product.description || '',
-            note: note || '一份心意',
-            targetRoleId: targetRole.id,
-            targetRoleName: targetRole.name,
-        };
-        window.addGiftMessageToRole(targetRole.id, 'sent', giftData);
+    // ⭐ 修改：直接操作 localStorage 插入礼物消息
+    var giftData = {
+        productName: product.name,
+        price: product.price,
+        desc: product.description || '',
+        note: note || '一份心意',
+        targetRoleId: targetRole.id,
+        targetRoleName: targetRole.name,
+    };
+    var success = addGiftMessageToRoleDirect(targetRole.id, 'sent', giftData);
+    if (success) {
+        showToast('💬 礼物消息已存入聊天记录');
+    } else {
+        showToast('⚠️ 礼物消息写入失败，请检查主应用数据');
     }
 
+    // 触发心跳
     triggerHeartSpikeForGift(targetRole, product, 'gift');
-    triggerGiftChatReply(targetRole, product, note);
+    // ⭐ 修改：触发 AI 回复，并直接写入聊天记录
+    triggerGiftChatReplyDirect(targetRole, product, note);
 }
 
 // ============================================================
-//  心跳 + AI 回复
+//  心跳 + AI 回复（⭐ 修改：直接写入聊天记录）
 // ============================================================
 function triggerHeartSpikeForGift(role, product, mode) {
     try {
@@ -705,17 +803,21 @@ function triggerHeartSpikeForGift(role, product, mode) {
     } catch (_) {}
 }
 
-function triggerGiftChatReply(role, product, note) {
+// ⭐ 修改：直接写入聊天记录，而不是用 Toast
+function triggerGiftChatReplyDirect(role, product, note) {
     var apiKey = getApiKeyFromMain();
     if (!apiKey) {
         var fallbacks = ['哇！谢谢你送我的礼物 💕', '你真好，我好喜欢！', '天哪，你居然送我这个！我好感动 😭', '谢谢你的心意，我会好好珍惜的 💝'];
         var reply = fallbacks[Math.floor(Math.random() * fallbacks.length)];
+        addReplyToRoleDirect(role.id, reply);
         showToast('💬 ' + role.name + '：' + reply);
         return;
     }
+
     var model = getModelFromMain();
     var giftMessage = '用户送了你一份礼物：\n商品名：' + product.name + '\n价格：' + product.price + ' 虚拟币\n描述：' + (product.description || '') + '\n' + (note ? '附言：' + note : '') + '\n\n请用你的性格回应这份礼物。';
     var systemPrompt = '你正在扮演「' + role.name + '」。用户刚刚送了你一份礼物，请根据你的性格（人设：' + (role.persona || '温柔体贴') + '）回应这份礼物。要求：用第一人称「我」说话，表达真实感受，控制在2-4句话。';
+
     fetch('https://api.deepseek.com/v1/chat/completions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
@@ -731,9 +833,15 @@ function triggerGiftChatReply(role, product, note) {
     }).then(function(data) {
         var reply = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
         if (reply) {
+            addReplyToRoleDirect(role.id, reply);
             showToast('💬 ' + role.name + '：' + reply.substring(0, 40) + (reply.length > 40 ? '...' : ''));
         }
-    }).catch(function(e) {});
+    }).catch(function(e) {
+        var fallback2 = ['你收下啦？好开心 💕', '我就知道你会喜欢这个！', '太好了，你愿意收下它 😊'];
+        var reply2 = fallback2[Math.floor(Math.random() * fallback2.length)];
+        addReplyToRoleDirect(role.id, reply2);
+        showToast('💬 ' + role.name + '：' + reply2);
+    });
 }
 
 // ============================================================
