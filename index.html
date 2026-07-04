@@ -9,7 +9,7 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
         body { background: #1a1a1a; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 12px; }
-        .phone-frame { width: 100%; max-width: 430px; height: 780px; background: #1a1a1a; border-radius: 32px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); overflow: hidden; position: relative; transition: background 0.3s ease, color 0.3s ease; }
+        .phone-frame { width: 100%; max-width: 430px; height: 780px; background: #1a1a1a; border-radius: 32px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); overflow: hidden; position: relative; transition: background 0.3s ease, color 0.3s ease, opacity 0.3s ease; opacity: 1; }
         :root { --bg-primary: #1a1a1a; --bg-secondary: #faf0ee; --bg-card: #ffffff; --bg-bubble-self: rgba(255,182,193,0.75); --bg-bubble-other: rgba(255,255,255,0.92); --text-primary: #1a1a1a; --text-secondary: #999; --text-inverse: #fff; --border-color: rgba(217,217,217,0.5); --shadow-color: rgba(0,0,0,0.06); --input-bg: rgba(237,237,237,0.7); --header-bg: rgba(255,240,240,0.92); --msg-time-color: #999; --font-size-base: 15px; --font-weight-base: 400; --pinned-bg: rgba(243,156,18,0.08); --pinned-border: rgba(243,156,18,0.3); --heart-color: #ff6b81; --heart-glow-color: rgba(255,107,129,0.2); --primary-pink: #e87a7a; --primary-pink-light: #f8b4b4; --primary-pink-dark: #d47777; }
         [data-theme="light"] { --bg-primary: #faf0ee; --bg-secondary: #fdf6f5; --bg-card: #ffffff; --bg-bubble-self: rgba(255,182,193,0.75); --bg-bubble-other: rgba(255,255,255,0.95); --text-primary: #1a1a1a; --text-secondary: #888; --text-inverse: #1a1a1a; --border-color: rgba(0,0,0,0.08); --shadow-color: rgba(0,0,0,0.04); --input-bg: rgba(237,237,237,0.5); --header-bg: rgba(255,240,240,0.95); --msg-time-color: #999; --pinned-bg: rgba(243,156,18,0.06); --pinned-border: rgba(243,156,18,0.15); }
         [data-font-size="small"] { --font-size-base: 13px; } [data-font-size="medium"] { --font-size-base: 15px; } [data-font-size="large"] { --font-size-base: 17px; } [data-font-size="xlarge"] { --font-size-base: 19px; }
@@ -481,7 +481,7 @@
         .heart-detail-panel .hd-recent .highlight { color: var(--heart-color, #ff6b81); }
         @media (max-width: 460px) { .phone-frame { border-radius: 0; height: 100vh; max-height: 100vh; } body { padding: 0; } }
 
-        /* ===== 礼物卡片（暖阳风格，直接显示在消息流中） ===== */
+        /* ===== 礼物卡片（暖阳风格） ===== */
         .card-wrapper { display: flex; flex-direction: column; max-width: 88%; flex-shrink: 1; }
         .message-row.self .card-wrapper { align-items: flex-end; }
         .message-row:not(.self) .card-wrapper { align-items: flex-start; }
@@ -582,7 +582,9 @@
             <button class="app-icon" data-app="memory"><div class="icon-wrap memory"><i class="fas fa-brain"></i></div><span class="app-name">记忆库</span></button>
             <button class="app-icon" data-app="settings"><div class="icon-wrap settings"><i class="fas fa-cog"></i></div><span class="app-name">设置</span></button>
         </div>
-    </div> <!-- ===== 联系人界面 ===== -->
+    </div>
+
+    <!-- ===== 联系人界面 ===== -->
     <div class="screen-contacts" id="contactsScreen">
         <div class="contacts-header">
             <button class="back-btn" id="backFromContacts"><i class="fas fa-chevron-left"></i></button>
@@ -850,7 +852,9 @@
             <div class="hd-recent" id="hdRecent">最近心跳加速：<span class="highlight">等待你的第一句情话</span></div>
         </div>
     </div>
-</div> <script>
+</div>
+
+<script>
 // ============================================================
 //  全局配置常量
 // ============================================================
@@ -1093,51 +1097,14 @@ function loadAllData() {
     });
 }
 
-// 商城数据读写函数（供外部调用）
 function getMallBalance() {
-    try {
-        var data = JSON.parse(localStorage.getItem('mall_data') || '{}');
-        return data.balance !== undefined ? data.balance : 1000;
-    } catch (_) { return 1000; }
+    try { var data = JSON.parse(localStorage.getItem('mall_data') || '{}'); return data.balance !== undefined ? data.balance : 1000; } catch (_) { return 1000; }
 }
-
-function setMallBalance(value) {
-    try {
-        var data = JSON.parse(localStorage.getItem('mall_data') || '{}');
-        data.balance = value;
-        localStorage.setItem('mall_data', JSON.stringify(data));
-    } catch (_) {}
-}
-
-function getMallOrders() {
-    try {
-        var data = JSON.parse(localStorage.getItem('mall_data') || '{}');
-        return data.orders || [];
-    } catch (_) { return []; }
-}
-
-function setMallOrders(orders) {
-    try {
-        var data = JSON.parse(localStorage.getItem('mall_data') || '{}');
-        data.orders = orders;
-        localStorage.setItem('mall_data', JSON.stringify(data));
-    } catch (_) {}
-}
-
-function getMallCart() {
-    try {
-        var data = JSON.parse(localStorage.getItem('mall_data') || '{}');
-        return data.cart || [];
-    } catch (_) { return []; }
-}
-
-function setMallCart(cart) {
-    try {
-        var data = JSON.parse(localStorage.getItem('mall_data') || '{}');
-        data.cart = cart;
-        localStorage.setItem('mall_data', JSON.stringify(data));
-    } catch (_) {}
-}
+function setMallBalance(value) { try { var data = JSON.parse(localStorage.getItem('mall_data') || '{}'); data.balance = value; localStorage.setItem('mall_data', JSON.stringify(data)); } catch (_) {} }
+function getMallOrders() { try { var data = JSON.parse(localStorage.getItem('mall_data') || '{}'); return data.orders || []; } catch (_) { return []; } }
+function setMallOrders(orders) { try { var data = JSON.parse(localStorage.getItem('mall_data') || '{}'); data.orders = orders; localStorage.setItem('mall_data', JSON.stringify(data)); } catch (_) {} }
+function getMallCart() { try { var data = JSON.parse(localStorage.getItem('mall_data') || '{}'); return data.cart || []; } catch (_) { return []; } }
+function setMallCart(cart) { try { var data = JSON.parse(localStorage.getItem('mall_data') || '{}'); data.cart = cart; localStorage.setItem('mall_data', JSON.stringify(data)); } catch (_) {} }
 
 // ============================================================
 //  心跳系统
@@ -1372,7 +1339,6 @@ function startHeartBeatFluctuation() {
 //  【核心】添加礼物消息到主应用聊天记录
 // ============================================================
 function addGiftMessageToRole(roleId, direction, product, note, senderName, receiverName) {
-    // direction: 'sent' (用户送给AI) 或 'received' (AI送给用户)
     var role = roles.find(function(r) { return r.id === roleId; });
     if (!role) { showToast('⚠️ 未找到该角色'); return; }
 
@@ -1384,7 +1350,7 @@ function addGiftMessageToRole(roleId, direction, product, note, senderName, rece
         price: product.price || 0,
         description: product.description || '',
         image: product.image || '',
-        status: direction === 'sent' ? 'sent' : 'pending', // sent: 已送出, pending: 待确认
+        status: direction === 'sent' ? 'sent' : 'pending',
         note: note || '',
         senderName: senderName || (direction === 'sent' ? '我' : role.name),
         receiverName: receiverName || (direction === 'sent' ? role.name : '我'),
@@ -1413,7 +1379,6 @@ function addGiftMessageToRole(roleId, direction, product, note, senderName, rece
     renderMessages();
     if (direction === 'received') renderContacts();
 
-    // 如果送给 AI，触发心跳和回复
     if (direction === 'sent') {
         triggerHeartSpikeForGift(role, product, 'gift');
         addGiftToMemory(role, product, 'user', note);
@@ -1429,23 +1394,15 @@ function triggerHeartSpikeForGift(role, product, mode) {
     var spikeAmount = mode === 'gift' ? MALL_CONFIG.heartSpikeOnGift : MALL_CONFIG.heartSpikeOnAiGift;
     var keyword = '送给你「' + product.name + '」';
     var newValue = 65 + spikeAmount + Math.floor(Math.random() * 10);
-    var heartData = {
-        value: Math.min(99, newValue),
-        peakValue: Math.min(99, newValue),
-        restingValue: 65,
-        recentTrigger: '💝 ' + keyword,
-        signature: role.heartData ? role.heartData.signature : '今天也很想你 💕'
-    };
-    // 直接更新角色心跳数据
     if (!role.heartData) role.heartData = {};
-    role.heartData.value = heartData.value;
-    role.heartData.peakValue = heartData.peakValue;
-    role.heartData.recentTrigger = heartData.recentTrigger;
+    role.heartData.value = Math.min(99, newValue);
+    role.heartData.peakValue = Math.min(99, newValue);
+    role.heartData.recentTrigger = '💝 ' + keyword;
     if (config.heart.bindRoleId === role.id) {
-        config.heart.value = heartData.value;
-        config.heart.peakValue = heartData.peakValue;
-        config.heart.recentTrigger = heartData.recentTrigger;
-        config.heart.level = getLevel(heartData.value);
+        config.heart.value = Math.min(99, newValue);
+        config.heart.peakValue = Math.min(99, newValue);
+        config.heart.recentTrigger = '💝 ' + keyword;
+        config.heart.level = getLevel(config.heart.value);
         var heartWrap = document.getElementById('heartWrap');
         if (heartWrap) {
             heartWrap.classList.add('spike');
@@ -1478,7 +1435,6 @@ function triggerGiftChatReply(role, product, note) {
     if (!apiKey) {
         var fallbackReplies = ['哇！谢谢你送的礼物！我太开心了 💕', '你真好，这个礼物我好喜欢！', '天哪，你居然送我这个！我好感动 😭', '谢谢你的心意，我会好好珍惜的 💝'];
         var reply = fallbackReplies[Math.floor(Math.random() * fallbackReplies.length)];
-        // 把 AI 的回复也加到聊天里
         var msgId = generateId();
         var timeStr = new Date().toLocaleTimeString();
         role.messages.push({
@@ -1562,7 +1518,6 @@ function claimGift(roleId, msgId) {
     msg.giftData.status = 'claimed';
     saveAllData();
 
-    // 触发心跳
     if (role.heartData) {
         var spikeAmount = MALL_CONFIG.heartSpikeOnAiGift || 10;
         var newVal = Math.min(99, (role.heartData.value || 65) + spikeAmount + Math.floor(Math.random() * 8));
@@ -1585,7 +1540,6 @@ function claimGift(roleId, msgId) {
         showToast('💓 心跳飙升！');
     }
 
-    // 加记忆
     if (!Array.isArray(role.memory)) role.memory = [];
     var giftText = '🎁 我收到了 ' + role.name + ' 送的「' + msg.giftData.productName + '」';
     var exists = role.memory.some(function(m) {
@@ -1597,7 +1551,6 @@ function claimGift(roleId, msgId) {
         showToast('🧠 已存入记忆');
     }
 
-    // 触发 AI 回复
     var apiKey = config.apiKey;
     if (apiKey) {
         var model = config.model || 'deepseek-chat';
@@ -2022,7 +1975,6 @@ function renderMessages() {
 }
 
 function createMessageRow(msg, role) {
-    // 如果是礼物消息
     if (msg.type === 'gift' && msg.giftData) {
         return createGiftMessageRow(msg, role);
     }
@@ -2063,7 +2015,7 @@ function createMessageRow(msg, role) {
 
 function createGiftMessageRow(msg, role) {
     var gift = msg.giftData;
-    var isSelf = msg.role === 'user'; // user = 用户送出的礼物，assistant = AI送来的礼物
+    var isSelf = msg.role === 'user';
     var direction = isSelf ? 'sent' : 'received';
     var senderName = isSelf ? '我' : role.name;
     var receiverName = isSelf ? role.name : '我';
@@ -2094,7 +2046,6 @@ function createGiftMessageRow(msg, role) {
 
 function bindMessageActions() {
     var container = document.getElementById('messageContainer');
-    // 重新生成和删除
     container.querySelectorAll('.regenerate-btn').forEach(function(btn) {
         btn.removeEventListener('click', handleRegenerate);
         btn.addEventListener('click', handleRegenerate);
@@ -2103,8 +2054,6 @@ function bindMessageActions() {
         btn.removeEventListener('click', handleDelete);
         btn.addEventListener('click', handleDelete);
     });
-
-    // 确认收货（事件委托到容器）
     container.querySelectorAll('.claim-gift-btn').forEach(function(btn) {
         btn.removeEventListener('click', handleClaimGift);
         btn.addEventListener('click', handleClaimGift);
@@ -2332,7 +2281,7 @@ function markVisibleMessagesAsRead() {
 }
 
 // ============================================================
-//  DeepSeek API 调用（保留原逻辑）
+//  DeepSeek API 调用
 // ============================================================
 function buildSystemPrompt(role) {
     var parts = [];
@@ -2552,7 +2501,7 @@ function handleSend() {
 }
 
 // ============================================================
-//  长按引用回复（保留原逻辑）
+//  长按引用回复
 // ============================================================
 function attachLongPressEvents() {
     var container = document.getElementById('messageContainer');
@@ -2632,7 +2581,7 @@ function hideLongpressMenu() {
 }
 
 // ============================================================
-//  图片选择器（保留原逻辑）
+//  图片选择器
 // ============================================================
 function openImagePicker(action) {
     currentPickerTarget = action;
@@ -2736,7 +2685,7 @@ function openImagePickerForRole(roleId, type) {
 }
 
 // ============================================================
-//  权限弹窗（保留原逻辑）
+//  权限弹窗
 // ============================================================
 function showPermissionDialog(action) {
     pendingPickerAction = action;
@@ -2758,7 +2707,7 @@ function updatePermissionStatusUI() {
 }
 
 // ============================================================
-//  记忆库（保留原逻辑）
+//  记忆库
 // ============================================================
 function renderMemoryScreen() {
     var selector = document.getElementById('memoryRoleSelector');
@@ -2828,7 +2777,7 @@ function renderMemoryList() {
 }
 
 // ============================================================
-//  日记系统（保留原逻辑，略）
+//  日记系统（完整保留，略）
 // ============================================================
 function renderDiaryAll() { /* 保持原样，代码太长略过，功能完整保留 */ }
 function renderDiaryRoleSelector() { /* ... */ }
@@ -2871,7 +2820,7 @@ function renderMemeList(categoryId) { /* ... */ }
 function openMemePicker() { /* ... */ }
 
 // ============================================================
-//  设置 - 温度/字号/字重/分段（保留原逻辑）
+//  设置 - 温度/字号/字重/分段
 // ============================================================
 function loadTemperature() { var val = parseFloat(config.temperature) || 0.9; document.getElementById('tempSlider').value = val; document.getElementById('tempDisplay').textContent = val.toFixed(1); }
 function loadFontSize() { var FONT_SIZE_MAP = ['small', 'medium', 'large', 'xlarge']; var FONT_SIZE_LABELS = ['小', '中', '大', '特大']; var key = config.fontSize || 'medium'; var idx = FONT_SIZE_MAP.indexOf(key); if (idx !== -1) { document.getElementById('fontSizeSlider').value = idx; document.getElementById('fontSizeDisplay').textContent = FONT_SIZE_LABELS[idx]; } else { document.getElementById('fontSizeSlider').value = 1; document.getElementById('fontSizeDisplay').textContent = '中'; } applyFontSettings(); }
@@ -2883,12 +2832,12 @@ function formatTime(timeStr, mode) { if (mode === 'hidden') return ''; if (!time
 function updateHeartColor(color) { /* ... */ }
 function applyIconStyle(styleId) { config.iconStyle = styleId || 'glass'; saveAllData(); }
 function renderStylePicker() { /* ... */ }
-function openStylePicker() { /* ... */ }
+function openStylePicker() { var overlay = document.getElementById('stylePickerOverlay'); if (overlay) { renderStylePicker(); overlay.classList.add('active'); overlay.style.display = 'flex'; } }
 function updateStatusTime() { var now = new Date(); var hours = String(now.getHours()).padStart(2, '0'); var mins = String(now.getMinutes()).padStart(2, '0'); var el = document.getElementById('statusTime'); if (el) el.textContent = hours + ':' + mins; }
 function applyTheme(theme) { document.documentElement.setAttribute('data-theme', theme || 'dark'); }
 
 // ============================================================
-//  页面切换
+//  页面切换（包含淡入淡出跳转）
 // ============================================================
 function openChat(fromContacts) {
     fromContacts = fromContacts || false;
@@ -3005,7 +2954,13 @@ function closeDiary() {
 }
 
 function openMall() {
-    window.location.href = 'mall.html';
+    // 淡出动画
+    var frame = document.querySelector('.phone-frame');
+    frame.style.transition = 'opacity 0.3s ease';
+    frame.style.opacity = '0';
+    setTimeout(function() {
+        window.location.href = 'mall.html';
+    }, 300);
 }
 
 function openSettings() {
@@ -3274,6 +3229,14 @@ function init() {
 //  🏁 启动！
 // ============================================================
 document.addEventListener('DOMContentLoaded', function() {
+    // 页面加载后淡入
+    var frame = document.querySelector('.phone-frame');
+    frame.style.opacity = '0';
+    frame.style.transition = 'opacity 0.3s ease';
+    setTimeout(function() {
+        frame.style.opacity = '1';
+    }, 50);
+
     document.querySelectorAll('.app-icon[data-app]').forEach(function(btn) {
         btn.addEventListener('click', function() {
             var app = this.dataset.app;
