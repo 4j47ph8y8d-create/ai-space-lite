@@ -3,13 +3,16 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <title>造梦</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet" />
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
         body { background: #1a1a1a; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 12px; }
-        .phone-frame { width: 100%; max-width: 430px; height: 780px; background: #1a1a1a; border-radius: 32px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); overflow: hidden; position: relative; transition: background 0.3s ease, color 0.3s ease; }
+        .phone-frame { width: 100%; max-width: 430px; height: 100vh; max-height: 780px; background: #1a1a1a; border-radius: 32px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); overflow: hidden; position: relative; transition: background 0.3s ease, color 0.3s ease; }
         :root { --bg-primary: #1a1a1a; --bg-secondary: #ededed; --bg-card: #ffffff; --bg-bubble-self: rgba(149,236,105,0.92); --bg-bubble-other: rgba(255,255,255,0.92); --text-primary: #1a1a1a; --text-secondary: #999; --text-inverse: #fff; --border-color: rgba(217,217,217,0.5); --shadow-color: rgba(0,0,0,0.06); --input-bg: rgba(237,237,237,0.7); --header-bg: rgba(255,255,255,0.92); --msg-time-color: #999; --font-size-base: 15px; --font-weight-base: 400; --pinned-bg: rgba(243,156,18,0.08); --pinned-border: rgba(243,156,18,0.3); --heart-color: #ff6b81; --heart-glow-color: rgba(255,107,129,0.2); }
         [data-theme="light"] { --bg-primary: #f0f0f0; --bg-secondary: #fafafa; --bg-card: #ffffff; --bg-bubble-self: rgba(149,236,105,0.92); --bg-bubble-other: rgba(255,255,255,0.95); --text-primary: #1a1a1a; --text-secondary: #888; --text-inverse: #1a1a1a; --border-color: rgba(0,0,0,0.08); --shadow-color: rgba(0,0,0,0.04); --input-bg: rgba(237,237,237,0.5); --header-bg: rgba(255,255,255,0.95); --msg-time-color: #999; --pinned-bg: rgba(243,156,18,0.06); --pinned-border: rgba(243,156,18,0.15); }
         [data-font-size="small"] { --font-size-base: 13px; } [data-font-size="medium"] { --font-size-base: 15px; } [data-font-size="large"] { --font-size-base: 17px; } [data-font-size="xlarge"] { --font-size-base: 19px; }
@@ -60,7 +63,7 @@
         .app-icon .icon-wrap.style { background: linear-gradient(135deg,#fdcb6e,#f0932b); }
         .app-icon .icon-wrap.meme { background: linear-gradient(135deg,#ff6b81,#ee5a24); }
         .app-icon .icon-wrap.diary { background: #f5efe6; color: #d4a574; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-        .app-icon .icon-wrap.mall { background: linear-gradient(135deg,#7bed9f,#2ed573); color: #fff; box-shadow: 0 4px 12px rgba(46,213,115,0.4); }
+        .app-icon .icon-wrap.mall { background: linear-gradient(135deg,#ff6b81,#ee5a24); color: #fff; box-shadow: 0 4px 12px rgba(255,107,129,0.4); }
         .app-icon .app-name { font-size: 11px; color: rgba(255,255,255,0.85); text-align: center; line-height: 1.2; text-shadow: 0 1px 4px rgba(0,0,0,0.4); }
         [data-theme="light"] .app-icon .app-name { color: rgba(0,0,0,0.7); text-shadow: none; }
         .dock { display: flex; justify-content: center; gap: 24px; padding: 10px 0 4px; border-top: 1px solid rgba(255,255,255,0.08); margin-top: auto; flex-shrink: 0; }
@@ -4105,7 +4108,7 @@ function closeDiary() {
 }
 
 function openMall() {
-    window.location.href = 'mall.html';
+    window.location.replace('mall.html');
 }
 
 function openSettings() {
