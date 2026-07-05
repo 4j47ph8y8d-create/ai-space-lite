@@ -13,16 +13,21 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
         body { background: #1a1a1a; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 12px; }
-        .phone-frame { width: 100%; max-width: 430px; height: 780px; background: #1a1a1a; border-radius: 32px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); overflow: hidden; position: relative; transition: background 0.3s ease; }
+        .phone-frame { width: 100%; max-width: 430px; height: 780px; background: #1a1a1a; border-radius: 32px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); overflow: hidden; position: relative; transition: background 0.3s ease, color 0.3s ease; padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
         :root { --bg-primary: #1a1a1a; --bg-secondary: #1e1e2e; --bg-card: #252535; --bg-bubble-self: rgba(149,236,105,0.92); --bg-bubble-other: rgba(45,45,60,0.92); --text-primary: #f0f0f0; --text-secondary: #999; --text-inverse: #f0f0f0; --border-color: rgba(255,255,255,0.08); --shadow-color: rgba(0,0,0,0.3); --input-bg: rgba(255,255,255,0.06); --header-bg: rgba(26,26,26,0.92); --msg-time-color: #666; --font-size-base: 15px; --font-weight-base: 400; --pinned-bg: rgba(243,156,18,0.08); --pinned-border: rgba(243,156,18,0.2); --heart-color: #ff6b81; --heart-glow-color: rgba(255,107,129,0.2); --gift-card-bg: rgba(255,107,129,0.06); --gift-card-border: rgba(255,107,129,0.15); }
+        [data-theme="light"] { --bg-primary: #f0f0f0; --bg-secondary: #fafafa; --bg-card: #ffffff; --bg-bubble-self: rgba(149,236,105,0.92); --bg-bubble-other: rgba(255,255,255,0.95); --text-primary: #1a1a1a; --text-secondary: #888; --text-inverse: #1a1a1a; --border-color: rgba(0,0,0,0.08); --shadow-color: rgba(0,0,0,0.04); --input-bg: rgba(237,237,237,0.5); --header-bg: rgba(255,255,255,0.95); --msg-time-color: #999; --pinned-bg: rgba(243,156,18,0.06); --pinned-border: rgba(243,156,18,0.15); --gift-card-bg: rgba(255,107,129,0.06); --gift-card-border: rgba(255,107,129,0.15); }
         [data-font-size="small"] { --font-size-base: 13px; } [data-font-size="medium"] { --font-size-base: 15px; } [data-font-size="large"] { --font-size-base: 17px; } [data-font-size="xlarge"] { --font-size-base: 19px; }
         [data-font-weight="light"] { --font-weight-base: 300; } [data-font-weight="regular"] { --font-weight-base: 400; } [data-font-weight="medium"] { --font-weight-base: 500; } [data-font-weight="bold"] { --font-weight-base: 600; }
         .screen-launcher { width: 100%; height: 100%; background: linear-gradient(145deg,#1a1a2e,#16213e,#0f3460); background-size: cover; background-position: center; padding: 40px 16px 16px; display: flex; flex-direction: column; position: absolute; top: 0; left: 0; z-index: 10; transition: transform 0.35s cubic-bezier(0.32,0.72,0,1), opacity 0.35s ease; overflow-y: auto; }
         .screen-launcher.hidden { transform: scale(0.92); opacity: 0; pointer-events: none; }
+        [data-theme="light"] .screen-launcher { background: linear-gradient(145deg,#e8ecf1,#d5dbe3,#c5cdd8); }
         .status-bar { display: flex; justify-content: space-between; color: rgba(255,255,255,0.8); font-size: 12px; padding: 4px 0 12px; font-weight: 500; text-shadow: 0 1px 4px rgba(0,0,0,0.3); }
+        [data-theme="light"] .status-bar { color: rgba(0,0,0,0.6); text-shadow: none; }
         .status-bar .icons { display: flex; gap: 6px; }
         .desktop-title { color: rgba(255,255,255,0.4); font-size: 13px; letter-spacing: 4px; text-align: center; margin-bottom: 14px; font-weight: 300; text-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+        [data-theme="light"] .desktop-title { color: rgba(0,0,0,0.3); }
         .heart-card { width: 92%; max-width: 280px; background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; padding: 14px 16px 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 8px 32px rgba(0,0,0,0.25); margin: 0 auto 14px auto; overflow: hidden; position: relative; transition: all 0.3s ease; flex-shrink: 0; }
+        [data-theme="light"] .heart-card { background: rgba(255,255,255,0.6); border: 1px solid rgba(0,0,0,0.06); }
         .heart-card .heart-wrap { position: relative; width: 72px; height: 64px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
         .heart-card .heart-wrap svg { width: 64px; height: 58px; display: block; position: relative; z-index: 2; filter: drop-shadow(0 0 20px var(--heart-glow-color)); animation: heartbeat 1.2s ease-in-out infinite; transform-origin: center; }
         .heart-card .heart-wrap .heart-glow { position: absolute; top: 50%; left: 50%; width: 100px; height: 100px; border-radius: 50%; background: radial-gradient(circle, var(--heart-glow-color), rgba(255,107,129,0.02) 60%, transparent 90%); transform: translate(-50%,-50%) scale(0.8); opacity: 0; pointer-events: none; z-index: 1; animation: pulseGlow 1.2s ease-in-out infinite; }
@@ -44,16 +49,27 @@
         @keyframes pulseGlowSpike { 0% { transform: translate(-50%,-50%) scale(0.8); opacity: 0; } 25% { transform: translate(-50%,-50%) scale(1.8); opacity: 0.8; } 50% { transform: translate(-50%,-50%) scale(1.5); opacity: 0.4; } 75% { transform: translate(-50%,-50%) scale(1.7); opacity: 0.6; } 100% { transform: translate(-50%,-50%) scale(0.8); opacity: 0; } }
         @keyframes heartbeat { 0% { transform: scale(1); } 14% { transform: scale(1.1); } 28% { transform: scale(1); } 42% { transform: scale(1.04); } 70% { transform: scale(1); } 100% { transform: scale(1); } }
         @keyframes pulseGlow { 0% { transform: translate(-50%,-50%) scale(0.8); opacity: 0; } 14% { transform: translate(-50%,-50%) scale(1.2); opacity: 0.5; } 28% { transform: translate(-50%,-50%) scale(1.3); opacity: 0.15; } 42% { transform: translate(-50%,-50%) scale(1.35); opacity: 0.05; } 70% { transform: translate(-50%,-50%) scale(1.4); opacity: 0; } 100% { transform: translate(-50%,-50%) scale(0.8); opacity: 0; } }
+        .heart-card .heart-wrap.slow svg { animation-duration: 1.8s; }
+        .heart-card .heart-wrap.slow .heart-glow { animation-duration: 1.8s; }
+        .heart-card .heart-wrap.normal svg { animation-duration: 1.2s; }
+        .heart-card .heart-wrap.normal .heart-glow { animation-duration: 1.2s; }
+        .heart-card .heart-wrap.fast svg { animation-duration: 0.8s; }
+        .heart-card .heart-wrap.fast .heart-glow { animation-duration: 0.8s; }
+        .heart-card .heart-wrap.racing svg { animation-duration: 0.5s; }
+        .heart-card .heart-wrap.racing .heart-glow { animation-duration: 0.5s; }
         .app-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px 8px; padding: 0 8px; margin-bottom: 12px; align-content: start; }
         .app-icon { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; padding: 6px 4px; border-radius: 16px; transition: 0.15s; border: none; background: transparent; color: #fff; font-family: inherit; }
         .app-icon:active { transform: scale(0.88); background: rgba(255,255,255,0.08); }
+        [data-theme="light"] .app-icon { color: #1a1a1a; }
         .app-icon .icon-wrap { width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: 0.2s; }
         .app-icon .icon-wrap.style { background: linear-gradient(135deg,#fdcb6e,#f0932b); }
         .app-icon .icon-wrap.meme { background: linear-gradient(135deg,#ff6b81,#ee5a24); }
         .app-icon .icon-wrap.diary { background: #f5efe6; color: #d4a574; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
         .app-icon .icon-wrap.mall { background: linear-gradient(135deg,#7bed9f,#2ed573); color: #fff; box-shadow: 0 4px 12px rgba(46,213,115,0.4); }
         .app-icon .app-name { font-size: 11px; color: rgba(255,255,255,0.85); text-align: center; line-height: 1.2; text-shadow: 0 1px 4px rgba(0,0,0,0.4); }
+        [data-theme="light"] .app-icon .app-name { color: rgba(0,0,0,0.7); text-shadow: none; }
         .dock { display: flex; justify-content: center; gap: 16px; padding: 10px 0 4px; border-top: 1px solid rgba(255,255,255,0.08); margin-top: auto; flex-shrink: 0; flex-wrap: wrap; }
+        [data-theme="light"] .dock { border-top-color: rgba(0,0,0,0.08); }
         .dock .app-icon .icon-wrap { width: 50px; height: 50px; border-radius: 12px; font-size: 20px; }
         .dock .app-icon .icon-wrap.contacts { background: linear-gradient(135deg,#74b9ff,#0984e3); }
         .dock .app-icon .icon-wrap.memory { background: linear-gradient(135deg,#a29bfe,#6c5ce7); }
@@ -85,6 +101,7 @@
         .chat-header .title { font-size: 17px; font-weight: 600; color: var(--text-primary); flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; text-align: center; }
         .chat-header .title .chat-role-name { font-size: 17px; font-weight: 600; color: var(--text-primary); transition: color 0.2s; }
         .chat-header .title .chat-role-name.typing { color: var(--text-secondary); font-size: 15px; font-weight: 400; }
+        .chat-header .title .status { font-size: 8px; color: #07c160; display: none; }
         .chat-header .actions { display: flex; gap: 14px; font-size: 18px; color: #576b95; cursor: pointer; }
         .chat-messages { flex: 1; overflow-y: auto; padding: 14px 14px 8px; display: flex; flex-direction: column; gap: 10px; background: transparent; scroll-behavior: smooth; position: relative; z-index: 1; }
         .message-row { display: flex; align-items: flex-start; gap: 0; max-width: 100%; animation: fadeInUp 0.25s ease; width: 100%; }
@@ -142,9 +159,9 @@
         .chat-input-area .input-row { display: flex; align-items: center; gap: 8px; }
         .chat-input-area .meme-btn { background: none; border: none; font-size: 22px; color: #576b95; cursor: pointer; padding: 4px; flex-shrink: 0; line-height: 1; }
         .chat-input-area .plus-btn { background: none; border: none; font-size: 24px; color: #576b95; cursor: pointer; padding: 4px; flex-shrink: 0; }
-        .chat-input-area input { flex: 1; border: none; outline: none; background: var(--input-bg); padding: 8px 14px; border-radius: 8px; font-size: 15px; color: var(--text-primary); transition: background 0.3s ease; }
+        .chat-input-area input { flex: 1; border: none; outline: none; background: var(--input-bg); padding: 8px 14px; border-radius: 8px; font-size: 15px; color: var(--text-primary); transition: background 0.3s ease; min-width: 0; }
         .chat-input-area input:focus { background: var(--bg-card); box-shadow: 0 0 0 2px rgba(7,193,96,0.2); }
-        .chat-input-area .send-btn { background: #07c160; border: none; color: #fff; width: 38px; height: 38px; border-radius: 50%; font-size: 16px; cursor: pointer; flex-shrink: 0; }
+        .chat-input-area .send-btn { background: #07c160; border: none; color: #fff; width: 36px; height: 36px; border-radius: 50%; font-size: 15px; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
         .chat-input-area .send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
         .quote-bar { display: none; align-items: center; gap: 8px; padding: 4px 12px; background: var(--input-bg); border-radius: 8px; font-size: 13px; color: var(--text-secondary); border-left: 3px solid #07c160; }
         .quote-bar.active { display: flex; }
@@ -335,17 +352,24 @@
         .style-picker-overlay { position: absolute; inset: 0; z-index: 90; background: rgba(0,0,0,0.5); backdrop-filter: blur(6px); display: none; justify-content: center; align-items: center; border-radius: 32px; overflow: hidden; }
         .style-picker-overlay.active { display: flex; }
         .style-picker-panel { background: #1a1a2e; border-radius: 20px; padding: 24px 18px 20px; max-width: 400px; width: 94%; max-height: 85%; overflow-y: auto; animation: fadeInUp 0.3s ease; box-shadow: 0 20px 60px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.06); }
+        [data-theme="light"] .style-picker-panel { background: #f5f5f5; border-color: rgba(0,0,0,0.06); }
         .style-picker-panel .panel-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.06); margin-bottom: 16px; }
         .style-picker-panel .panel-header h3 { color: rgba(255,255,255,0.8); font-size: 17px; font-weight: 500; letter-spacing: 1px; }
+        [data-theme="light"] .style-picker-panel .panel-header h3 { color: rgba(0,0,0,0.8); }
         .style-picker-panel .panel-header .close-btn { font-size: 22px; color: rgba(255,255,255,0.3); cursor: pointer; border: none; background: none; }
+        [data-theme="light"] .style-picker-panel .panel-header .close-btn { color: rgba(0,0,0,0.3); }
         .style-category-title { color: rgba(255,255,255,0.4); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin: 16px 0 10px; font-weight: 400; }
+        [data-theme="light"] .style-category-title { color: rgba(0,0,0,0.4); }
+        .style-category-title:first-of-type { margin-top: 0; }
         .style-option-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         .style-option { background: rgba(255,255,255,0.04); border: 2px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 12px 8px 10px; cursor: pointer; transition: 0.15s; text-align: center; }
+        [data-theme="light"] .style-option { background: rgba(0,0,0,0.02); border-color: rgba(0,0,0,0.06); }
         .style-option:active { transform: scale(0.96); }
         .style-option.active { border-color: #07c160; background: rgba(7,193,160,0.08); }
         .style-option .style-demo { display: flex; justify-content: center; gap: 6px; margin-bottom: 6px; }
         .style-option .style-demo .demo-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
         .style-option .style-name-label { font-size: 11px; color: rgba(255,255,255,0.5); letter-spacing: 0.5px; }
+        [data-theme="light"] .style-option .style-name-label { color: rgba(0,0,0,0.5); }
         .style-option .style-check { color: #07c160; font-size: 14px; margin-left: 4px; display: none; }
         .style-option.active .style-check { display: inline; }
         .image-picker-overlay { position: absolute; inset: 0; z-index: 50; background: rgba(0,0,0,0.4); backdrop-filter: blur(2px); display: none; justify-content: center; align-items: flex-end; border-radius: 32px; overflow: hidden; }
@@ -423,6 +447,7 @@
         .role-bg-upload .remove-btn { padding: 4px 14px; border: 1px solid #e74c3c; border-radius: 16px; background: transparent; color: #e74c3c; font-size: 12px; cursor: pointer; transition: 0.15s; }
         .role-bg-upload .remove-btn:active { background: #e74c3c; color: #fff; }
         .custom-toast { position: absolute; bottom: 120px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.75); color: #fff; padding: 10px 24px; border-radius: 12px; font-size: 14px; z-index: 200; animation: fadeInUp 0.3s ease; text-align: center; max-width: 80%; }
+        [data-theme="light"] .custom-toast { background: rgba(40,40,40,0.85); }
         .data-modal-overlay { position: absolute; inset: 0; z-index: 95; background: rgba(0,0,0,0.5); backdrop-filter: blur(6px); display: none; justify-content: center; align-items: center; border-radius: 32px; overflow: hidden; }
         .data-modal-overlay.active { display: flex; }
         .data-modal { background: var(--bg-card); border-radius: 20px; padding: 24px 20px 20px; max-width: 380px; width: 94%; max-height: 90%; overflow-y: auto; animation: fadeInUp 0.3s ease; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
@@ -705,6 +730,8 @@
     <div class="style-picker-overlay" id="stylePickerOverlay">
         <div class="style-picker-panel">
             <div class="panel-header"><h3>✨ 个性化</h3><button class="close-btn" id="closeStylePicker">&times;</button></div>
+            <div class="style-category-title">🌓 主题</div>
+            <div class="style-option-grid" id="themeOptionGrid"></div>
             <div class="style-category-title">📱 桌面图标</div>
             <div class="style-option-grid" id="styleOptionGrid"></div>
             <div class="style-category-title" style="margin-top:18px;">🫧 对话框气泡</div>
@@ -771,7 +798,8 @@
             <div class="hd-recent" id="hdRecent">最近心跳加速：<span class="highlight">等待你的第一句情话</span></div>
         </div>
     </div>
-</div> <script>
+</div>
+<script>
 // ============================================================
 //  全局配置常量
 // ============================================================
@@ -802,6 +830,7 @@ var config = {
     fontSize: 'medium',
     fontWeight: 'regular',
     splitEnabled: true,
+    theme: 'dark',
     pinnedContacts: [],
     heart: {
         bindRoleId: null,
@@ -945,6 +974,7 @@ function loadAllData() {
         if (!config.fontSize) config.fontSize = 'medium';
         if (!config.fontWeight) config.fontWeight = 'regular';
         if (config.splitEnabled === undefined) config.splitEnabled = true;
+        if (!config.theme) config.theme = 'dark';
         if (!config.pinnedContacts || !Array.isArray(config.pinnedContacts)) config.pinnedContacts = [];
         if (!config.heart) config.heart = { bindRoleId: null, value: 65, restingValue: 65, level: '平静', signature: '今天也很想你 💕', color: '#ff6b81', floatingEnabled: true, speed: 'normal', recentTrigger: '等待你的第一句情话', spikeActive: false, spikeTimer: null, recoveryTimer: null, peakValue: 65 };
         if (!config.heart.color) config.heart.color = '#ff6b81';
@@ -978,7 +1008,7 @@ function loadAllData() {
             apiKey: '', model: 'deepseek-chat', wallpaper: '', chatBg: '', userAvatar: '',
             iconStyle: 'glass', bubbleStyle: 'default', timeMode: 'HH:MM', permission: null,
             temperature: 0.9, unreadCount: {}, fontSize: 'medium', fontWeight: 'regular',
-            splitEnabled: true, pinnedContacts: [],
+            splitEnabled: true, theme: 'dark', pinnedContacts: [],
             heart: { bindRoleId: null, value: 65, restingValue: 65, level: '平静', signature: '今天也很想你 💕', color: '#ff6b81', floatingEnabled: true, speed: 'normal', recentTrigger: '等待你的第一句情话', spikeActive: false, spikeTimer: null, recoveryTimer: null, peakValue: 65 },
             aiMemeEnabled: true, diaries: [], diaryAutoGenerateEnabled: true, lastDiaryCheckDate: null, diaryCalendarCollapsed: false,
         };
@@ -1523,7 +1553,6 @@ function applyWallpaper(dataUrl) {
         document.getElementById('wallpaperPreviewImg').src = dataUrl;
         document.getElementById('wallpaperPreviewImg').style.display = 'block';
         document.getElementById('wallpaperStatus').textContent = '自定义';
-        // 保存到 IndexedDB
         saveWallpaperToDB(dataUrl).catch(function(e) { console.error('壁纸保存失败:', e); });
     } else {
         screen.style.backgroundImage = 'linear-gradient(145deg, #1a1a2e, #16213e, #0f3460)';
@@ -1619,7 +1648,7 @@ function createGiftCardHtml(gift) {
     html += '<div class="gift-price">¥' + gift.price + '</div>';
     html += '</div>';
     html += '</div>';
-    if (gift.status === 'pending') {
+    if (gift.status === 'pending' || gift.status === 'ai_pending') {
         html += '<div class="gift-actions">';
         html += '<button class="btn-receive" data-gift-id="' + gift.id + '">💝 确认收货</button>';
         html += '<button class="btn-later" data-gift-id="' + gift.id + '">稍后再说</button>';
@@ -1628,24 +1657,19 @@ function createGiftCardHtml(gift) {
         html += '<div class="gift-status">✅ 已收货</div>';
     } else if (gift.status === 'ai_received') {
         html += '<div class="gift-status">💕 ' + gift.fromName + ' 已收到礼物</div>';
-    } else if (gift.status === 'ai_pending') {
-        html += '<div class="gift-actions">';
-        html += '<button class="btn-receive" data-gift-id="' + gift.id + '">💝 确认收货</button>';
-        html += '<button class="btn-later" data-gift-id="' + gift.id + '">稍后再说</button>';
-        html += '</div>';
     }
     html += '</div>';
     return html;
 }
 
-function renderGiftMessage(gift, role) {
+function renderGiftMessage(gift, role, sender) {
     if (!role) return;
     var content = createGiftCardHtml(gift);
     var msgId = generateId();
     var timeStr = new Date().toLocaleTimeString();
     var msg = {
         id: msgId,
-        role: 'assistant',
+        role: sender || 'assistant',
         content: content,
         type: 'gift',
         time: timeStr,
@@ -1669,12 +1693,10 @@ function shouldAISendGift(role, conversationText) {
     var isRomantic = persona.indexOf('浪漫') !== -1 || persona.indexOf('温柔') !== -1 || persona.indexOf('细心') !== -1;
     var isGenerous = persona.indexOf('大方') !== -1 || persona.indexOf('体贴') !== -1;
 
-    // 基于聊天轮次：每5-8轮判断一次
     var msgCount = (role.messages || []).length;
     if (msgCount < 3) return false;
     if (msgCount % 7 !== 0 && msgCount % 8 !== 0) return false;
 
-    // 基于心跳值：心跳越高越容易送礼
     var heartValue = role.heartData.value || 65;
     var baseProbability = 0.08 + (heartValue - 50) * 0.002;
     if (isRomantic) baseProbability += 0.08;
@@ -1722,7 +1744,8 @@ function triggerAIGift(role) {
         createdAt: new Date().toISOString(),
     };
     pendingGift = gift;
-    renderGiftMessage(gift, role);
+    // AI 送礼 → 显示在 AI 侧（左侧）
+    renderGiftMessage(gift, role, 'assistant');
     giftCooldown[role.id] = Date.now() + 10 * 60 * 1000;
     showToast('🎁 ' + role.name + ' 送了你一份礼物！去聊天框查看吧');
 }
@@ -1757,7 +1780,6 @@ function handleGiftReceive(giftId) {
     if (isAiGift) {
         triggerHeartSpike(role, 8, '收到 AI 礼物 💕', '心动');
         showToast('💝 你已确认收货！');
-        // 触发 AI 下一轮对话
         setTimeout(function() {
             var replyMsg = '你收到礼物了！我好开心 💕 你喜欢吗？';
             var replyId = generateId();
@@ -1999,7 +2021,21 @@ function appendSingleMessage(msg, role) {
 
 function createMessageRow(msg, role) {
     var row = document.createElement('div');
-    row.className = 'message-row ' + (msg.role === 'user' ? 'self' : '');
+    var isSelf = false;
+    if (msg.giftData) {
+        if (msg.giftData.type === 'user_gift' && msg.role === 'assistant') {
+            isSelf = false;
+        } else if (msg.giftData.type === 'ai_gift' && msg.role === 'assistant') {
+            isSelf = false;
+        } else if (msg.role === 'user') {
+            isSelf = true;
+        } else {
+            isSelf = false;
+        }
+    } else {
+        isSelf = (msg.role === 'user');
+    }
+    row.className = 'message-row ' + (isSelf ? 'self' : '');
     if (msg.id) row.dataset.msgId = msg.id;
 
     var contentHtml = msg.content;
@@ -2032,7 +2068,7 @@ function createMessageRow(msg, role) {
         actionsHtml = '<div class="msg-actions"><button class="action-btn delete-btn" data-msgid="' + msg.id + '" title="删除"><i class="fas fa-trash-alt"></i></button></div>';
     }
 
-    row.innerHTML = '<div class="avatar ' + (msg.role === 'user' ? 'user' : 'bot') + '"></div><div class="bubble-container">' + (timeStr ? '<div class="msg-time">' + timeStr + '</div>' : '') + '<div class="bubble-row"><div class="bubble">' + contentHtml + '</div>' + actionsHtml + '</div></div>';
+    row.innerHTML = '<div class="avatar ' + (isSelf ? 'user' : 'bot') + '"></div><div class="bubble-container">' + (timeStr ? '<div class="msg-time">' + timeStr + '</div>' : '') + '<div class="bubble-row"><div class="bubble">' + contentHtml + '</div>' + actionsHtml + '</div></div>';
     return row;
 }
 
@@ -2323,7 +2359,6 @@ function addMessageToRole(roleId, role, content, type) {
     saveAllData();
     updateHeartDisplay();
 
-    // AI 主动送礼判断（在 AI 回复后触发）
     if (role === 'assistant' && r.id) {
         setTimeout(function() {
             var roleObj = roles.find(function(ro) { return ro.id === r.id; });
@@ -3735,6 +3770,17 @@ function initFloatingDrag() {
     });
 }
 
+function applyTheme(theme) {
+    if (theme === 'auto') {
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+    } else {
+        document.documentElement.setAttribute('data-theme', theme);
+    }
+    config.theme = theme;
+    saveAllData();
+}
+
 function applyIconStyle(styleId) {
     var oldStyle = document.getElementById('dynamicIconStyle');
     if (oldStyle) oldStyle.remove();
@@ -3762,6 +3808,34 @@ function applyIconStyle(styleId) {
 }
 
 function renderStylePicker() {
+    // 主题
+    var themeGrid = document.getElementById('themeOptionGrid');
+    if (themeGrid) {
+        var THEMES = [
+            { id: 'dark', name: '🌙 深色' },
+            { id: 'light', name: '☀️ 浅色' },
+            { id: 'auto', name: '🔄 自动跟随系统' },
+        ];
+        themeGrid.innerHTML = '';
+        THEMES.forEach(function(theme) {
+            var option = document.createElement('div');
+            var isActive = theme.id === config.theme;
+            option.className = 'style-option ' + (isActive ? 'active' : '');
+            option.dataset.theme = theme.id;
+            option.innerHTML = '<div style="font-size:20px;margin-bottom:4px;">' + (theme.id === 'dark' ? '🌙' : theme.id === 'light' ? '☀️' : '🔄') + '</div><div class="style-name-label">' + theme.name + '<span class="style-check">✓</span></div>';
+            option.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                document.querySelectorAll('#themeOptionGrid .style-option').forEach(function(el) { el.classList.remove('active'); });
+                this.classList.add('active');
+                applyTheme(theme.id);
+                showToast('🌓 已切换至「' + theme.name + '」主题');
+            });
+            themeGrid.appendChild(option);
+        });
+    }
+
+    // 图标风格
     var iconGrid = document.getElementById('styleOptionGrid');
     if (!iconGrid) return;
 
@@ -3807,6 +3881,7 @@ function renderStylePicker() {
         iconGrid.appendChild(option);
     });
 
+    // 气泡风格
     var bubbleGrid = document.getElementById('bubbleOptionGrid');
     if (bubbleGrid) {
         var BUBBLE_STYLES = [
@@ -3827,18 +3902,18 @@ function renderStylePicker() {
             option.dataset.bubble = style.id;
 
             var previewColors = {
-                'default': { bg: '#ffffff', self: '#95ec69', text: '#1a1a1a' },
-                'pink': { bg: '#ffe8ec', self: '#ffb3c6', text: '#5a2d3a' },
-                'green': { bg: '#e0f7fa', self: '#81ecec', text: '#1a3a3a' },
-                'dark': { bg: '#2d3436', self: '#00b894', text: '#dfe6e9' },
-                'frost': { bg: 'rgba(255,255,255,0.12)', self: 'rgba(255,255,255,0.18)', text: 'rgba(255,255,255,0.85)' },
-                'orange': { bg: '#fff5e6', self: '#fdcb6e', text: '#5a3d1a' },
-                'purple': { bg: '#f3e8ff', self: '#a29bfe', text: '#2d1a4a' },
-                'bw': { bg: '#ffffff', self: '#000000', text: '#1a1a1a' },
+                'default': { bg: 'rgba(255,255,255,0.08)', self: 'rgba(149,236,105,0.92)', text: '#f0f0f0' },
+                'pink': { bg: '#2d1a2d', self: '#ffb3c6', text: '#f0d0e0' },
+                'green': { bg: '#1a2d2d', self: '#81ecec', text: '#d0f0f0' },
+                'dark': { bg: '#1a1a1a', self: '#00b894', text: '#e0e0e0' },
+                'frost': { bg: 'rgba(255,255,255,0.06)', self: 'rgba(255,255,255,0.12)', text: 'rgba(255,255,255,0.85)' },
+                'orange': { bg: '#2d1a0a', self: '#fdcb6e', text: '#f0d0a0' },
+                'purple': { bg: '#1a0a2d', self: '#a29bfe', text: '#d0b0f0' },
+                'bw': { bg: '#1a1a1a', self: '#ffffff', text: '#f0f0f0' },
             };
             var colors = previewColors[style.id] || previewColors['default'];
 
-            option.innerHTML = '<div class="bubble-preview"><div class="bp-row"><div class="bp-avatar">🤖</div><div class="bp-bubble" style="background:' + colors.bg + ';color:' + colors.text + ';">你好呀~</div></div><div class="bp-row self"><div class="bp-avatar">👤</div><div class="bp-bubble" style="background:' + colors.self + ';color:' + colors.text + ';">嗨！</div></div></div><div class="style-name-label" style="margin-top:4px;">' + style.name + '<span class="style-check">✓</span></div>';
+            option.innerHTML = '<div class="bubble-preview"><div class="bp-row" style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><div class="bp-avatar" style="font-size:16px;">🤖</div><div class="bp-bubble" style="background:' + colors.bg + ';color:' + colors.text + ';padding:4px 10px;border-radius:8px;font-size:12px;">你好呀~</div></div><div class="bp-row self" style="display:flex;align-items:center;gap:6px;justify-content:flex-end;"><div class="bp-bubble" style="background:' + colors.self + ';color:' + (style.id === 'bw' ? '#1a1a1a' : '#1a1a1a') + ';padding:4px 10px;border-radius:8px;font-size:12px;">嗨！</div><div class="bp-avatar" style="font-size:16px;">👤</div></div></div><div class="style-name-label" style="margin-top:4px;">' + style.name + '<span class="style-check">✓</span></div>';
 
             option.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -3853,6 +3928,7 @@ function renderStylePicker() {
         });
     }
 
+    // 时间模式
     var timeGrid = document.getElementById('timeModeGrid');
     if (timeGrid) {
         var TIME_MODES = [
@@ -3887,6 +3963,7 @@ function renderStylePicker() {
         });
     }
 
+    // 悬浮窗
     var floatingGrid = document.getElementById('floatingSwitchGrid');
     if (floatingGrid) {
         var floatingOptions = [{ id: 'on', name: '开启悬浮窗' }, { id: 'off', name: '关闭悬浮窗' }];
@@ -3929,6 +4006,7 @@ function renderStylePicker() {
         });
     }
 
+    // 心跳颜色
     var colorGrid = document.getElementById('heartColorGrid');
     if (colorGrid) {
         var colorOptions = [
@@ -3964,6 +4042,7 @@ function renderStylePicker() {
         });
     }
 
+    // AI 表情包
     var aiMemeGrid = document.getElementById('aiMemeSwitchGrid');
     if (aiMemeGrid) {
         var aiMemeOptions = [{ id: 'on', name: 'AI 可发表情包' }, { id: 'off', name: 'AI 不发表情包' }];
@@ -4305,7 +4384,6 @@ function init() {
         loadAllData();
     } catch (e) { console.error('加载数据失败:', e); }
 
-    // 从 IndexedDB 加载壁纸
     loadWallpaperFromDB().then(function(dataUrl) {
         if (dataUrl) {
             applyWallpaper(dataUrl);
@@ -4336,14 +4414,11 @@ function init() {
     } catch (e) { console.error('角色数据修复失败:', e); }
 
     try {
-        if (config.wallpaper) {
-            // 如果 config 中有壁纸但 DB 没有，尝试从 config 恢复（兼容旧数据）
-            loadWallpaperFromDB().then(function(dbData) {
-                if (!dbData && config.wallpaper) {
-                    applyWallpaper(config.wallpaper);
-                }
-            });
-        }
+        loadWallpaperFromDB().then(function(dbData) {
+            if (!dbData && config.wallpaper) {
+                applyWallpaper(config.wallpaper);
+            }
+        });
         if (config.chatBg) applyChatBg(config.chatBg);
         else applyChatBg(null);
         if (config.userAvatar) applyUserAvatar(config.userAvatar);
@@ -4354,6 +4429,7 @@ function init() {
         applyIconStyle(config.iconStyle || 'glass');
         applyBubbleStyle(config.bubbleStyle || 'default');
         applyFontSettings();
+        applyTheme(config.theme || 'dark');
     } catch (e) { console.error('样式应用失败:', e); }
 
     try {
@@ -4537,9 +4613,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (exportType === 'all') {
             roleData = JSON.parse(JSON.stringify(roles));
             exportData.diaries = JSON.parse(JSON.stringify(config.diaries || []));
-            exportData.config = { iconStyle: config.iconStyle, bubbleStyle: config.bubbleStyle, timeMode: config.timeMode, fontSize: config.fontSize, fontWeight: config.fontWeight, splitEnabled: config.splitEnabled, heart: config.heart };
+            exportData.config = { theme: config.theme, iconStyle: config.iconStyle, bubbleStyle: config.bubbleStyle, timeMode: config.timeMode, fontSize: config.fontSize, fontWeight: config.fontWeight, splitEnabled: config.splitEnabled, heart: config.heart };
         } else if (exportType === 'settings') {
-            exportData.config = { iconStyle: config.iconStyle, bubbleStyle: config.bubbleStyle, timeMode: config.timeMode, fontSize: config.fontSize, fontWeight: config.fontWeight, splitEnabled: config.splitEnabled, heart: config.heart };
+            exportData.config = { theme: config.theme, iconStyle: config.iconStyle, bubbleStyle: config.bubbleStyle, timeMode: config.timeMode, fontSize: config.fontSize, fontWeight: config.fontWeight, splitEnabled: config.splitEnabled, heart: config.heart };
             var blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
             var url = URL.createObjectURL(blob);
             var link = document.createElement('a');
