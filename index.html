@@ -13,12 +13,12 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
         body { background: #1a1a1a; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 12px; }
-        .phone-frame { width: 100%; max-width: 430px; height: 780px; background: #1a1a1a; border-radius: 32px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); overflow: hidden; position: relative; transition: background 0.3s ease, color 0.3s ease; padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
+        .phone-frame { width: 100%; max-width: 430px; height: 780px; background: #1a1a1a; border-radius: 32px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); overflow: hidden; position: relative; transition: background 0.3s ease, color 0.3s ease; }
         :root { --bg-primary: #1a1a1a; --bg-secondary: #1e1e2e; --bg-card: #252535; --bg-bubble-self: rgba(149,236,105,0.92); --bg-bubble-other: rgba(45,45,60,0.92); --text-primary: #f0f0f0; --text-secondary: #999; --text-inverse: #f0f0f0; --border-color: rgba(255,255,255,0.08); --shadow-color: rgba(0,0,0,0.3); --input-bg: rgba(255,255,255,0.06); --header-bg: rgba(26,26,26,0.92); --msg-time-color: #666; --font-size-base: 15px; --font-weight-base: 400; --pinned-bg: rgba(243,156,18,0.08); --pinned-border: rgba(243,156,18,0.2); --heart-color: #ff6b81; --heart-glow-color: rgba(255,107,129,0.2); --gift-card-bg: rgba(255,107,129,0.06); --gift-card-border: rgba(255,107,129,0.15); }
-        [data-theme="light"] { --bg-primary: #f0f0f0; --bg-secondary: #fafafa; --bg-card: #ffffff; --bg-bubble-self: rgba(149,236,105,0.92); --bg-bubble-other: rgba(255,255,255,0.95); --text-primary: #1a1a1a; --text-secondary: #888; --text-inverse: #1a1a1a; --border-color: rgba(0,0,0,0.08); --shadow-color: rgba(0,0,0,0.04); --input-bg: rgba(237,237,237,0.5); --header-bg: rgba(255,255,255,0.95); --msg-time-color: #999; --pinned-bg: rgba(243,156,18,0.06); --pinned-border: rgba(243,156,18,0.15); --gift-card-bg: rgba(255,107,129,0.06); --gift-card-border: rgba(255,107,129,0.15); }
+        [data-theme="light"] { --bg-primary: #f5f0eb; --bg-secondary: #fafafa; --bg-card: #ffffff; --bg-bubble-self: rgba(149,236,105,0.92); --bg-bubble-other: rgba(255,255,255,0.95); --text-primary: #1a1a1a; --text-secondary: #888; --text-inverse: #1a1a1a; --border-color: rgba(0,0,0,0.08); --shadow-color: rgba(0,0,0,0.04); --input-bg: rgba(237,237,237,0.5); --header-bg: rgba(255,255,255,0.95); --msg-time-color: #999; --pinned-bg: rgba(243,156,18,0.06); --pinned-border: rgba(243,156,18,0.15); }
         [data-font-size="small"] { --font-size-base: 13px; } [data-font-size="medium"] { --font-size-base: 15px; } [data-font-size="large"] { --font-size-base: 17px; } [data-font-size="xlarge"] { --font-size-base: 19px; }
         [data-font-weight="light"] { --font-weight-base: 300; } [data-font-weight="regular"] { --font-weight-base: 400; } [data-font-weight="medium"] { --font-weight-base: 500; } [data-font-weight="bold"] { --font-weight-base: 600; }
-        .screen-launcher { width: 100%; height: 100%; background: linear-gradient(145deg,#1a1a2e,#16213e,#0f3460); background-size: cover; background-position: center; padding: 40px 16px 16px; display: flex; flex-direction: column; position: absolute; top: 0; left: 0; z-index: 10; transition: transform 0.35s cubic-bezier(0.32,0.72,0,1), opacity 0.35s ease; overflow-y: auto; }
+        .screen-launcher { width: 100%; height: 100%; background: linear-gradient(145deg,#1a1a2e,#16213e,#0f3460); background-size: cover; background-position: center; padding: calc(12px + env(safe-area-inset-top, 0px)) 16px 16px; display: flex; flex-direction: column; position: absolute; top: 0; left: 0; z-index: 10; transition: transform 0.35s cubic-bezier(0.32,0.72,0,1), opacity 0.35s ease; overflow-y: auto; }
         .screen-launcher.hidden { transform: scale(0.92); opacity: 0; pointer-events: none; }
         [data-theme="light"] .screen-launcher { background: linear-gradient(145deg,#e8ecf1,#d5dbe3,#c5cdd8); }
         .status-bar { display: flex; justify-content: space-between; color: rgba(255,255,255,0.8); font-size: 12px; padding: 4px 0 12px; font-weight: 500; text-shadow: 0 1px 4px rgba(0,0,0,0.3); }
@@ -27,7 +27,6 @@
         .desktop-title { color: rgba(255,255,255,0.4); font-size: 13px; letter-spacing: 4px; text-align: center; margin-bottom: 14px; font-weight: 300; text-shadow: 0 1px 4px rgba(0,0,0,0.2); }
         [data-theme="light"] .desktop-title { color: rgba(0,0,0,0.3); }
         .heart-card { width: 92%; max-width: 280px; background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; padding: 14px 16px 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 8px 32px rgba(0,0,0,0.25); margin: 0 auto 14px auto; overflow: hidden; position: relative; transition: all 0.3s ease; flex-shrink: 0; }
-        [data-theme="light"] .heart-card { background: rgba(255,255,255,0.6); border: 1px solid rgba(0,0,0,0.06); }
         .heart-card .heart-wrap { position: relative; width: 72px; height: 64px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
         .heart-card .heart-wrap svg { width: 64px; height: 58px; display: block; position: relative; z-index: 2; filter: drop-shadow(0 0 20px var(--heart-glow-color)); animation: heartbeat 1.2s ease-in-out infinite; transform-origin: center; }
         .heart-card .heart-wrap .heart-glow { position: absolute; top: 50%; left: 50%; width: 100px; height: 100px; border-radius: 50%; background: radial-gradient(circle, var(--heart-glow-color), rgba(255,107,129,0.02) 60%, transparent 90%); transform: translate(-50%,-50%) scale(0.8); opacity: 0; pointer-events: none; z-index: 1; animation: pulseGlow 1.2s ease-in-out infinite; }
@@ -78,7 +77,7 @@
         .dock .app-icon .app-name { font-size: 10px; }
         .screen-contacts { width: 100%; height: 100%; background: var(--bg-secondary); display: flex; flex-direction: column; position: absolute; top: 0; left: 0; z-index: 15; transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.32,0.72,0,1); }
         .screen-contacts.open { transform: translateX(0); }
-        .contacts-header { background: var(--header-bg); backdrop-filter: blur(10px); padding: 12px 16px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px; flex-shrink: 0; min-height: 52px; }
+        .contacts-header { background: var(--header-bg); backdrop-filter: blur(10px); padding: calc(12px + env(safe-area-inset-top, 0px)) 16px 12px 16px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px; flex-shrink: 0; min-height: 52px; }
         .contacts-header .back-btn { font-size: 20px; color: #576b95; cursor: pointer; border: none; background: none; padding: 4px; }
         .contacts-header .title { font-size: 17px; font-weight: 600; color: var(--text-primary); flex: 1; }
         .contacts-header .actions { font-size: 18px; color: #576b95; cursor: pointer; }
@@ -96,48 +95,47 @@
         .screen-chat { width: 100%; height: 100%; background: var(--bg-secondary); display: flex; flex-direction: column; position: absolute; top: 0; left: 0; z-index: 20; transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.32,0.72,0,1); }
         .screen-chat.open { transform: translateX(0); }
         .chat-bg-layer { position: absolute; inset: 0; z-index: 0; background: var(--bg-secondary); background-size: cover; background-position: center; }
-        .chat-header { background: var(--header-bg); backdrop-filter: blur(10px); padding: 12px 16px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px; flex-shrink: 0; min-height: 52px; position: relative; z-index: 1; }
-        .chat-header .back-btn { font-size: 20px; color: #576b95; cursor: pointer; border: none; background: none; padding: 4px; }
-        .chat-header .title { font-size: 17px; font-weight: 600; color: var(--text-primary); flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; text-align: center; }
-        .chat-header .title .chat-role-name { font-size: 17px; font-weight: 600; color: var(--text-primary); transition: color 0.2s; }
-        .chat-header .title .chat-role-name.typing { color: var(--text-secondary); font-size: 15px; font-weight: 400; }
-        .chat-header .title .status { font-size: 8px; color: #07c160; display: none; }
-        .chat-header .actions { display: flex; gap: 14px; font-size: 18px; color: #576b95; cursor: pointer; }
+        .chat-header { background: var(--header-bg); backdrop-filter: blur(10px); padding: calc(12px + env(safe-area-inset-top, 0px)) 16px 12px 16px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 8px; flex-shrink: 0; min-height: 52px; position: relative; z-index: 1; }
+        .chat-header .back-btn { font-size: 20px; color: #576b95; cursor: pointer; border: none; background: none; padding: 4px; flex-shrink: 0; }
+        .chat-header .title { font-size: 16px; font-weight: 600; color: var(--text-primary); flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; text-align: center; min-width: 0; }
+        .chat-header .title .chat-role-name { font-size: 16px; font-weight: 600; color: var(--text-primary); transition: color 0.2s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; }
+        .chat-header .title .chat-role-name.typing { color: var(--text-secondary); font-size: 14px; font-weight: 400; }
+        .chat-header .actions { display: flex; gap: 10px; font-size: 17px; color: #576b95; cursor: pointer; flex-shrink: 0; }
         .chat-messages { flex: 1; overflow-y: auto; padding: 14px 14px 8px; display: flex; flex-direction: column; gap: 10px; background: transparent; scroll-behavior: smooth; position: relative; z-index: 1; }
         .message-row { display: flex; align-items: flex-start; gap: 0; max-width: 100%; animation: fadeInUp 0.25s ease; width: 100%; }
         .message-row.self { align-self: flex-end; flex-direction: row-reverse; }
-        .avatar { width: 36px; height: 36px; border-radius: 6px; flex-shrink: 0; background-color: #07c160; background-size: cover; background-position: center; overflow: hidden; font-size: 0; line-height: 0; color: transparent; transition: 0.15s; cursor: pointer; margin-top: 2px; }
+        .avatar { width: 34px; height: 34px; border-radius: 6px; flex-shrink: 0; background-color: #07c160; background-size: cover; background-position: center; overflow: hidden; font-size: 0; line-height: 0; color: transparent; transition: 0.15s; cursor: pointer; margin-top: 2px; }
         .avatar:active { transform: scale(0.92); }
         .avatar.user { background-color: #576b95; }
         .avatar.has-image { background-color: transparent !important; }
-        .message-row.self .avatar { margin-left: 8px; }
-        .message-row:not(.self) .avatar { margin-right: 8px; }
-        .bubble-container { display: flex; flex-direction: column; max-width: 85%; flex-shrink: 1; }
+        .message-row.self .avatar { margin-left: 6px; }
+        .message-row:not(.self) .avatar { margin-right: 6px; }
+        .bubble-container { display: flex; flex-direction: column; max-width: 82%; flex-shrink: 1; }
         .message-row.self .bubble-container { align-items: flex-end; }
         .message-row:not(.self) .bubble-container { align-items: flex-start; }
         .msg-time { font-size: 10px; color: var(--msg-time-color); padding: 0 4px 2px 4px; opacity: 0.7; user-select: none; }
-        .bubble-row { display: flex; align-items: flex-end; gap: 6px; width: 100%; }
+        .bubble-row { display: flex; align-items: flex-end; gap: 4px; width: 100%; }
         .message-row.self .bubble-row { flex-direction: row-reverse; }
-        .bubble { padding: 10px 14px; border-radius: 8px; font-size: var(--font-size-base); font-weight: var(--font-weight-base); line-height: 1.6; word-break: break-word; background: var(--bg-bubble-other); box-shadow: 0 1px 4px var(--shadow-color); color: var(--text-primary); max-width: 100%; flex-shrink: 1; transition: font-size 0.2s ease, font-weight 0.2s ease; }
+        .bubble { padding: 8px 12px; border-radius: 8px; font-size: var(--font-size-base); font-weight: var(--font-weight-base); line-height: 1.6; word-break: break-word; background: var(--bg-bubble-other); box-shadow: 0 1px 4px var(--shadow-color); color: var(--text-primary); max-width: 100%; flex-shrink: 1; transition: font-size 0.2s ease, font-weight 0.2s ease; }
         .message-row.self .bubble { background: var(--bg-bubble-self); }
-        .bubble img { max-width: 200px; max-height: 200px; border-radius: 6px; display: block; margin: 4px 0; }
-        .bubble .gift-card { background: var(--gift-card-bg); border: 1px solid var(--gift-card-border); border-radius: 12px; padding: 12px 14px; margin: 4px 0 2px 0; display: flex; flex-direction: column; gap: 8px; }
-        .bubble .gift-card .gift-row { display: flex; align-items: center; gap: 12px; }
-        .bubble .gift-card .gift-row .gift-icon-box { font-size: 28px; flex-shrink: 0; }
+        .bubble img { max-width: 180px; max-height: 180px; border-radius: 6px; display: block; margin: 4px 0; }
+        .bubble .gift-card { background: var(--gift-card-bg); border: 1px solid var(--gift-card-border); border-radius: 12px; padding: 10px 12px; margin: 4px 0 2px 0; display: flex; flex-direction: column; gap: 6px; }
+        .bubble .gift-card .gift-row { display: flex; align-items: center; gap: 10px; }
+        .bubble .gift-card .gift-row .gift-icon-box { font-size: 24px; flex-shrink: 0; }
         .bubble .gift-card .gift-row .gift-info { flex: 1; }
-        .bubble .gift-card .gift-row .gift-info .gift-name { font-weight: 600; font-size: 14px; color: var(--text-primary); }
-        .bubble .gift-card .gift-row .gift-info .gift-from { font-size: 12px; color: var(--text-secondary); }
-        .bubble .gift-card .gift-row .gift-info .gift-price { font-size: 13px; color: #ff6b81; font-weight: 600; }
-        .bubble .gift-card .gift-actions { display: flex; gap: 8px; justify-content: flex-end; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 8px; margin-top: 2px; }
-        .bubble .gift-card .gift-actions button { padding: 4px 16px; border: none; border-radius: 16px; font-size: 12px; font-weight: 500; cursor: pointer; transition: 0.15s; font-family: inherit; }
+        .bubble .gift-card .gift-row .gift-info .gift-name { font-weight: 600; font-size: 13px; color: var(--text-primary); }
+        .bubble .gift-card .gift-row .gift-info .gift-from { font-size: 11px; color: var(--text-secondary); }
+        .bubble .gift-card .gift-row .gift-info .gift-price { font-size: 12px; color: #ff6b81; font-weight: 600; }
+        .bubble .gift-card .gift-actions { display: flex; gap: 6px; justify-content: flex-end; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 6px; margin-top: 2px; }
+        .bubble .gift-card .gift-actions button { padding: 3px 14px; border: none; border-radius: 14px; font-size: 11px; font-weight: 500; cursor: pointer; transition: 0.15s; font-family: inherit; }
         .bubble .gift-card .gift-actions button:active { transform: scale(0.95); }
         .bubble .gift-card .gift-actions .btn-receive { background: linear-gradient(135deg,#ff6b81,#ee5a24); color: #fff; }
         .bubble .gift-card .gift-actions .btn-receive:disabled { opacity: 0.5; cursor: not-allowed; }
         .bubble .gift-card .gift-actions .btn-later { background: rgba(255,255,255,0.06); color: var(--text-secondary); }
-        .bubble .gift-card .gift-status { font-size: 12px; color: #ff6b81; font-weight: 500; text-align: right; padding-top: 4px; }
-        .msg-actions { display: flex; gap: 6px; flex-shrink: 0; align-items: center; opacity: 0.3; transition: opacity 0.2s; padding-bottom: 2px; }
+        .bubble .gift-card .gift-status { font-size: 11px; color: #ff6b81; font-weight: 500; text-align: right; padding-top: 4px; }
+        .msg-actions { display: flex; gap: 4px; flex-shrink: 0; align-items: center; opacity: 0.3; transition: opacity 0.2s; padding-bottom: 2px; }
         .message-row:hover .msg-actions { opacity: 0.8; }
-        .msg-actions .action-btn { background: none; border: none; color: #666; font-size: 13px; cursor: pointer; padding: 2px 4px; transition: 0.15s; }
+        .msg-actions .action-btn { background: none; border: none; color: #666; font-size: 12px; cursor: pointer; padding: 2px 4px; transition: 0.15s; }
         .msg-actions .action-btn:active { transform: scale(0.85); }
         .msg-actions .action-btn.regenerate-btn { color: #07c160; }
         .msg-actions .action-btn.delete-btn:active { color: #e74c3c; }
@@ -149,19 +147,19 @@
         .message-row .bubble .quote-block .quote-content { font-style: italic; }
         .message-row .bubble .quote-divider { border: none; border-top: 1px solid rgba(0,0,0,0.08); margin: 4px 0 6px 0; }
         .typing-indicator { display: flex; align-items: center; gap: 10px; padding: 6px 0; }
-        .typing-dots { padding: 12px 18px; border-radius: 8px; display: flex; gap: 5px; background: var(--bg-bubble-other); }
+        .typing-dots { padding: 10px 16px; border-radius: 8px; display: flex; gap: 5px; background: var(--bg-bubble-other); }
         .typing-dots span { display: inline-block; width: 8px; height: 8px; background: var(--text-secondary); border-radius: 50%; animation: dotBounce 1.4s infinite both; }
         .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
         .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
         @keyframes dotBounce { 0%,80%,100% { transform: scale(0.6); opacity: 0.5; } 40% { transform: scale(1); opacity: 1; } }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .chat-input-area { background: var(--header-bg); backdrop-filter: blur(10px); padding: 8px 12px; border-top: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; position: relative; z-index: 1; }
-        .chat-input-area .input-row { display: flex; align-items: center; gap: 8px; }
-        .chat-input-area .meme-btn { background: none; border: none; font-size: 22px; color: #576b95; cursor: pointer; padding: 4px; flex-shrink: 0; line-height: 1; }
-        .chat-input-area .plus-btn { background: none; border: none; font-size: 24px; color: #576b95; cursor: pointer; padding: 4px; flex-shrink: 0; }
-        .chat-input-area input { flex: 1; border: none; outline: none; background: var(--input-bg); padding: 8px 14px; border-radius: 8px; font-size: 15px; color: var(--text-primary); transition: background 0.3s ease; min-width: 0; }
+        .chat-input-area { background: var(--header-bg); backdrop-filter: blur(10px); padding: 6px 10px calc(6px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; position: relative; z-index: 1; }
+        .chat-input-area .input-row { display: flex; align-items: center; gap: 6px; }
+        .chat-input-area .meme-btn { background: none; border: none; font-size: 20px; color: #576b95; cursor: pointer; padding: 4px; flex-shrink: 0; line-height: 1; }
+        .chat-input-area .plus-btn { background: none; border: none; font-size: 20px; color: #576b95; cursor: pointer; padding: 4px; flex-shrink: 0; }
+        .chat-input-area input { flex: 1; border: none; outline: none; background: var(--input-bg); padding: 6px 12px; border-radius: 8px; font-size: 14px; color: var(--text-primary); transition: background 0.3s ease; min-height: 32px; }
         .chat-input-area input:focus { background: var(--bg-card); box-shadow: 0 0 0 2px rgba(7,193,96,0.2); }
-        .chat-input-area .send-btn { background: #07c160; border: none; color: #fff; width: 36px; height: 36px; border-radius: 50%; font-size: 15px; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+        .chat-input-area .send-btn { background: #07c160; border: none; color: #fff; width: 34px; height: 34px; border-radius: 50%; font-size: 14px; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
         .chat-input-area .send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
         .quote-bar { display: none; align-items: center; gap: 8px; padding: 4px 12px; background: var(--input-bg); border-radius: 8px; font-size: 13px; color: var(--text-secondary); border-left: 3px solid #07c160; }
         .quote-bar.active { display: flex; }
@@ -175,7 +173,7 @@
         .longpress-menu .menu-item.danger i { color: #e74c3c; }
         .screen-memory { width: 100%; height: 100%; background: var(--bg-secondary); display: flex; flex-direction: column; position: absolute; top: 0; left: 0; z-index: 15; transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.32,0.72,0,1); }
         .screen-memory.open { transform: translateX(0); }
-        .memory-header-bar { background: var(--header-bg); backdrop-filter: blur(10px); padding: 12px 16px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px; flex-shrink: 0; min-height: 52px; }
+        .memory-header-bar { background: var(--header-bg); backdrop-filter: blur(10px); padding: calc(12px + env(safe-area-inset-top, 0px)) 16px 12px 16px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px; flex-shrink: 0; min-height: 52px; }
         .memory-header-bar .back-btn { font-size: 20px; color: #576b95; cursor: pointer; border: none; background: none; padding: 4px; }
         .memory-header-bar .title { font-size: 17px; font-weight: 600; color: var(--text-primary); flex: 1; }
         .memory-header-bar .role-selector { font-size: 14px; color: var(--text-secondary); cursor: pointer; padding: 4px 12px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-card); outline: none; color: var(--text-primary); max-width: 120px; }
@@ -200,7 +198,7 @@
         .memory-add-bar .add-mem-btn:active { transform: scale(0.95); }
         .screen-meme { width: 100%; height: 100%; background: var(--bg-secondary); display: flex; flex-direction: column; position: absolute; top: 0; left: 0; z-index: 15; transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.32,0.72,0,1); }
         .screen-meme.open { transform: translateX(0); }
-        .meme-header-bar { background: var(--header-bg); backdrop-filter: blur(10px); padding: 12px 16px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px; flex-shrink: 0; min-height: 52px; }
+        .meme-header-bar { background: var(--header-bg); backdrop-filter: blur(10px); padding: calc(12px + env(safe-area-inset-top, 0px)) 16px 12px 16px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px; flex-shrink: 0; min-height: 52px; }
         .meme-header-bar .back-btn { font-size: 20px; color: #576b95; cursor: pointer; border: none; background: none; padding: 4px; }
         .meme-header-bar .title { font-size: 17px; font-weight: 600; color: var(--text-primary); flex: 1; }
         .meme-header-bar .meme-actions { display: flex; gap: 8px; }
@@ -272,14 +270,14 @@
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
         .screen-diary { width: 100%; height: 100%; background: #1a1a2e; display: flex; flex-direction: column; position: absolute; top: 0; left: 0; z-index: 15; transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.32,0.72,0,1); }
         .screen-diary.open { transform: translateX(0); }
-        .diary-header { background: rgba(26,26,46,0.95); backdrop-filter: blur(10px); padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 10px; flex-shrink: 0; min-height: 48px; }
+        .diary-header { background: rgba(26,26,46,0.95); backdrop-filter: blur(10px); padding: calc(10px + env(safe-area-inset-top, 0px)) 16px 10px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 10px; flex-shrink: 0; min-height: 48px; }
         .diary-header .back-btn { font-size: 18px; color: #8a7a6a; cursor: pointer; border: none; background: none; padding: 4px; }
         .diary-header .title { font-size: 16px; font-weight: 600; color: #e8d5c4; flex: 1; display: flex; align-items: center; gap: 6px; }
         .diary-header .title i { color: #d4a574; }
         .diary-header .diary-actions { display: flex; gap: 6px; align-items: center; }
         .diary-header .diary-actions .role-selector { padding: 3px 8px; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; background: rgba(255,255,255,0.04); font-size: 12px; color: #e8d5c4; outline: none; font-family: inherit; max-width: 80px; }
         .diary-header .diary-actions .role-selector:focus { border-color: #d4a574; }
-        .diary-header .write-btn { background: linear-gradient(135deg,#d4a574,#c4956a); border: none; color: #fff; padding: 4px 12px; border-radius: 16px; font-size: 12px; cursor: pointer; transition: 0.15s; display: flex; align-items: center; gap: 4px; font-family: inherit; white-space: nowrap; }
+        .diary-header .write-btn { background: linear-gradient(135deg,#d4a574,#c4956a); border: none; color: #1a1a2e; padding: 4px 12px; border-radius: 16px; font-size: 12px; cursor: pointer; transition: 0.15s; display: flex; align-items: center; gap: 4px; font-family: inherit; white-space: nowrap; }
         .diary-header .write-btn:active { transform: scale(0.95); }
         .diary-header .write-btn:disabled { opacity: 0.5; cursor: not-allowed; }
         .calendar-toggle-outside { display: flex; justify-content: space-between; align-items: center; padding: 8px 16px 4px; cursor: pointer; user-select: none; background: rgba(255,248,240,0.04); border-bottom: 1px solid rgba(255,255,255,0.04); flex-shrink: 0; }
@@ -385,7 +383,7 @@
         .image-picker-menu .cancel-btn:active { background: #e8e8e8; }
         .settings-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(3px); z-index: 60; display: none; justify-content: flex-end; border-radius: 32px; overflow: hidden; }
         .settings-overlay.active { display: flex; }
-        .settings-drawer { background: var(--bg-secondary); width: 88%; max-width: 340px; height: 100%; padding: 24px 18px 30px; overflow-y: auto; box-shadow: -4px 0 25px rgba(0,0,0,0.15); animation: slideInRight 0.25s ease; }
+        .settings-drawer { background: var(--bg-secondary); width: 88%; max-width: 340px; height: 100%; padding: calc(24px + env(safe-area-inset-top, 0px)) 18px 30px; overflow-y: auto; box-shadow: -4px 0 25px rgba(0,0,0,0.15); animation: slideInRight 0.25s ease; }
         .settings-drawer .close-drawer { font-size: 24px; color: var(--text-secondary); cursor: pointer; float: right; background: none; border: none; }
         .settings-drawer h2 { font-size: 20px; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); color: var(--text-primary); }
         .settings-drawer .setting-group { margin-bottom: 14px; }
@@ -730,8 +728,6 @@
     <div class="style-picker-overlay" id="stylePickerOverlay">
         <div class="style-picker-panel">
             <div class="panel-header"><h3>✨ 个性化</h3><button class="close-btn" id="closeStylePicker">&times;</button></div>
-            <div class="style-category-title">🌓 主题</div>
-            <div class="style-option-grid" id="themeOptionGrid"></div>
             <div class="style-category-title">📱 桌面图标</div>
             <div class="style-option-grid" id="styleOptionGrid"></div>
             <div class="style-category-title" style="margin-top:18px;">🫧 对话框气泡</div>
@@ -798,8 +794,7 @@
             <div class="hd-recent" id="hdRecent">最近心跳加速：<span class="highlight">等待你的第一句情话</span></div>
         </div>
     </div>
-</div>
-<script>
+</div> <script>
 // ============================================================
 //  全局配置常量
 // ============================================================
@@ -830,8 +825,8 @@ var config = {
     fontSize: 'medium',
     fontWeight: 'regular',
     splitEnabled: true,
-    theme: 'dark',
     pinnedContacts: [],
+    theme: 'dark',
     heart: {
         bindRoleId: null,
         value: 65,
@@ -1638,17 +1633,17 @@ function applyChatBgForRole(role) {
 // ============================================================
 //  送礼卡片渲染
 // ============================================================
-function createGiftCardHtml(gift) {
+function createGiftCardHtml(gift, isFromUser) {
     var html = '<div class="gift-card" data-gift-id="' + gift.id + '">';
     html += '<div class="gift-row">';
     html += '<div class="gift-icon-box">🎁</div>';
     html += '<div class="gift-info">';
     html += '<div class="gift-name">' + gift.productName + '</div>';
-    html += '<div class="gift-from">来自：' + gift.fromName + '</div>';
+    html += '<div class="gift-from">' + (isFromUser ? '来自：你' : '来自：' + gift.fromName) + '</div>';
     html += '<div class="gift-price">¥' + gift.price + '</div>';
     html += '</div>';
     html += '</div>';
-    if (gift.status === 'pending' || gift.status === 'ai_pending') {
+    if (gift.status === 'pending') {
         html += '<div class="gift-actions">';
         html += '<button class="btn-receive" data-gift-id="' + gift.id + '">💝 确认收货</button>';
         html += '<button class="btn-later" data-gift-id="' + gift.id + '">稍后再说</button>';
@@ -1657,19 +1652,24 @@ function createGiftCardHtml(gift) {
         html += '<div class="gift-status">✅ 已收货</div>';
     } else if (gift.status === 'ai_received') {
         html += '<div class="gift-status">💕 ' + gift.fromName + ' 已收到礼物</div>';
+    } else if (gift.status === 'ai_pending') {
+        html += '<div class="gift-actions">';
+        html += '<button class="btn-receive" data-gift-id="' + gift.id + '">💝 确认收货</button>';
+        html += '<button class="btn-later" data-gift-id="' + gift.id + '">稍后再说</button>';
+        html += '</div>';
     }
     html += '</div>';
     return html;
 }
 
-function renderGiftMessage(gift, role, sender) {
+function renderGiftMessage(gift, role, isFromUser) {
     if (!role) return;
-    var content = createGiftCardHtml(gift);
+    var content = createGiftCardHtml(gift, isFromUser);
     var msgId = generateId();
     var timeStr = new Date().toLocaleTimeString();
     var msg = {
         id: msgId,
-        role: sender || 'assistant',
+        role: isFromUser ? 'user' : 'assistant',
         content: content,
         type: 'gift',
         time: timeStr,
@@ -1744,8 +1744,8 @@ function triggerAIGift(role) {
         createdAt: new Date().toISOString(),
     };
     pendingGift = gift;
-    // AI 送礼 → 显示在 AI 侧（左侧）
-    renderGiftMessage(gift, role, 'assistant');
+    // AI 送礼 → 卡片在角色那边（assistant）
+    renderGiftMessage(gift, role, false);
     giftCooldown[role.id] = Date.now() + 10 * 60 * 1000;
     showToast('🎁 ' + role.name + ' 送了你一份礼物！去聊天框查看吧');
 }
@@ -2021,27 +2021,14 @@ function appendSingleMessage(msg, role) {
 
 function createMessageRow(msg, role) {
     var row = document.createElement('div');
-    var isSelf = false;
-    if (msg.giftData) {
-        if (msg.giftData.type === 'user_gift' && msg.role === 'assistant') {
-            isSelf = false;
-        } else if (msg.giftData.type === 'ai_gift' && msg.role === 'assistant') {
-            isSelf = false;
-        } else if (msg.role === 'user') {
-            isSelf = true;
-        } else {
-            isSelf = false;
-        }
-    } else {
-        isSelf = (msg.role === 'user');
-    }
-    row.className = 'message-row ' + (isSelf ? 'self' : '');
+    row.className = 'message-row ' + (msg.role === 'user' ? 'self' : '');
     if (msg.id) row.dataset.msgId = msg.id;
 
     var contentHtml = msg.content;
 
     if (msg.type === 'gift' && msg.giftData) {
-        contentHtml = createGiftCardHtml(msg.giftData);
+        var isFromUser = msg.role === 'user';
+        contentHtml = createGiftCardHtml(msg.giftData, isFromUser);
     } else {
         var memeMatch = contentHtml.match(/\[表情包：([^\]]+)\]/);
         if (memeMatch) {
@@ -2064,11 +2051,11 @@ function createMessageRow(msg, role) {
     var actionsHtml = '';
     if (msg.role === 'assistant' && msg.type !== 'gift') {
         actionsHtml = '<div class="msg-actions"><button class="action-btn regenerate-btn" data-msgid="' + msg.id + '" title="重新生成"><i class="fas fa-sync-alt"></i></button><button class="action-btn delete-btn" data-msgid="' + msg.id + '" title="删除"><i class="fas fa-trash-alt"></i></button></div>';
-    } else if (msg.role === 'user') {
+    } else if (msg.role === 'user' && msg.type !== 'gift') {
         actionsHtml = '<div class="msg-actions"><button class="action-btn delete-btn" data-msgid="' + msg.id + '" title="删除"><i class="fas fa-trash-alt"></i></button></div>';
     }
 
-    row.innerHTML = '<div class="avatar ' + (isSelf ? 'user' : 'bot') + '"></div><div class="bubble-container">' + (timeStr ? '<div class="msg-time">' + timeStr + '</div>' : '') + '<div class="bubble-row"><div class="bubble">' + contentHtml + '</div>' + actionsHtml + '</div></div>';
+    row.innerHTML = '<div class="avatar ' + (msg.role === 'user' ? 'user' : 'bot') + '"></div><div class="bubble-container">' + (timeStr ? '<div class="msg-time">' + timeStr + '</div>' : '') + '<div class="bubble-row"><div class="bubble">' + contentHtml + '</div>' + actionsHtml + '</div></div>';
     return row;
 }
 
@@ -3770,17 +3757,6 @@ function initFloatingDrag() {
     });
 }
 
-function applyTheme(theme) {
-    if (theme === 'auto') {
-        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
-    } else {
-        document.documentElement.setAttribute('data-theme', theme);
-    }
-    config.theme = theme;
-    saveAllData();
-}
-
 function applyIconStyle(styleId) {
     var oldStyle = document.getElementById('dynamicIconStyle');
     if (oldStyle) oldStyle.remove();
@@ -3808,34 +3784,6 @@ function applyIconStyle(styleId) {
 }
 
 function renderStylePicker() {
-    // 主题
-    var themeGrid = document.getElementById('themeOptionGrid');
-    if (themeGrid) {
-        var THEMES = [
-            { id: 'dark', name: '🌙 深色' },
-            { id: 'light', name: '☀️ 浅色' },
-            { id: 'auto', name: '🔄 自动跟随系统' },
-        ];
-        themeGrid.innerHTML = '';
-        THEMES.forEach(function(theme) {
-            var option = document.createElement('div');
-            var isActive = theme.id === config.theme;
-            option.className = 'style-option ' + (isActive ? 'active' : '');
-            option.dataset.theme = theme.id;
-            option.innerHTML = '<div style="font-size:20px;margin-bottom:4px;">' + (theme.id === 'dark' ? '🌙' : theme.id === 'light' ? '☀️' : '🔄') + '</div><div class="style-name-label">' + theme.name + '<span class="style-check">✓</span></div>';
-            option.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                document.querySelectorAll('#themeOptionGrid .style-option').forEach(function(el) { el.classList.remove('active'); });
-                this.classList.add('active');
-                applyTheme(theme.id);
-                showToast('🌓 已切换至「' + theme.name + '」主题');
-            });
-            themeGrid.appendChild(option);
-        });
-    }
-
-    // 图标风格
     var iconGrid = document.getElementById('styleOptionGrid');
     if (!iconGrid) return;
 
@@ -3881,7 +3829,6 @@ function renderStylePicker() {
         iconGrid.appendChild(option);
     });
 
-    // 气泡风格
     var bubbleGrid = document.getElementById('bubbleOptionGrid');
     if (bubbleGrid) {
         var BUBBLE_STYLES = [
@@ -3902,8 +3849,8 @@ function renderStylePicker() {
             option.dataset.bubble = style.id;
 
             var previewColors = {
-                'default': { bg: 'rgba(255,255,255,0.08)', self: 'rgba(149,236,105,0.92)', text: '#f0f0f0' },
-                'pink': { bg: '#2d1a2d', self: '#ffb3c6', text: '#f0d0e0' },
+                'default': { bg: 'var(--bg-bubble-other)', self: 'var(--bg-bubble-self)', text: 'var(--text-primary)' },
+                'pink': { bg: '#3d1a2d', self: '#ffb3c6', text: '#f0d0e0' },
                 'green': { bg: '#1a2d2d', self: '#81ecec', text: '#d0f0f0' },
                 'dark': { bg: '#1a1a1a', self: '#00b894', text: '#e0e0e0' },
                 'frost': { bg: 'rgba(255,255,255,0.06)', self: 'rgba(255,255,255,0.12)', text: 'rgba(255,255,255,0.85)' },
@@ -3913,7 +3860,7 @@ function renderStylePicker() {
             };
             var colors = previewColors[style.id] || previewColors['default'];
 
-            option.innerHTML = '<div class="bubble-preview"><div class="bp-row" style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><div class="bp-avatar" style="font-size:16px;">🤖</div><div class="bp-bubble" style="background:' + colors.bg + ';color:' + colors.text + ';padding:4px 10px;border-radius:8px;font-size:12px;">你好呀~</div></div><div class="bp-row self" style="display:flex;align-items:center;gap:6px;justify-content:flex-end;"><div class="bp-bubble" style="background:' + colors.self + ';color:' + (style.id === 'bw' ? '#1a1a1a' : '#1a1a1a') + ';padding:4px 10px;border-radius:8px;font-size:12px;">嗨！</div><div class="bp-avatar" style="font-size:16px;">👤</div></div></div><div class="style-name-label" style="margin-top:4px;">' + style.name + '<span class="style-check">✓</span></div>';
+            option.innerHTML = '<div class="bubble-preview" style="display:flex;flex-direction:column;gap:4px;padding:4px 0;"><div style="display:flex;gap:4px;align-items:center;"><div style="width:20px;height:20px;border-radius:4px;background:#07c160;flex-shrink:0;"></div><div style="padding:4px 8px;border-radius:6px;background:' + colors.bg + ';color:' + colors.text + ';font-size:10px;">你好呀</div></div><div style="display:flex;gap:4px;align-items:center;justify-content:flex-end;"><div style="padding:4px 8px;border-radius:6px;background:' + colors.self + ';color:' + (style.id === 'bw' ? '#1a1a1a' : '#1a1a1a') + ';font-size:10px;">嗨！</div><div style="width:20px;height:20px;border-radius:4px;background:#576b95;flex-shrink:0;"></div></div></div><div class="style-name-label" style="margin-top:2px;">' + style.name + '<span class="style-check">✓</span></div>';
 
             option.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -3928,7 +3875,6 @@ function renderStylePicker() {
         });
     }
 
-    // 时间模式
     var timeGrid = document.getElementById('timeModeGrid');
     if (timeGrid) {
         var TIME_MODES = [
@@ -3963,7 +3909,6 @@ function renderStylePicker() {
         });
     }
 
-    // 悬浮窗
     var floatingGrid = document.getElementById('floatingSwitchGrid');
     if (floatingGrid) {
         var floatingOptions = [{ id: 'on', name: '开启悬浮窗' }, { id: 'off', name: '关闭悬浮窗' }];
@@ -4006,7 +3951,6 @@ function renderStylePicker() {
         });
     }
 
-    // 心跳颜色
     var colorGrid = document.getElementById('heartColorGrid');
     if (colorGrid) {
         var colorOptions = [
@@ -4042,7 +3986,6 @@ function renderStylePicker() {
         });
     }
 
-    // AI 表情包
     var aiMemeGrid = document.getElementById('aiMemeSwitchGrid');
     if (aiMemeGrid) {
         var aiMemeOptions = [{ id: 'on', name: 'AI 可发表情包' }, { id: 'off', name: 'AI 不发表情包' }];
@@ -4314,8 +4257,8 @@ function applyBubbleStyle(styleId) {
     if (oldStyle) oldStyle.remove();
 
     var BUBBLE_CSS = {
-        'default': '.bubble { background: rgba(255,255,255,0.08) !important; box-shadow: 0 1px 4px rgba(0,0,0,0.3) !important; color: #f0f0f0 !important; } .message-row.self .bubble { background: rgba(149,236,105,0.85) !important; color: #1a1a1a !important; } .typing-dots { background: rgba(255,255,255,0.08) !important; } .typing-dots span { background: #999 !important; }',
-        'pink': '.bubble { background: #2d1a2d !important; box-shadow: 0 1px 4px rgba(0,0,0,0.3) !important; color: #f0d0e0 !important; } .message-row.self .bubble { background: #ffb3c6 !important; color: #1a1a1a !important; } .typing-dots { background: #2d1a2d !important; } .typing-dots span { background: #ffb3c6 !important; }',
+        'default': '.bubble { background: var(--bg-bubble-other) !important; box-shadow: 0 1px 4px var(--shadow-color) !important; color: var(--text-primary) !important; } .message-row.self .bubble { background: var(--bg-bubble-self) !important; } .typing-dots { background: var(--bg-bubble-other) !important; } .typing-dots span { background: var(--text-secondary) !important; }',
+        'pink': '.bubble { background: #3d1a2d !important; box-shadow: 0 1px 4px rgba(0,0,0,0.3) !important; color: #f0d0e0 !important; } .message-row.self .bubble { background: #ffb3c6 !important; color: #1a1a1a !important; } .typing-dots { background: #3d1a2d !important; } .typing-dots span { background: #ffb3c6 !important; }',
         'green': '.bubble { background: #1a2d2d !important; box-shadow: 0 1px 4px rgba(0,0,0,0.3) !important; color: #d0f0f0 !important; } .message-row.self .bubble { background: #81ecec !important; color: #1a1a1a !important; } .typing-dots { background: #1a2d2d !important; } .typing-dots span { background: #81ecec !important; }',
         'dark': '.bubble { background: #1a1a1a !important; box-shadow: 0 1px 4px rgba(0,0,0,0.4) !important; color: #e0e0e0 !important; } .message-row.self .bubble { background: #00b894 !important; color: #fff !important; } .typing-dots { background: #1a1a1a !important; } .typing-dots span { background: #00b894 !important; }',
         'frost': '.bubble { background: rgba(255,255,255,0.06) !important; backdrop-filter: blur(10px) !important; -webkit-backdrop-filter: blur(10px) !important; border: 1px solid rgba(255,255,255,0.06) !important; color: rgba(255,255,255,0.85) !important; } .message-row.self .bubble { background: rgba(255,255,255,0.12) !important; border: 1px solid rgba(255,255,255,0.1) !important; } .typing-dots { background: rgba(255,255,255,0.06) !important; backdrop-filter: blur(10px) !important; -webkit-backdrop-filter: blur(10px) !important; border: 1px solid rgba(255,255,255,0.06) !important; } .typing-dots span { background: rgba(255,255,255,0.5) !important; }',
@@ -4414,22 +4357,26 @@ function init() {
     } catch (e) { console.error('角色数据修复失败:', e); }
 
     try {
-        loadWallpaperFromDB().then(function(dbData) {
-            if (!dbData && config.wallpaper) {
-                applyWallpaper(config.wallpaper);
-            }
-        });
+        if (config.wallpaper) {
+            loadWallpaperFromDB().then(function(dbData) {
+                if (!dbData && config.wallpaper) {
+                    applyWallpaper(config.wallpaper);
+                }
+            });
+        }
         if (config.chatBg) applyChatBg(config.chatBg);
         else applyChatBg(null);
         if (config.userAvatar) applyUserAvatar(config.userAvatar);
         else applyUserAvatar(null);
+        if (config.theme) {
+            document.documentElement.setAttribute('data-theme', config.theme);
+        }
     } catch (e) { console.error('美化应用失败:', e); }
 
     try {
         applyIconStyle(config.iconStyle || 'glass');
         applyBubbleStyle(config.bubbleStyle || 'default');
         applyFontSettings();
-        applyTheme(config.theme || 'dark');
     } catch (e) { console.error('样式应用失败:', e); }
 
     try {
@@ -4613,9 +4560,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (exportType === 'all') {
             roleData = JSON.parse(JSON.stringify(roles));
             exportData.diaries = JSON.parse(JSON.stringify(config.diaries || []));
-            exportData.config = { theme: config.theme, iconStyle: config.iconStyle, bubbleStyle: config.bubbleStyle, timeMode: config.timeMode, fontSize: config.fontSize, fontWeight: config.fontWeight, splitEnabled: config.splitEnabled, heart: config.heart };
+            exportData.config = { iconStyle: config.iconStyle, bubbleStyle: config.bubbleStyle, timeMode: config.timeMode, fontSize: config.fontSize, fontWeight: config.fontWeight, splitEnabled: config.splitEnabled, heart: config.heart };
         } else if (exportType === 'settings') {
-            exportData.config = { theme: config.theme, iconStyle: config.iconStyle, bubbleStyle: config.bubbleStyle, timeMode: config.timeMode, fontSize: config.fontSize, fontWeight: config.fontWeight, splitEnabled: config.splitEnabled, heart: config.heart };
+            exportData.config = { iconStyle: config.iconStyle, bubbleStyle: config.bubbleStyle, timeMode: config.timeMode, fontSize: config.fontSize, fontWeight: config.fontWeight, splitEnabled: config.splitEnabled, heart: config.heart };
             var blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
             var url = URL.createObjectURL(blob);
             var link = document.createElement('a');
