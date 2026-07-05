@@ -10,28 +10,31 @@
     <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet" />
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
-        body { background: #f5e6d3; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 12px; }
-        .phone-frame { width: 100%; max-width: 430px; height: 780px; background: #fdf6f0; border-radius: 32px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); overflow: hidden; position: relative; transition: background 0.3s ease; }
-        :root { --bg-primary: #fdf6f0; --bg-secondary: #f8ede6; --bg-card: #ffffff; --text-primary: #4a2a1a; --text-secondary: #a08070; --text-light: #d0b8a8; --border-color: rgba(200,170,150,0.2); --shadow-color: rgba(180,140,120,0.08); --header-bg: rgba(253,246,240,0.92); --heart-color: #ff6b81; --input-bg: rgba(240,225,215,0.5); --pink-primary: #f5a0b0; --pink-light: #ffe8ec; --pink-dark: #d48090; --gold: #e8c8a0; --gold-light: #f5e0c8; }
+        body { background: #1a1a1a; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 12px; }
+        .phone-frame { width: 100%; max-width: 430px; height: 780px; background: #1a1a1a; border-radius: 32px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); overflow: hidden; position: relative; transition: background 0.3s ease, color 0.3s ease; }
+        :root { --bg-primary: #1a1a1a; --bg-secondary: #1e1e2e; --bg-card: #252535; --bg-bubble-self: rgba(149,236,105,0.92); --bg-bubble-other: rgba(45,45,60,0.92); --text-primary: #f0f0f0; --text-secondary: #999; --text-inverse: #f0f0f0; --border-color: rgba(255,255,255,0.08); --shadow-color: rgba(0,0,0,0.3); --input-bg: rgba(255,255,255,0.06); --header-bg: rgba(26,26,26,0.92); --msg-time-color: #666; --font-size-base: 15px; --font-weight-base: 400; --pinned-bg: rgba(243,156,18,0.08); --pinned-border: rgba(243,156,18,0.2); --heart-color: #ff6b81; --heart-glow-color: rgba(255,107,129,0.2); --gift-card-bg: rgba(255,107,129,0.06); --gift-card-border: rgba(255,107,129,0.15); --pink-primary: #ff6b81; --pink-light: #ffe8ec; --gold: #e8c8a0; }
+        [data-theme="light"] { --bg-primary: #f5f0eb; --bg-secondary: #fafafa; --bg-card: #ffffff; --bg-bubble-self: rgba(149,236,105,0.92); --bg-bubble-other: rgba(255,255,255,0.95); --text-primary: #1a1a1a; --text-secondary: #888; --text-inverse: #1a1a1a; --border-color: rgba(0,0,0,0.08); --shadow-color: rgba(0,0,0,0.04); --input-bg: rgba(237,237,237,0.5); --header-bg: rgba(255,255,255,0.95); --msg-time-color: #999; --pinned-bg: rgba(243,156,18,0.06); --pinned-border: rgba(243,156,18,0.15); --gift-card-bg: rgba(255,107,129,0.04); --gift-card-border: rgba(255,107,129,0.1); }
+        [data-font-size="small"] { --font-size-base: 13px; } [data-font-size="medium"] { --font-size-base: 15px; } [data-font-size="large"] { --font-size-base: 17px; } [data-font-size="xlarge"] { --font-size-base: 19px; }
+        [data-font-weight="light"] { --font-weight-base: 300; } [data-font-weight="regular"] { --font-weight-base: 400; } [data-font-weight="medium"] { --font-weight-base: 500; } [data-font-weight="bold"] { --font-weight-base: 600; }
         .screen-mall { width: 100%; height: 100%; background: var(--bg-primary); display: flex; flex-direction: column; position: absolute; top: 0; left: 0; z-index: 15; }
-        .mall-header { background: var(--header-bg); backdrop-filter: blur(10px); padding: 10px 14px 8px 14px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 8px; flex-shrink: 0; min-height: 50px; flex-wrap: wrap; }
-        .mall-header .back-btn { font-size: 20px; color: #a08070; cursor: pointer; border: none; background: none; padding: 4px 6px; transition: 0.15s; }
+        .mall-header { background: var(--header-bg); backdrop-filter: blur(10px); padding: calc(10px + env(safe-area-inset-top, 0px)) 14px 8px 14px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 6px; flex-shrink: 0; min-height: 50px; flex-wrap: wrap; }
+        .mall-header .back-btn { font-size: 20px; color: var(--text-secondary); cursor: pointer; border: none; background: none; padding: 4px 6px; transition: 0.15s; flex-shrink: 0; }
         .mall-header .back-btn:active { transform: scale(0.9); opacity: 0.6; }
-        .mall-header .title { font-size: 17px; font-weight: 600; color: var(--text-primary); flex: 1; display: flex; align-items: center; gap: 6px; }
+        .mall-header .title { font-size: 17px; font-weight: 600; color: var(--text-primary); flex: 1; display: flex; align-items: center; gap: 6px; min-width: 0; }
         .mall-header .title i { color: var(--pink-primary); }
-        .mall-header .mall-actions { display: flex; align-items: center; gap: 6px; }
-        .mall-header .mall-balance { font-size: 12px; color: var(--text-secondary); background: var(--pink-light); padding: 3px 10px; border-radius: 14px; border: 1px solid rgba(245,160,176,0.2); cursor: pointer; transition: 0.15s; font-weight: 500; }
+        .mall-header .mall-actions { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+        .mall-header .mall-balance { font-size: 12px; color: var(--text-secondary); background: rgba(255,107,129,0.08); padding: 3px 10px; border-radius: 14px; border: 1px solid rgba(255,107,129,0.12); cursor: pointer; transition: 0.15s; font-weight: 500; }
         .mall-header .mall-balance:active { transform: scale(0.95); }
         .mall-header .mall-balance span { color: var(--pink-primary); font-weight: 700; }
         .mall-header .mall-cart-btn { background: none; border: none; font-size: 18px; color: var(--text-primary); cursor: pointer; position: relative; padding: 4px; }
         .mall-header .mall-cart-btn .cart-count { position: absolute; top: -4px; right: -4px; background: var(--pink-primary); color: #fff; font-size: 10px; font-weight: 700; min-width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; padding: 0 4px; }
         .mall-header .mall-cart-btn .cart-count.empty { display: none; }
-        .mall-header .mall-invite-btn { background: linear-gradient(135deg, var(--pink-light), var(--pink-primary)); border: none; color: var(--text-primary); padding: 4px 12px; border-radius: 16px; font-size: 12px; cursor: pointer; font-family: inherit; transition: 0.15s; white-space: nowrap; font-weight: 500; border: 1px solid rgba(245,160,176,0.2); }
+        .mall-header .mall-invite-btn { background: linear-gradient(135deg, var(--pink-light), var(--pink-primary)); border: none; color: var(--text-primary); padding: 4px 12px; border-radius: 16px; font-size: 12px; cursor: pointer; font-family: inherit; transition: 0.15s; white-space: nowrap; font-weight: 500; border: 1px solid rgba(255,107,129,0.15); }
         .mall-header .mall-invite-btn:active { transform: scale(0.95); }
         .mall-header .mall-invite-btn.inviting { background: var(--pink-primary); color: #fff; border-color: var(--pink-primary); }
         .mall-body { flex: 1; overflow-y: auto; padding: 10px 12px 16px; position: relative; }
         .mall-body::-webkit-scrollbar { width: 3px; }
-        .mall-body::-webkit-scrollbar-thumb { background: rgba(200,170,150,0.4); border-radius: 4px; }
+        .mall-body::-webkit-scrollbar-thumb { background: rgba(192,192,192,0.3); border-radius: 4px; }
         .mall-category-nav { display: flex; gap: 6px; padding: 6px 0 12px 0; overflow-x: auto; flex-shrink: 0; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
         .mall-category-nav::-webkit-scrollbar { display: none; }
         .mall-category-nav .cat-tab { padding: 4px 14px; border-radius: 20px; font-size: 12px; background: var(--bg-card); color: var(--text-secondary); border: 1px solid var(--border-color); cursor: pointer; white-space: nowrap; transition: 0.15s; font-weight: 500; }
@@ -54,7 +57,7 @@
         .mall-product-card .product-tag.new { background: #74b9ff; }
         .mall-product-card .product-tag.couple { background: #a29bfe; }
         .mall-product-card .product-tag.default-tag { background: var(--text-secondary); }
-        .mall-product-card .product-tag.gift-tag { background: var(--gold); color: #4a2a1a; }
+        .mall-product-card .product-tag.gift-tag { background: var(--gold); color: #1a1a1a; }
         .mall-empty { text-align: center; padding: 40px 20px; color: var(--text-secondary); grid-column: 1 / -1; }
         .mall-empty i { font-size: 40px; opacity: 0.2; display: block; margin-bottom: 10px; }
         .mall-order-entry { margin-top: 12px; padding: 10px 14px; background: var(--bg-card); border-radius: 12px; cursor: pointer; text-align: center; box-shadow: 0 1px 4px var(--shadow-color); display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; color: var(--text-primary); transition: 0.15s; border: 1px solid var(--border-color); }
@@ -63,8 +66,8 @@
         .mall-order-entry .order-count { font-size: 12px; color: var(--text-secondary); margin-left: 4px; }
         .mall-detail-overlay { position: absolute; inset: 0; z-index: 30; background: var(--bg-primary); display: none; flex-direction: column; animation: fadeInUp 0.25s ease; border-radius: 32px; overflow: hidden; }
         .mall-detail-overlay.active { display: flex; }
-        .mall-detail-header { background: var(--header-bg); backdrop-filter: blur(10px); padding: 10px 14px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px; flex-shrink: 0; min-height: 48px; }
-        .mall-detail-header .back-btn { font-size: 18px; color: #a08070; cursor: pointer; border: none; background: none; padding: 4px; }
+        .mall-detail-header { background: var(--header-bg); backdrop-filter: blur(10px); padding: calc(10px + env(safe-area-inset-top, 0px)) 14px 10px 14px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px; flex-shrink: 0; min-height: 48px; }
+        .mall-detail-header .back-btn { font-size: 18px; color: var(--text-secondary); cursor: pointer; border: none; background: none; padding: 4px; }
         .mall-detail-header .title { font-size: 16px; font-weight: 600; color: var(--text-primary); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .mall-detail-body { flex: 1; overflow-y: auto; padding: 14px; }
         .mall-detail-body .detail-img { width: 100%; aspect-ratio: 1/1; border-radius: 14px; background: var(--bg-secondary); border: 1px solid var(--border-color); overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 48px; margin-bottom: 12px; }
@@ -79,16 +82,16 @@
         .mall-detail-body .detail-qty .qty-num { font-size: 16px; font-weight: 600; color: var(--text-primary); min-width: 30px; text-align: center; }
         .mall-detail-body .detail-note input { width: 100%; padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 13px; background: var(--bg-card); color: var(--text-primary); outline: none; font-family: inherit; }
         .mall-detail-body .detail-note input:focus { border-color: var(--pink-primary); }
-        .mall-detail-footer { display: flex; gap: 10px; padding: 10px 14px; background: var(--header-bg); border-top: 1px solid var(--border-color); flex-shrink: 0; }
+        .mall-detail-footer { display: flex; gap: 10px; padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px)); background: var(--header-bg); border-top: 1px solid var(--border-color); flex-shrink: 0; }
         .mall-detail-footer button { flex: 1; padding: 10px; border: none; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.15s; font-family: inherit; }
         .mall-detail-footer button:active { transform: scale(0.97); }
         .mall-detail-footer .btn-gift { background: linear-gradient(135deg, var(--pink-light), var(--pink-primary)); color: var(--text-primary); }
         .mall-detail-footer .btn-gift:disabled { opacity: 0.4; cursor: not-allowed; }
-        .mall-detail-footer .btn-buy { background: linear-gradient(135deg, var(--gold-light), var(--gold)); color: var(--text-primary); }
+        .mall-detail-footer .btn-buy { background: linear-gradient(135deg, var(--gold), #d4a574); color: var(--text-primary); }
         .mall-detail-footer .btn-buy:disabled { opacity: 0.4; cursor: not-allowed; }
-        .cart-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.3); backdrop-filter: blur(3px); z-index: 40; display: none; justify-content: flex-end; border-radius: 0; overflow: hidden; }
+        .cart-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(3px); z-index: 40; display: none; justify-content: flex-end; border-radius: 0; overflow: hidden; }
         .cart-overlay.active { display: flex; }
-        .cart-drawer { background: var(--bg-card); width: 88%; max-width: 340px; height: 100%; padding: 20px 16px 30px; overflow-y: auto; box-shadow: -4px 0 25px rgba(0,0,0,0.08); animation: slideInRight 0.25s ease; display: flex; flex-direction: column; }
+        .cart-drawer { background: var(--bg-card); width: 88%; max-width: 340px; height: 100%; padding: calc(20px + env(safe-area-inset-top, 0px)) 16px calc(20px + env(safe-area-inset-bottom, 0px)); overflow-y: auto; box-shadow: -4px 0 25px rgba(0,0,0,0.15); animation: slideInRight 0.25s ease; display: flex; flex-direction: column; }
         .cart-drawer .cart-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); flex-shrink: 0; }
         .cart-drawer .cart-header h3 { font-size: 17px; color: var(--text-primary); }
         .cart-drawer .cart-header .close-cart { font-size: 22px; color: var(--text-secondary); cursor: pointer; background: none; border: none; }
@@ -121,7 +124,7 @@
         .mall-order-item .order-id { font-size: 11px; color: var(--text-secondary); }
         .mall-order-item .order-time { font-size: 10px; color: var(--text-secondary); }
         .mall-order-item .order-status { font-size: 11px; font-weight: 600; padding: 1px 10px; border-radius: 12px; }
-        .mall-order-item .order-status.status-pending { background: var(--gold-light); color: #8a7a5a; }
+        .mall-order-item .order-status.status-pending { background: var(--gold); color: #1a1a1a; }
         .mall-order-item .order-status.status-shipped { background: #74b9ff; color: #fff; }
         .mall-order-item .order-status.status-done { background: var(--pink-primary); color: #fff; }
         .mall-order-item .order-items { font-size: 12px; color: var(--text-secondary); padding: 4px 0; }
@@ -132,9 +135,9 @@
         .mall-order-item .order-actions button:active { transform: scale(0.95); }
         .mall-order-item .order-actions .btn-ship { background: #74b9ff; color: #fff; }
         .mall-order-item .order-actions .btn-done { background: var(--pink-primary); color: #fff; }
-        .mall-order-item .order-actions .btn-delete-order { background: #fee; color: #e74c3c; }
-        .mall-order-item .order-actions .btn-refund { background: var(--gold-light); color: #8a7a5a; }
-        .mall-recharge-overlay { position: absolute; inset: 0; z-index: 35; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; border-radius: 32px; overflow: hidden; }
+        .mall-order-item .order-actions .btn-delete-order { background: rgba(231,76,60,0.1); color: #e74c3c; }
+        .mall-order-item .order-actions .btn-refund { background: var(--gold); color: #1a1a1a; }
+        .mall-recharge-overlay { position: absolute; inset: 0; z-index: 35; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; border-radius: 32px; overflow: hidden; }
         .mall-recharge-overlay.active { display: flex; }
         .mall-recharge-panel { background: var(--bg-card); border-radius: 20px; padding: 20px 18px 18px; max-width: 300px; width: 90%; animation: fadeInUp 0.3s ease; text-align: center; border: 1px solid var(--border-color); }
         .mall-recharge-panel h3 { font-size: 17px; color: var(--text-primary); margin-bottom: 2px; }
@@ -148,15 +151,15 @@
         .mall-recharge-panel .recharge-confirm { width: 100%; padding: 10px; border: none; border-radius: 12px; background: linear-gradient(135deg, var(--pink-light), var(--pink-primary)); color: var(--text-primary); font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit; transition: 0.15s; }
         .mall-recharge-panel .recharge-confirm:active { transform: scale(0.97); }
         .mall-recharge-panel .recharge-cancel { background: none; border: none; color: var(--text-secondary); font-size: 13px; cursor: pointer; margin-top: 6px; font-family: inherit; }
-        .mall-ai-bubble { position: absolute; bottom: 16px; left: 12px; z-index: 25; background: var(--bg-card); border-radius: 18px; padding: 6px 12px 6px 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); display: none; align-items: center; gap: 8px; border: 2px solid var(--pink-primary); animation: fadeInUp 0.3s ease; max-width: 75%; }
+        .mall-ai-bubble { position: absolute; bottom: 16px; left: 12px; z-index: 25; background: var(--bg-card); border-radius: 18px; padding: 6px 12px 6px 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.15); display: none; align-items: center; gap: 8px; border: 2px solid var(--pink-primary); animation: fadeInUp 0.3s ease; max-width: 75%; }
         .mall-ai-bubble.active { display: flex; }
         .mall-ai-bubble .ai-avatar { width: 28px; height: 28px; border-radius: 50%; background-size: cover; background-position: center; background-color: var(--pink-primary); flex-shrink: 0; border: 2px solid var(--pink-primary); }
         .mall-ai-bubble .ai-text { font-size: 12px; color: var(--text-primary); line-height: 1.3; flex: 1; }
         .mall-ai-bubble .ai-text .ai-name { font-weight: 600; color: var(--pink-primary); }
         .mall-ai-bubble .ai-end-btn { background: none; border: none; color: var(--text-secondary); font-size: 14px; cursor: pointer; padding: 0 2px; }
-        .mall-ai-spot-overlay { position: absolute; inset: 0; z-index: 35; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; border-radius: 0; }
+        .mall-ai-spot-overlay { position: absolute; inset: 0; z-index: 35; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; border-radius: 0; }
         .mall-ai-spot-overlay.active { display: flex; }
-        .mall-ai-spot-panel { background: var(--bg-card); border-radius: 20px; padding: 18px 18px 22px; max-width: 330px; width: 92%; animation: fadeInUp 0.3s ease; box-shadow: 0 20px 60px rgba(0,0,0,0.15); text-align: center; border: 1px solid var(--border-color); }
+        .mall-ai-spot-panel { background: var(--bg-card); border-radius: 20px; padding: 18px 18px 22px; max-width: 330px; width: 92%; animation: fadeInUp 0.3s ease; box-shadow: 0 20px 60px rgba(0,0,0,0.2); text-align: center; border: 1px solid var(--border-color); }
         .mall-ai-spot-panel .spot-product { display: flex; flex-direction: column; align-items: center; margin-bottom: 10px; }
         .mall-ai-spot-panel .spot-product .spot-img { width: 70px; height: 70px; border-radius: 12px; background: var(--bg-secondary); border: 1px solid var(--border-color); overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 4px; }
         .mall-ai-spot-panel .spot-product .spot-img img { width: 100%; height: 100%; object-fit: cover; }
@@ -169,9 +172,9 @@
         .mall-ai-spot-panel .spot-buttons button:active { transform: scale(0.95); }
         .mall-ai-spot-panel .spot-buttons .btn-buy-for-him { background: linear-gradient(135deg, var(--pink-light), var(--pink-primary)); color: var(--text-primary); }
         .mall-ai-spot-panel .spot-buttons .btn-reject { background: var(--bg-secondary); color: var(--text-secondary); }
-        .mall-ai-spot-panel .spot-buttons .btn-ai-gift { background: linear-gradient(135deg, var(--gold-light), var(--gold)); color: var(--text-primary); }
+        .mall-ai-spot-panel .spot-buttons .btn-ai-gift { background: linear-gradient(135deg, var(--gold), #d4a574); color: var(--text-primary); }
         .mall-ai-spot-panel .spot-buttons .btn-ai-gift:disabled { opacity: 0.4; cursor: not-allowed; }
-        .mall-role-select-overlay { position: absolute; inset: 0; z-index: 36; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; border-radius: 32px; overflow: hidden; }
+        .mall-role-select-overlay { position: absolute; inset: 0; z-index: 36; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; border-radius: 32px; overflow: hidden; }
         .mall-role-select-overlay.active { display: flex; }
         .mall-role-select-panel { background: var(--bg-card); border-radius: 20px; padding: 18px 18px 22px; max-width: 300px; width: 90%; animation: fadeInUp 0.3s ease; text-align: center; border: 1px solid var(--border-color); }
         .mall-role-select-panel h3 { font-size: 17px; color: var(--text-primary); margin-bottom: 2px; }
@@ -185,9 +188,9 @@
         .mall-role-select-panel .role-select-btn:disabled { opacity: 0.5; cursor: not-allowed; border-color: var(--border-color); }
         .mall-role-select-panel .role-select-cancel { width: 100%; padding: 8px; border: none; border-radius: 10px; background: var(--bg-secondary); color: var(--text-secondary); font-size: 13px; cursor: pointer; font-family: inherit; }
         .mall-role-select-panel .role-select-cancel:active { transform: scale(0.97); }
-        .gift-receive-overlay { position: absolute; inset: 0; z-index: 37; background: rgba(0,0,0,0.4); backdrop-filter: blur(6px); display: none; justify-content: center; align-items: center; border-radius: 32px; overflow: hidden; }
+        .gift-receive-overlay { position: absolute; inset: 0; z-index: 37; background: rgba(0,0,0,0.5); backdrop-filter: blur(6px); display: none; justify-content: center; align-items: center; border-radius: 32px; overflow: hidden; }
         .gift-receive-overlay.active { display: flex; }
-        .gift-receive-panel { background: var(--bg-card); border-radius: 24px; padding: 20px 18px 20px; max-width: 320px; width: 92%; animation: fadeInUp 0.4s ease; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.12); border: 1px solid var(--border-color); }
+        .gift-receive-panel { background: var(--bg-card); border-radius: 24px; padding: 20px 18px 20px; max-width: 320px; width: 92%; animation: fadeInUp 0.4s ease; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.15); border: 1px solid var(--border-color); }
         .gift-receive-panel .gift-icon { font-size: 52px; margin-bottom: 6px; }
         .gift-receive-panel .gift-title { font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 2px; }
         .gift-receive-panel .gift-from { font-size: 13px; color: var(--text-secondary); margin-bottom: 2px; }
@@ -201,7 +204,8 @@
         .gift-receive-panel .gift-buttons .btn-receive { background: linear-gradient(135deg, var(--pink-light), var(--pink-primary)); color: var(--text-primary); }
         .gift-receive-panel .gift-buttons .btn-receive:disabled { opacity: 0.5; cursor: not-allowed; }
         .gift-receive-panel .gift-buttons .btn-reject-gift { background: var(--bg-secondary); color: var(--text-secondary); }
-        .custom-toast { position: absolute; bottom: 100px; left: 50%; transform: translateX(-50%); background: rgba(60,40,30,0.85); color: #fff; padding: 8px 20px; border-radius: 12px; font-size: 13px; z-index: 200; animation: fadeInUp 0.3s ease; text-align: center; max-width: 80%; }
+        .custom-toast { position: absolute; bottom: 100px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.75); color: #fff; padding: 8px 20px; border-radius: 12px; font-size: 13px; z-index: 200; animation: fadeInUp 0.3s ease; text-align: center; max-width: 80%; }
+        [data-theme="light"] .custom-toast { background: rgba(40,40,40,0.85); }
         @keyframes slideInRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(16px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
         @media (max-width: 460px) { .phone-frame { border-radius: 0; height: 100vh; max-height: 100vh; } body { padding: 0; } .mall-header .mall-balance { font-size: 11px; padding: 2px 8px; } .mall-header .mall-invite-btn { font-size: 10px; padding: 2px 8px; } .mall-product-grid { gap: 8px; } .mall-product-card .product-name { font-size: 12px; } .mall-product-card .product-price { font-size: 13px; } .mall-detail-body .detail-name { font-size: 16px; } .mall-detail-body .detail-price { font-size: 18px; } .mall-ai-spot-panel { max-width: 280px; padding: 14px; } .mall-ai-spot-panel .spot-product .spot-img { width: 56px; height: 56px; font-size: 22px; } .mall-ai-spot-panel .spot-ai-words { font-size: 13px; } .gift-receive-panel { max-width: 280px; padding: 16px; } }
@@ -224,13 +228,17 @@
             </div>
         </div>
         <div class="mall-body" id="mallBody">
+            <!-- Tab 导航 -->
             <div class="mall-tab-nav" id="mallTabNav">
                 <button class="tab-btn active" data-tab="recommend"><span class="tab-icon">✨</span>推荐</button>
                 <button class="tab-btn" data-tab="takeout"><span class="tab-icon">🍜</span>外卖</button>
                 <button class="tab-btn" data-tab="orders" id="ordersTabBtn"><span class="tab-icon">📦</span>订单</button>
             </div>
+            <!-- 分类标签 -->
             <div class="mall-category-nav" id="mallCategoryNav"></div>
+            <!-- 商品网格 -->
             <div class="mall-product-grid" id="mallProductGrid"></div>
+            <!-- 我的订单入口（备用） -->
             <div class="mall-order-entry" id="mallOrderEntry">
                 <i class="fas fa-box"></i> 我的订单 <span class="order-count" id="orderCountBadge">(0 笔)</span>
                 <span style="font-size:11px;color:var(--text-secondary);margin-left:auto;">查看 →</span>
@@ -390,6 +398,53 @@ function showToast(msg) {
     toast.textContent = msg;
     document.querySelector('.phone-frame').appendChild(toast);
     setTimeout(function() { toast.remove(); }, 2200);
+}
+
+// ============================================================
+//  从主应用读取主题和样式
+// ============================================================
+function syncThemeFromMain() {
+    try {
+        var raw = localStorage.getItem('ds_multirole_v2');
+        if (raw) {
+            var data = JSON.parse(raw);
+            var config = data.config || {};
+            if (config.theme) {
+                document.documentElement.setAttribute('data-theme', config.theme);
+            }
+            if (config.fontSize) {
+                document.documentElement.setAttribute('data-font-size', config.fontSize);
+            }
+            if (config.fontWeight) {
+                document.documentElement.setAttribute('data-font-weight', config.fontWeight);
+            }
+            if (config.bubbleStyle) {
+                applyMallBubbleStyle(config.bubbleStyle);
+            }
+        }
+    } catch (_) {}
+}
+
+function applyMallBubbleStyle(styleId) {
+    var oldStyle = document.getElementById('mallBubbleStyle');
+    if (oldStyle) oldStyle.remove();
+
+    var BUBBLE_CSS = {
+        'default': '.bubble { background: var(--bg-bubble-other) !important; box-shadow: 0 1px 4px var(--shadow-color) !important; color: var(--text-primary) !important; } .message-row.self .bubble { background: var(--bg-bubble-self) !important; } .typing-dots { background: var(--bg-bubble-other) !important; } .typing-dots span { background: var(--text-secondary) !important; }',
+        'pink': '.bubble { background: #3d1a2d !important; box-shadow: 0 1px 4px rgba(0,0,0,0.3) !important; color: #f0d0e0 !important; } .message-row.self .bubble { background: #ffb3c6 !important; color: #1a1a1a !important; } .typing-dots { background: #3d1a2d !important; } .typing-dots span { background: #ffb3c6 !important; }',
+        'green': '.bubble { background: #1a2d2d !important; box-shadow: 0 1px 4px rgba(0,0,0,0.3) !important; color: #d0f0f0 !important; } .message-row.self .bubble { background: #81ecec !important; color: #1a1a1a !important; } .typing-dots { background: #1a2d2d !important; } .typing-dots span { background: #81ecec !important; }',
+        'dark': '.bubble { background: #1a1a1a !important; box-shadow: 0 1px 4px rgba(0,0,0,0.4) !important; color: #e0e0e0 !important; } .message-row.self .bubble { background: #00b894 !important; color: #fff !important; } .typing-dots { background: #1a1a1a !important; } .typing-dots span { background: #00b894 !important; }',
+        'frost': '.bubble { background: rgba(255,255,255,0.06) !important; backdrop-filter: blur(10px) !important; -webkit-backdrop-filter: blur(10px) !important; border: 1px solid rgba(255,255,255,0.06) !important; color: rgba(255,255,255,0.85) !important; } .message-row.self .bubble { background: rgba(255,255,255,0.12) !important; border: 1px solid rgba(255,255,255,0.1) !important; } .typing-dots { background: rgba(255,255,255,0.06) !important; backdrop-filter: blur(10px) !important; -webkit-backdrop-filter: blur(10px) !important; border: 1px solid rgba(255,255,255,0.06) !important; } .typing-dots span { background: rgba(255,255,255,0.5) !important; }',
+        'orange': '.bubble { background: #2d1a0a !important; box-shadow: 0 1px 4px rgba(0,0,0,0.3) !important; color: #f0d0a0 !important; } .message-row.self .bubble { background: #fdcb6e !important; color: #1a1a1a !important; } .typing-dots { background: #2d1a0a !important; } .typing-dots span { background: #fdcb6e !important; }',
+        'purple': '.bubble { background: #1a0a2d !important; box-shadow: 0 1px 4px rgba(0,0,0,0.3) !important; color: #d0b0f0 !important; } .message-row.self .bubble { background: #a29bfe !important; color: #1a1a1a !important; } .typing-dots { background: #1a0a2d !important; } .typing-dots span { background: #a29bfe !important; }',
+        'bw': '.bubble { background: #1a1a1a !important; border: 1px solid #444 !important; box-shadow: none !important; color: #f0f0f0 !important; } .message-row.self .bubble { background: #ffffff !important; color: #1a1a1a !important; border: none !important; } .typing-dots { background: #1a1a1a !important; border: 1px solid #444 !important; } .typing-dots span { background: #fff !important; }'
+    };
+
+    var css = BUBBLE_CSS[styleId] || BUBBLE_CSS['default'];
+    var styleTag = document.createElement('style');
+    styleTag.id = 'mallBubbleStyle';
+    styleTag.textContent = css;
+    document.head.appendChild(styleTag);
 }
 
 // ============================================================
@@ -812,17 +867,16 @@ function executePurchase(product, qty, note, mode, targetRole, totalPrice) {
         triggerHeartSpikeForGift(targetRole, product, 'gift');
         triggerGiftChatReply(targetRole, product, note);
         addGiftToMemory(targetRole, product, 'user', note);
-        // 用户送礼 → 显示在用户侧（右侧），用 role: 'user' 表示
-        sendGiftCardToMain(targetRole, product, note, 'user');
+        sendGiftCardToMain(targetRole, product, note);
     }
 
     if (mallShoppingTogether.isActive) mallShoppingTogether.totalTriggers++;
 }
 
 // ============================================================
-//  送礼卡片发送到主应用（修复方向）
+//  送礼卡片发送到主应用（用户送礼物 → 卡片在用户侧）
 // ============================================================
-function sendGiftCardToMain(role, product, note, sender) {
+function sendGiftCardToMain(role, product, note) {
     try {
         var raw = localStorage.getItem('ds_multirole_v2');
         if (!raw) return;
@@ -834,11 +888,11 @@ function sendGiftCardToMain(role, product, note, sender) {
             id: 'gift_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
             productName: product.name,
             price: product.price,
-            fromName: sender === 'user' ? '你' : role.name,
-            fromId: sender === 'user' ? 'user' : role.id,
+            fromName: '你',
+            fromId: 'user',
             roleId: role.id,
-            status: sender === 'user' ? 'ai_received' : 'pending',
-            type: sender === 'user' ? 'user_gift' : 'ai_gift',
+            status: 'ai_received',
+            type: 'user_gift',
             note: note || '',
             createdAt: new Date().toISOString(),
         };
@@ -846,22 +900,13 @@ function sendGiftCardToMain(role, product, note, sender) {
         var msgId = 'msg_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
         var timeStr = new Date().toLocaleTimeString();
 
-        var giftCardHtml = '<div class="gift-card" data-gift-id="' + giftData.id + '">';
-        giftCardHtml += '<div class="gift-row"><div class="gift-icon-box">🎁</div><div class="gift-info"><div class="gift-name">' + giftData.productName + '</div><div class="gift-from">来自：' + giftData.fromName + '</div><div class="gift-price">¥' + giftData.price + '</div></div></div>';
-        if (sender === 'user') {
-            giftCardHtml += '<div class="gift-status">💕 ' + role.name + ' 已收到礼物</div>';
-        } else {
-            giftCardHtml += '<div class="gift-actions"><button class="btn-receive" data-gift-id="' + giftData.id + '">💝 确认收货</button><button class="btn-later" data-gift-id="' + giftData.id + '">稍后再说</button></div>';
-        }
-        giftCardHtml += '</div>';
-
-        // 关键修复：用户送礼 → 消息角色为 'user'（显示在右侧）
-        // AI 送礼 → 消息角色为 'assistant'（显示在左侧）
-        var msgRole = sender === 'user' ? 'user' : 'assistant';
+        // 用户送礼 → 卡片在用户侧（user）
+        var isFromUser = true;
+        var giftCardHtml = createGiftCardHtmlForMain(giftData, isFromUser);
 
         targetRole.messages.push({
             id: msgId,
-            role: msgRole,
+            role: 'user',
             content: giftCardHtml,
             type: 'gift',
             time: timeStr,
@@ -873,6 +918,21 @@ function sendGiftCardToMain(role, product, note, sender) {
     } catch (e) {
         console.error('发送送礼卡片失败:', e);
     }
+}
+
+function createGiftCardHtmlForMain(gift, isFromUser) {
+    var html = '<div class="gift-card" data-gift-id="' + gift.id + '">';
+    html += '<div class="gift-row">';
+    html += '<div class="gift-icon-box">🎁</div>';
+    html += '<div class="gift-info">';
+    html += '<div class="gift-name">' + gift.productName + '</div>';
+    html += '<div class="gift-from">' + (isFromUser ? '来自：你' : '来自：' + gift.fromName) + '</div>';
+    html += '<div class="gift-price">¥' + gift.price + '</div>';
+    html += '</div>';
+    html += '</div>';
+    html += '<div class="gift-status">💕 ' + (isFromUser ? '你送出了礼物' : gift.fromName + ' 已收到礼物') + '</div>';
+    html += '</div>';
+    return html;
 }
 
 // ============================================================
@@ -990,8 +1050,7 @@ function showAiSpotDialog(product, role) {
             triggerHeartSpikeForGift(role, product, 'gift');
             addGiftToMemory(role, product, 'user', 'AI看中后购买');
             triggerGiftChatReply(role, product, 'AI 看中后你送给了我 ❤️');
-            // 用户送礼 → 显示在用户侧
-            sendGiftCardToMain(role, product, 'AI 看中后购买', 'user');
+            sendGiftCardToMain(role, product, 'AI 看中后购买');
             mallShoppingTogether.rejectCount = 0;
             saveMallData();
         }
@@ -1012,8 +1071,6 @@ function showAiSpotDialog(product, role) {
 
         pendingAiGiftOrder = order;
         showGiftReceiveDialog(order, role);
-        // AI 送礼 → 显示在 AI 侧（左侧），用 'assistant' 角色
-        sendGiftCardToMain(role, product, order.note, 'assistant');
 
         mallShoppingTogether.rejectCount = 0;
         saveMallData();
@@ -1160,6 +1217,7 @@ function showGiftReceiveDialog(order, role) {
                 triggerHeartSpikeForGift(roleRef, { name: pendingAiGiftOrder.productName }, 'ai_gift');
                 addGiftToMemory(roleRef, { name: pendingAiGiftOrder.productName }, 'ai', pendingAiGiftOrder.note);
                 triggerGiftChatReply(roleRef, { name: pendingAiGiftOrder.productName, price: 0 }, pendingAiGiftOrder.note);
+                sendGiftCardToMain(roleRef, { name: pendingAiGiftOrder.productName, price: 0 }, pendingAiGiftOrder.note);
             }
             showToast('💝 已确认收货！');
             pendingAiGiftOrder = null;
@@ -1526,6 +1584,7 @@ function exitMall() {
 //  初始化
 // ============================================================
 function init() {
+    syncThemeFromMain();
     loadMallData();
     loadRolesFromMain();
     loadMallProducts();
