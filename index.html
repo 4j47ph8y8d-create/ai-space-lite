@@ -1276,10 +1276,8 @@ function recoverHeartRate(role) {
 
 function startHeartBeatFluctuation() {
     if (heartBeatInterval) clearInterval(heartBeatInterval);
-    // 确保有绑定角色时才启动
     var bindRoleId = config.heart.bindRoleId;
     if (!bindRoleId) {
-        // 如果没有绑定角色，尝试绑定第一个角色
         if (roles.length > 0) {
             bindHeartRole(roles[0].id);
         }
@@ -3774,7 +3772,6 @@ function applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
     config.theme = theme;
     saveAllData();
-    // 更新设置面板中的选择器显示
     var selector = document.querySelector('.theme-selector');
     if (selector) selector.value = theme;
 }
