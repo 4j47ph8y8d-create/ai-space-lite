@@ -543,7 +543,6 @@
             <button class="back-btn" id="backFromChat"><i class="fas fa-chevron-left"></i></button>
             <div class="title">
                 <span class="chat-role-name" id="chatRoleName">DeepSeek</span>
-                <span class="status"><i class="fas fa-circle"></i></span>
             </div>
             <div class="actions">
                 <i class="fas fa-trash-alt" id="clearChatBtn" style="color:#e74c3c;cursor:pointer;" title="清空聊天记录"></i>
@@ -1374,7 +1373,7 @@ function renderContacts() {
             clearUnreadForRole(role.id);
             currentRoleId = role.id;
             saveAllData();
-            // 直接打开聊天界面，不用 openChat 函数
+            // 直接打开聊天界面，绕过 openChat 函数
             document.getElementById('contactsScreen').classList.remove('open');
             document.getElementById('launcherScreen').classList.add('hidden');
             document.getElementById('chatScreen').classList.add('open');
@@ -4077,7 +4076,7 @@ function updateStatusTime() {
 }
 
 // ============================================================
-//  页面切换 - 完全重写，确保联系人能打开聊天
+//  页面切换
 // ============================================================
 function openChat(fromContacts) {
     fromContacts = fromContacts || false;
@@ -4085,16 +4084,16 @@ function openChat(fromContacts) {
     var role = getCurrentRole();
     if (role) saveDraft(role.id, document.getElementById('messageInput').value);
 
-    // 1. 隐藏桌面
     document.getElementById('launcherScreen').classList.add('hidden');
-    // 2. 关闭联系人界面（如果是从联系人来的，后续会重新打开）
-    document.getElementById('contactsScreen').classList.remove('open');
-    // 3. 关闭所有其他界面
+    if (fromContacts) {
+        document.getElementById('contactsScreen').classList.add('open');
+    } else {
+        document.getElementById('contactsScreen').classList.remove('open');
+    }
+    document.getElementById('chatScreen').classList.add('open');
     document.getElementById('memoryScreen').classList.remove('open');
     document.getElementById('memeScreen').classList.remove('open');
     document.getElementById('diaryScreen').classList.remove('open');
-    // 4. 打开聊天界面
-    document.getElementById('chatScreen').classList.add('open');
 
     var role2 = getCurrentRole();
     if (role2) {
@@ -4109,6 +4108,7 @@ function openChat(fromContacts) {
     updateChatTitle();
     lastMessageCount = -1;
     renderMessages();
+    if (document.getElementById('contactsScreen').classList.contains('open')) renderContacts();
     if (config.heart.floatingEnabled !== false) setTimeout(showFloatingHeart, 300);
 }
 
@@ -4515,13 +4515,44 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('settingsOverlay').addEventListener('click', function(e) {
         if (e.target === this) closeSettings();
     });
+
+    // ========== 保存设置按钮 ==========
     document.getElementById('saveSettingsBtn').addEventListener('click', function() {
-        config.apiKey = document.getElementById('apiKeyInput').value.trim();
-        config.model = document.getElementById('modelSelect').value;
+        var apiKey = document.getElementById('apiKeyInput').value.trim();
+        var model = document.getElementById('modelSelect').value;
+        // 读取温度
+        var temp = parseFloat(document.getElementById('tempSlider').value) || 0.9;
+        // 读取字号
+        var FONT_SIZE_MAP = ['small', 'medium', 'large', 'xlarge'];
+        var fontSizeIdx = parseInt(document.getElementById('fontSizeSlider').value) || 1;
+        // 读取字重
+        var FONT_WEIGHT_MAP = ['light', 'regular', 'medium', 'bold'];
+        var fontWeightIdx = parseInt(document.getElementById('fontWeightSlider').value) || 1;
+        // 读取分段生成
+        var splitVal = parseInt(document.getElementById('splitToggleSlider').value) || 1;
+
+        config.apiKey = apiKey;
+        config.model = model;
+        config.temperature = temp;
+        config.fontSize = FONT_SIZE_MAP[fontSizeIdx] || 'medium';
+        config.fontWeight = FONT_WEIGHT_MAP[fontWeightIdx] || 'regular';
+        config.splitEnabled = (splitVal === 1);
+
+        // 如果主题选择器存在则读取，否则保留原有
+        var themeSelector = document.querySelector('.theme-selector');
+        if (themeSelector) {
+            config.theme = themeSelector.value;
+        }
+
         saveAllData();
-        closeSettings();
+        // 应用字体设置
+        applyFontSettings();
         showToast('✅ 设置已保存');
+        closeSettings();
+        // 刷新消息显示
+        renderMessages();
     });
+
     document.getElementById('resetPermissionBtn').addEventListener('click', function() {
         config.permission = null;
         saveAllData();
