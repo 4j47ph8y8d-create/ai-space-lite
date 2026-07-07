@@ -38,6 +38,7 @@
         .lock-screen .lock-date { font-size: 18px; color: rgba(255,255,255,0.6); margin-top: 4px; }
         .lock-screen .lock-avatar { width: 72px; height: 72px; border-radius: 50%; background-color: #2ed573; background-size: cover; background-position: center; margin: 24px 0 8px; border: 2px solid rgba(255,255,255,0.1); }
         .lock-screen .lock-name { font-size: 20px; font-weight: 500; color: #fff; }
+        .lock-screen .lock-switch-hint { font-size: 13px; color: rgba(255,255,255,0.2); margin-top: 4px; }
         .lock-screen .lock-pin-dots { display: flex; gap: 16px; margin: 32px 0 20px; }
         .lock-screen .lock-pin-dots .dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.3); transition: 0.2s; }
         .lock-screen .lock-pin-dots .dot.filled { background: #fff; border-color: #fff; }
@@ -151,12 +152,11 @@
         .track-map-card { background: rgba(255,255,255,0.03); border-radius: 14px; padding: 16px; border: 1px solid rgba(255,255,255,0.04); min-height: 160px; }
         .track-map-card .map-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 120px; color: rgba(255,255,255,0.1); }
         .track-map-card .map-placeholder i { font-size: 48px; margin-bottom: 8px; }
-        .track-map-card .track-point { display: flex; align-items: flex-start; gap: 12px; padding: 6px 0; position: relative; }
-        .track-map-card .track-point .tp-dot { width: 10px; height: 10px; border-radius: 50%; background: #2ed573; flex-shrink: 0; margin-top: 6px; border: 2px solid rgba(46,213,115,0.2); }
-        .track-map-card .track-point .tp-line { position: absolute; left: 4px; top: 22px; width: 2px; height: calc(100% - 10px); background: rgba(255,255,255,0.04); }
-        .track-map-card .track-point:last-child .tp-line { display: none; }
+        .track-map-card .track-point { display: flex; align-items: flex-start; gap: 12px; padding: 8px 0; position: relative; border-bottom: 1px solid rgba(255,255,255,0.03); }
+        .track-map-card .track-point:last-child { border-bottom: none; }
+        .track-map-card .track-point .tp-dot { width: 10px; height: 10px; border-radius: 50%; background: #2ed573; flex-shrink: 0; margin-top: 5px; border: 2px solid rgba(46,213,115,0.2); }
         .track-map-card .track-point .tp-info { flex: 1; }
-        .track-map-card .track-point .tp-info .tp-title { font-size: 14px; color: #fff; }
+        .track-map-card .track-point .tp-info .tp-title { font-size: 14px; color: #fff; font-weight: 500; }
         .track-map-card .track-point .tp-info .tp-desc { font-size: 11px; color: rgba(255,255,255,0.3); }
         .track-map-card .track-point .tp-time { font-size: 10px; color: rgba(255,255,255,0.2); flex-shrink: 0; }
 
@@ -176,17 +176,11 @@
         .moments-item.m-private { border-left: 3px solid rgba(255,255,255,0.1); }
         .moments-item.m-private .m-header .m-privacy { color: #ff6b81; }
 
-        /* ===== 朋友圈个人主页 ===== */
-        .moments-profile { background: var(--moments-bg, #000); }
         .moments-profile .profile-cover { width: 100%; height: 160px; background: linear-gradient(135deg, #2d3436, #636e72); background-size: cover; background-position: center; position: relative; }
         .moments-profile .profile-cover .cover-avatar { position: absolute; bottom: -32px; left: 20px; width: 64px; height: 64px; border-radius: 50%; background-color: #2ed573; background-size: cover; background-position: center; border: 3px solid #000; }
         .moments-profile .profile-cover .cover-name { position: absolute; bottom: -20px; left: 96px; font-size: 18px; font-weight: 600; color: #fff; }
         .moments-profile .profile-body { padding: 40px 16px 16px; }
 
-        /* ===== 角色切换锁屏 ===== */
-        .lock-screen .lock-switch-hint { font-size: 13px; color: rgba(255,255,255,0.2); margin-top: 4px; }
-
-        /* ===== Toast ===== */
         .phone-toast { position: absolute; bottom: 120px; left: 50%; transform: translateX(-50%); background: rgba(255,255,255,0.12); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: #fff; padding: 10px 24px; border-radius: 12px; font-size: 13px; z-index: 300; animation: fadeInUp 0.3s ease; text-align: center; max-width: 80%; border: 1px solid rgba(255,255,255,0.06); }
         .phone-toast.hidden { display: none; }
         @keyframes fadeInUp { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
@@ -195,13 +189,13 @@
         .exit-btn-wrap .exit-btn { width: 100%; padding: 10px; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; background: rgba(255,255,255,0.02); color: rgba(255,255,255,0.2); font-size: 13px; cursor: pointer; font-family: inherit; transition: 0.15s; }
         .exit-btn-wrap .exit-btn:active { background: rgba(255,255,255,0.04); transform: scale(0.97); }
 
-        /* ===== 设置里的壁纸预览 ===== */
         .wallpaper-preview-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
         .wallpaper-preview-row .wpr-label { flex: 1; font-size: 14px; color: rgba(255,255,255,0.7); }
         .wallpaper-preview-row .wpr-preview { width: 40px; height: 40px; border-radius: 6px; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.06); overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 16px; color: rgba(255,255,255,0.1); }
         .wallpaper-preview-row .wpr-preview img { width: 100%; height: 100%; object-fit: cover; }
         .wallpaper-preview-row .wpr-btn { padding: 4px 12px; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; background: transparent; color: rgba(255,255,255,0.4); font-size: 11px; cursor: pointer; font-family: inherit; transition: 0.15s; }
         .wallpaper-preview-row .wpr-btn:active { background: rgba(255,255,255,0.05); transform: scale(0.95); }
+        .wallpaper-preview-row .wpr-btn.danger { color: #ff6b81; border-color: rgba(255,107,129,0.15); }
 
         @media (min-width: 431px) { .phone-frame { border-radius: 32px; height: 780px; max-height: 90vh; box-shadow: 0 20px 60px rgba(0,0,0,0.8); } body { padding: 12px; } }
         @media (max-width: 460px) { .phone-frame { border-radius: 0; height: 100vh; max-height: 100vh; } body { padding: 0; } }
@@ -210,7 +204,7 @@
 <body>
 <div class="phone-frame" id="app">
 
-    <!-- ===== 角色选择进入弹窗 ===== -->
+    <!-- ===== 角色选择进入 ===== -->
     <div class="entry-overlay" id="entryOverlay">
         <div class="entry-title">📱 他的手机</div>
         <div class="entry-sub">选择要进入的角色手机</div>
@@ -307,11 +301,10 @@
 
 <script>
 // ============================================================
-//  📱 他的手机 - 完整重构版
-//  特性：独立密码、角色切换锁屏、人设深度定制
+//  📱 他的手机 - 完整修复版
+//  修复：壁纸、切换角色、退出重进、好友消息、轨迹具体化
 // ============================================================
 
-// ===== 配置 =====
 var PHONE_CONFIG = {
     defaultPassword: '0000',
     noteCleanupDays: 3,
@@ -321,7 +314,6 @@ var PHONE_CONFIG = {
     wxAutoGenInterval: 86400000,
 };
 
-// ===== 数据 =====
 var phoneData = {};
 var allRoles = [];
 var currentRoleId = null;
@@ -330,8 +322,8 @@ var lockAttempts = 0;
 var wxChatTarget = null;
 var isSwitchingRole = false;
 var pendingSwitchRoleId = null;
+var isPhoneUnlocked = false;
 
-// ===== 工具 =====
 function generateId() { return 'id_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6); }
 
 function showToast(msg) {
@@ -346,15 +338,16 @@ function getRoleById(id) { return allRoles.find(function(r) { return r.id === id
 
 function getRolePassword(roleId) {
     if (!roleId) return PHONE_CONFIG.defaultPassword;
+    if (!phoneData.passwords) phoneData.passwords = {};
     return phoneData.passwords[roleId] || PHONE_CONFIG.defaultPassword;
 }
 
 function setRolePassword(roleId, password) {
+    if (!phoneData.passwords) phoneData.passwords = {};
     phoneData.passwords[roleId] = password;
     savePhoneData();
 }
 
-// ===== 数据持久化 =====
 function loadPhoneData() {
     try {
         var raw = localStorage.getItem('phone_data');
@@ -363,7 +356,7 @@ function loadPhoneData() {
         } else {
             phoneData = {
                 passwords: {},
-                notes: [],
+                notes: {},
                 browserHistory: {},
                 wxContacts: {},
                 wxMessages: {},
@@ -383,7 +376,7 @@ function loadPhoneData() {
     } catch (_) {
         phoneData = {
             passwords: {},
-            notes: [],
+            notes: {},
             browserHistory: {},
             wxContacts: {},
             wxMessages: {},
@@ -430,7 +423,6 @@ function loadRolesFromMain() {
     return [];
 }
 
-// ===== 提取生日 =====
 function extractBirthdayFromMemory(role) {
     if (!role || !Array.isArray(role.memory)) return null;
     var memories = role.memory.map(function(m) { return m.text || m; }).filter(function(t) { return t; });
@@ -487,7 +479,6 @@ function aiChangePassword(role, reason) {
     return newPass;
 }
 
-// ===== 角色数据管理（按角色隔离） =====
 function getRoleData(roleId, key, defaultVal) {
     if (!roleId) return defaultVal;
     var data = phoneData[key] || {};
@@ -503,34 +494,24 @@ function setRoleData(roleId, key, value) {
 
 function getRoleNotes(roleId) { return getRoleData(roleId, 'notes', []); }
 function setRoleNotes(roleId, notes) { setRoleData(roleId, 'notes', notes); }
-
 function getRoleBrowserHistory(roleId) { return getRoleData(roleId, 'browserHistory', []); }
 function setRoleBrowserHistory(roleId, history) { setRoleData(roleId, 'browserHistory', history); }
-
 function getRoleWxContacts(roleId) { return getRoleData(roleId, 'wxContacts', []); }
 function setRoleWxContacts(roleId, contacts) { setRoleData(roleId, 'wxContacts', contacts); }
-
 function getRoleWxMessages(roleId) { return getRoleData(roleId, 'wxMessages', {}); }
 function setRoleWxMessages(roleId, messages) { setRoleData(roleId, 'wxMessages', messages); }
-
 function getRoleSongs(roleId) { return getRoleData(roleId, 'songs', []); }
 function setRoleSongs(roleId, songs) { setRoleData(roleId, 'songs', songs); }
-
 function getRoleTracks(roleId) { return getRoleData(roleId, 'tracks', []); }
 function setRoleTracks(roleId, tracks) { setRoleData(roleId, 'tracks', tracks); }
-
 function getRoleMoments(roleId) { return getRoleData(roleId, 'moments', []); }
 function setRoleMoments(roleId, moments) { setRoleData(roleId, 'moments', moments); }
-
 function getRoleLastWxGen(roleId) { return getRoleData(roleId, 'lastWxGen', null); }
 function setRoleLastWxGen(roleId, time) { setRoleData(roleId, 'lastWxGen', time); }
-
 function getRoleLastSongGen(roleId) { return getRoleData(roleId, 'lastSongGen', null); }
 function setRoleLastSongGen(roleId, time) { setRoleData(roleId, 'lastSongGen', time); }
-
 function getRoleDesktopWallpaper(roleId) { return getRoleData(roleId, 'desktopWallpaper', ''); }
 function setRoleDesktopWallpaper(roleId, url) { setRoleData(roleId, 'desktopWallpaper', url); }
-
 function getRoleMomentsWallpaper(roleId) { return getRoleData(roleId, 'momentsWallpaper', ''); }
 function setRoleMomentsWallpaper(roleId, url) { setRoleData(roleId, 'momentsWallpaper', url); }
 
@@ -574,6 +555,8 @@ function renderLockScreen(roleId, isSwitch) {
     updateLockDots();
     document.getElementById('lockError').textContent = '';
     document.getElementById('lockKeypad').style.pointerEvents = 'auto';
+    // 确保锁屏显示
+    document.getElementById('lockScreen').classList.remove('unlocked');
 }
 
 function updateLockDots() {
@@ -611,13 +594,20 @@ function handleLockKey(key) {
                 isSwitchingRole = false;
                 phoneData.currentRoleId = currentRoleId;
                 savePhoneData();
-                showToast('✅ 已切换至「' + getRoleById(currentRoleId).name + '」的手机');
+                var newRole = getRoleById(currentRoleId);
+                if (newRole) showToast('✅ 已切换至「' + newRole.name + '」的手机');
+            } else {
+                isPhoneUnlocked = true;
+                phoneData.currentRoleId = currentRoleId;
+                savePhoneData();
             }
-            loadPhoneHome();
+
             var role = getCurrentPhoneRole();
             if (role) {
                 updateRolePasswordFromMemory(role);
                 generateAllData(role);
+                loadPhoneHome();
+                refreshAllApps();
             }
         } else {
             lockAttempts++;
@@ -664,11 +654,9 @@ function renderEntryScreen() {
             phoneData.currentRoleId = currentRoleId;
             savePhoneData();
             document.getElementById('entryOverlay').classList.add('hidden');
-            // 尝试从记忆库更新密码
             updateRolePasswordFromMemory(role);
+            isPhoneUnlocked = false;
             renderLockScreen(role.id, false);
-            // 解锁后进入
-            document.getElementById('lockScreen').classList.remove('unlocked');
         });
         list.appendChild(btn);
     });
@@ -719,21 +707,22 @@ function loadPhoneHome() {
     document.getElementById('phName').textContent = role.name;
     document.getElementById('phStatus').textContent = '点击切换角色';
 
-    // 应用桌面壁纸
     var wallpaper = getRoleDesktopWallpaper(role.id);
+    var home = document.getElementById('phoneHome');
     if (wallpaper) {
-        document.getElementById('phoneHome').style.setProperty('--desktop-bg', 'url(' + wallpaper + ')');
-        document.getElementById('phoneHome').style.backgroundImage = 'url(' + wallpaper + ')';
-        document.getElementById('phoneHome').style.backgroundSize = 'cover';
-        document.getElementById('phoneHome').style.backgroundPosition = 'center';
+        home.style.backgroundImage = 'url(' + wallpaper + ')';
+        home.style.backgroundSize = 'cover';
+        home.style.backgroundPosition = 'center';
+        home.style.backgroundColor = 'transparent';
     } else {
-        document.getElementById('phoneHome').style.setProperty('--desktop-bg', '#000');
-        document.getElementById('phoneHome').style.backgroundImage = 'none';
-        document.getElementById('phoneHome').style.backgroundColor = '#000';
+        home.style.backgroundImage = 'none';
+        home.style.backgroundColor = '#000';
     }
 
     updateStatusTime();
-    setInterval(updateStatusTime, 30000);
+    if (!window._statusInterval) {
+        window._statusInterval = setInterval(updateStatusTime, 30000);
+    }
 }
 
 function updateStatusTime() {
@@ -757,12 +746,9 @@ function startRoleSwitch() {
         item.innerHTML = '<div class="rs-avatar" style="' + avatarStyle + '"></div><span class="rs-name">' + role.name + ' <span style="font-size:11px;color:rgba(255,255,255,0.2);">' + (hasPassword ? '🔐' : '') + '</span></span>';
         item.addEventListener('click', function() {
             document.getElementById('roleSwitchOverlay').classList.remove('active');
-            // 切换到目标角色，需要锁屏验证
             pendingSwitchRoleId = role.id;
             isSwitchingRole = true;
-            document.getElementById('lockScreen').classList.remove('unlocked');
             renderLockScreen(role.id, true);
-            // 提示用户输入密码
             showToast('🔐 请输入 ' + role.name + ' 的密码');
         });
         list.appendChild(item);
@@ -770,7 +756,7 @@ function startRoleSwitch() {
     document.getElementById('roleSwitchOverlay').classList.add('active');
 }
 
-// ===== 生成所有数据（按角色） =====
+// ===== 生成所有数据 =====
 function generateAllData(role) {
     if (!role) return;
     generateBrowserHistory(role);
@@ -791,34 +777,22 @@ function generateBrowserHistory(role) {
     var contexts = userMessages.map(function(m) { return m.content; }).filter(function(c) { return c && c.length > 2; });
     var persona = (role.persona || '').toLowerCase();
     var bg = (role.background || '').toLowerCase();
+
     var isCold = persona.indexOf('冷') !== -1 || persona.indexOf('高冷') !== -1 || persona.indexOf('沉默') !== -1;
     var isGentle = persona.indexOf('温柔') !== -1 || persona.indexOf('暖') !== -1 || persona.indexOf('细腻') !== -1;
     var isArt = persona.indexOf('音乐') !== -1 || persona.indexOf('艺术') !== -1 || persona.indexOf('创作') !== -1 || bg.indexOf('琴') !== -1 || bg.indexOf('画') !== -1;
 
     var queryTemplates = [];
     if (isCold) {
-        queryTemplates = [
-            '怎么让人对你上心', '冷漠的人怎么表达爱', '为什么总是独来独往',
-            '如何变得更有温度', '喜欢一个人会有什么表现', '沉默的人在想什么'
-        ];
+        queryTemplates = ['怎么让人对你上心', '冷漠的人怎么表达爱', '为什么总是独来独往', '如何变得更有温度', '喜欢一个人会有什么表现', '沉默的人在想什么'];
     } else if (isGentle) {
-        queryTemplates = [
-            '怎么更好地关心别人', '温柔的人有哪些特质', '如何让关系更亲密',
-            '倾听是最好的安慰吗', '怎么表达爱意', '让人感到温暖的细节'
-        ];
+        queryTemplates = ['怎么更好地关心别人', '温柔的人有哪些特质', '如何让关系更亲密', '倾听是最好的安慰吗', '怎么表达爱意', '让人感到温暖的细节'];
     } else if (isArt) {
-        queryTemplates = [
-            '音乐如何治愈人心', '艺术家的内心世界', '创作灵感从哪里来',
-            '最打动人的一首歌', '艺术与生活的关系', '如何把情感写成歌'
-        ];
+        queryTemplates = ['音乐如何治愈人心', '艺术家的内心世界', '创作灵感从哪里来', '最打动人的一首歌', '艺术与生活的关系', '如何把情感写成歌'];
     } else {
-        queryTemplates = [
-            '如何与人相处', '怎么表达真实的自己', '关系中的安全感从哪里来',
-            '如何让生活更有意义', '每天都在想什么', '怎么判断一段感情'
-        ];
+        queryTemplates = ['如何与人相处', '怎么表达真实的自己', '关系中的安全感从哪里来', '如何让生活更有意义', '每天都在想什么', '怎么判断一段感情'];
     }
 
-    // 从上下文中提取关键词，匹配模板
     var contextText = contexts.join(' ');
     var matched = [];
     var templates = [
@@ -827,7 +801,6 @@ function generateBrowserHistory(role) {
         { keywords: ['工作', '累', '加班', '忙', '压力'], queries: ['如何缓解工作压力', '职场减压方法', '怎么平衡工作生活'] },
         { keywords: ['旅行', '想去', '玩', '假期', '周末'], queries: ['旅行推荐', '周末去哪儿', '小众旅行地'] },
         { keywords: ['学', '读', '看', '推荐', '书', '电影'], queries: ['好书推荐', '值得看的电影', '学新技能的方法'] },
-        { keywords: ['吃', '喝', '好吃', '美食', '餐厅'], queries: ['美食推荐', '必去的餐厅', '好吃的店'] },
         { keywords: ['喜欢', '爱', '心动', '好感'], queries: ['怎么判断对方喜欢你', '爱情中的小细节', '如何表达爱意'] },
     ];
     for (var i = 0; i < templates.length; i++) {
@@ -841,12 +814,9 @@ function generateBrowserHistory(role) {
     }
 
     var finalQueries = [];
-    // 先加匹配到的
     matched.forEach(function(q) { if (finalQueries.indexOf(q) === -1) finalQueries.push(q); });
-    // 再补人设模板
     var shuffled = queryTemplates.slice().sort(function() { return Math.random() - 0.5; });
     shuffled.forEach(function(q) { if (finalQueries.indexOf(q) === -1 && finalQueries.length < 6) finalQueries.push(q); });
-    // 如果还不够，补通用
     var fallbacks = ['如何让生活更有意义', '每天都开心的秘诀', '怎么做一个更好的人'];
     while (finalQueries.length < 3) {
         var fb = fallbacks[Math.floor(Math.random() * fallbacks.length)];
@@ -855,11 +825,7 @@ function generateBrowserHistory(role) {
 
     var tags = ['日常', '情感', '生活', '成长', '关系', '内心'];
     var history = finalQueries.slice(0, 6).map(function(q, idx) {
-        return {
-            query: q,
-            time: new Date(Date.now() - (idx + 1) * 600000).toLocaleString(),
-            tag: tags[idx % tags.length],
-        };
+        return { query: q, time: new Date(Date.now() - (idx + 1) * 600000).toLocaleString(), tag: tags[idx % tags.length] };
     });
     setRoleBrowserHistory(role.id, history);
 }
@@ -874,7 +840,6 @@ function generateNotes(role) {
     var persona = (role.persona || '').toLowerCase();
     var bg = (role.background || '').toLowerCase();
 
-    // 从聊天提取待办
     var patterns = [
         { regex: /(?:我|今天|明天|后天|下周|这周)(?:要|想|打算|准备|需要)(.+?)[。！？,.!?]/, label: '待办' },
         { regex: /(?:记住|记得|别忘了|不要忘记)(.+?)[。！？,.!?]/, label: '重要', important: true },
@@ -887,7 +852,6 @@ function generateNotes(role) {
         }
     }
 
-    // 生日
     var birthday = extractBirthdayFromMemory(role);
     if (birthday) {
         var month = birthday.substring(0,2);
@@ -895,11 +859,10 @@ function generateNotes(role) {
         noteTexts.push({ text: '🎂 用户生日：' + month + '月' + day + '日', label: '重要', important: true });
     }
 
-    // 从背景提取人设相关
     if (bg.indexOf('琴') !== -1 || bg.indexOf('音乐') !== -1 || persona.indexOf('音乐') !== -1) {
         noteTexts.push({ text: '🎵 练琴计划：每天2小时', label: '日常' });
     }
-    if (bg.indexOf('猫') !== -1 || bg.indexOf('宠物') !== -1 || bg.indexOf('养') !== -1) {
+    if (bg.indexOf('猫') !== -1 || bg.indexOf('宠物') !== -1) {
         var petMatch = bg.match(/(?:猫|狗|宠物)(?:叫|是|：|\s+)([^\s,，。；;、]{1,4})/);
         if (petMatch) {
             noteTexts.push({ text: '🐱 给 ' + petMatch[1] + ' 买罐头', label: '日常' });
@@ -907,17 +870,15 @@ function generateNotes(role) {
             noteTexts.push({ text: '🐱 买宠物零食', label: '日常' });
         }
     }
-    if (bg.indexOf('书店') !== -1 || bg.indexOf('阅读') !== -1 || persona.indexOf('阅读') !== -1) {
+    if (bg.indexOf('书') !== -1 || bg.indexOf('阅读') !== -1 || persona.indexOf('阅读') !== -1) {
         noteTexts.push({ text: '📚 新书到了，记得去取', label: '日常' });
     }
 
-    // 日常待办
     var dayNames = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
     var dayIndex = new Date().getDay();
     var todayName = dayNames[dayIndex === 0 ? 6 : dayIndex - 1];
     noteTexts.push({ text: '📋 ' + todayName + '待办：整理房间', label: '日常' });
 
-    // 去重保存
     var existing = getRoleNotes(role.id);
     var existingTexts = existing.map(function(n) { return n.text; });
     noteTexts.forEach(function(n) {
@@ -932,7 +893,6 @@ function generateNotes(role) {
         }
     });
 
-    // 清理
     var threeDaysAgo = Date.now() - PHONE_CONFIG.noteCleanupDays * 86400000;
     var important = existing.filter(function(n) { return n.important; });
     var regular = existing.filter(function(n) {
@@ -953,7 +913,6 @@ function generateWxContacts(role) {
     }
 
     var bgText = (role.persona || '') + ' ' + (role.background || '') + ' ' + (role.extra || '');
-    // 更精确的人名提取
     var patterns = [
         /好友(?:叫|是|：|\s+)([^\s,，。；;、]{2,4})/,
         /好朋友(?:叫|是|：|\s+)([^\s,，。；;、]{2,4})/,
@@ -963,7 +922,6 @@ function generateWxContacts(role) {
         /家人(?:叫|是|：|\s+)([^\s,，。；;、]{2,4})/,
         /同学(?:叫|是|：|\s+)([^\s,，。；;、]{2,4})/,
         /(?:妈妈|爸爸|姐姐|妹妹|哥哥|弟弟)(?:叫|是|：|\s+)([^\s,，。；;、]{2,4})/,
-        /(?:叫|是|：|\s+)([^\s,，。；;、]{2,4})(?:是)?(?:我的)?(?:好朋友|好友|闺蜜|兄弟|室友|家人|同学)/,
     ];
     var extractedNames = [];
     patterns.forEach(function(p) {
@@ -1006,7 +964,6 @@ function generateWxMessages(role) {
         '刚看到个东西，第一个想到你', '什么时候有空见一面？', '最近还好吗？'
     ];
 
-    // 根据人设调整
     if (persona.indexOf('温柔') !== -1) {
         templates = templates.map(function(t) {
             if (t.indexOf('好想你') !== -1) return '好想你呀 💕';
@@ -1130,13 +1087,11 @@ function generateSongs(role) {
         { name: '一路生花', artist: '温奕心', style: '温暖' },
     ];
 
-    // 用户提过的歌优先
     var mentioned = [];
     songPool.forEach(function(s) {
         if (allText.indexOf(s.name) !== -1) mentioned.push(s);
     });
 
-    // 根据人设筛选风格
     var styleKeys = [];
     if (persona.indexOf('温柔') !== -1 || persona.indexOf('暖') !== -1) styleKeys.push('温柔', '温暖');
     if (persona.indexOf('深') !== -1 || persona.indexOf('沉') !== -1) styleKeys.push('深情');
@@ -1152,14 +1107,9 @@ function generateSongs(role) {
         }
     });
 
-    // 合并
     var finalSongs = [];
-    mentioned.forEach(function(s) {
-        if (!finalSongs.some(function(f) { return f.name === s.name; })) finalSongs.push(s);
-    });
-    matched.forEach(function(s) {
-        if (!finalSongs.some(function(f) { return f.name === s.name; })) finalSongs.push(s);
-    });
+    mentioned.forEach(function(s) { if (!finalSongs.some(function(f) { return f.name === s.name; })) finalSongs.push(s); });
+    matched.forEach(function(s) { if (!finalSongs.some(function(f) { return f.name === s.name; })) finalSongs.push(s); });
     if (finalSongs.length < PHONE_CONFIG.dailySongsCount) {
         var shuffled = songPool.slice().sort(function() { return Math.random() - 0.5; });
         shuffled.forEach(function(s) {
@@ -1188,7 +1138,6 @@ function generateTracks(role) {
     if (!role) return;
     var bg = (role.background || '').toLowerCase();
     var persona = (role.persona || '').toLowerCase();
-    var extra = (role.extra || '').toLowerCase();
     var messages = role.messages || [];
     var chatText = messages.map(function(m) { return m.content; }).join(' ');
 
@@ -1196,80 +1145,109 @@ function generateTracks(role) {
     var isBook = bg.indexOf('书') !== -1 || bg.indexOf('阅读') !== -1 || persona.indexOf('阅读') !== -1;
     var isArt = bg.indexOf('画') !== -1 || bg.indexOf('设计') !== -1 || persona.indexOf('艺术') !== -1;
     var isCold = persona.indexOf('冷') !== -1 || persona.indexOf('高冷') !== -1;
+    var isWork = bg.indexOf('公司') !== -1 || bg.indexOf('上班') !== -1 || persona.indexOf('工作') !== -1;
 
-    var defaultTracks = [
-        { title: '家', desc: '出发', time: '08:30', icon: 'fa-location-dot' },
-        { title: '公司', desc: '工作', time: '09:30', icon: 'fa-circle' },
-        { title: '咖啡厅', desc: '休息', time: '14:00', icon: 'fa-circle' },
-        { title: '健身房', desc: '运动', time: '18:00', icon: 'fa-circle' },
-        { title: '家', desc: '回家', time: '20:00', icon: 'fa-location-dot' },
+    var now = new Date();
+    var timeSlots = [
+        { h: 7, m: 30, label: '07:30' },
+        { h: 9, m: 0, label: '09:00' },
+        { h: 12, m: 0, label: '12:00' },
+        { h: 14, m: 30, label: '14:30' },
+        { h: 17, m: 30, label: '17:30' },
+        { h: 19, m: 0, label: '19:00' },
+        { h: 21, m: 0, label: '21:00' },
     ];
 
+    var tracks = [];
+    var currentTime = new Date(now);
+    currentTime.setHours(8, 0, 0, 0);
+
     if (isMusic) {
-        defaultTracks = [
-            { title: '家', desc: '出发', time: '08:30', icon: 'fa-location-dot' },
-            { title: '琴房', desc: '练琴', time: '09:30', icon: 'fa-circle' },
-            { title: '唱片店', desc: '淘唱片', time: '14:00', icon: 'fa-circle' },
-            { title: '音乐厅', desc: '听音乐会', time: '18:00', icon: 'fa-circle' },
-            { title: '家', desc: '回家', time: '21:00', icon: 'fa-location-dot' },
+        tracks = [
+            { title: '家', desc: '起床，准备出发', time: '07:30', icon: 'fa-location-dot' },
+            { title: '琴房', desc: '练琴（肖邦夜曲）', time: '09:00', icon: 'fa-circle' },
+            { title: '咖啡厅', desc: '休息，听 demo', time: '12:00', icon: 'fa-circle' },
+            { title: '唱片店', desc: '淘黑胶唱片', time: '14:30', icon: 'fa-circle' },
+            { title: '音乐厅', desc: '排练 / 听音乐会', time: '17:30', icon: 'fa-circle' },
+            { title: '家', desc: '回家，整理乐谱', time: '21:00', icon: 'fa-location-dot' },
         ];
     } else if (isBook) {
-        defaultTracks = [
-            { title: '家', desc: '出发', time: '08:30', icon: 'fa-location-dot' },
-            { title: '图书馆', desc: '阅读', time: '09:30', icon: 'fa-circle' },
-            { title: '书店', desc: '淘书', time: '14:00', icon: 'fa-circle' },
-            { title: '咖啡厅', desc: '写作', time: '17:00', icon: 'fa-circle' },
-            { title: '家', desc: '回家', time: '20:00', icon: 'fa-location-dot' },
+        tracks = [
+            { title: '家', desc: '出发去图书馆', time: '07:30', icon: 'fa-location-dot' },
+            { title: '图书馆', desc: '阅读（文学/哲学）', time: '09:00', icon: 'fa-circle' },
+            { title: '书店', desc: '淘书，喝咖啡', time: '12:00', icon: 'fa-circle' },
+            { title: '公园', desc: '散步，思考', time: '14:30', icon: 'fa-circle' },
+            { title: '家', desc: '回家，写读书笔记', time: '17:30', icon: 'fa-location-dot' },
         ];
     } else if (isArt) {
-        defaultTracks = [
-            { title: '家', desc: '出发', time: '08:30', icon: 'fa-location-dot' },
-            { title: '画室', desc: '创作', time: '09:30', icon: 'fa-circle' },
-            { title: '美术馆', desc: '看展', time: '14:00', icon: 'fa-circle' },
-            { title: '公园', desc: '写生', time: '17:00', icon: 'fa-circle' },
-            { title: '家', desc: '回家', time: '19:00', icon: 'fa-location-dot' },
+        tracks = [
+            { title: '家', desc: '出发去画室', time: '07:30', icon: 'fa-location-dot' },
+            { title: '画室', desc: '创作（油画）', time: '09:00', icon: 'fa-circle' },
+            { title: '美术馆', desc: '看展 / 寻找灵感', time: '12:00', icon: 'fa-circle' },
+            { title: '公园', desc: '写生', time: '14:30', icon: 'fa-circle' },
+            { title: '家', desc: '回家，整理作品', time: '17:30', icon: 'fa-location-dot' },
         ];
     } else if (isCold) {
-        defaultTracks = [
-            { title: '家', desc: '出发', time: '08:00', icon: 'fa-location-dot' },
+        tracks = [
+            { title: '家', desc: '出发', time: '07:30', icon: 'fa-location-dot' },
             { title: '公司', desc: '工作', time: '09:00', icon: 'fa-circle' },
-            { title: '健身房', desc: '独处', time: '18:00', icon: 'fa-circle' },
+            { title: '健身房', desc: '独处，锻炼', time: '18:00', icon: 'fa-circle' },
             { title: '家', desc: '回家', time: '20:00', icon: 'fa-location-dot' },
+        ];
+    } else if (isWork) {
+        tracks = [
+            { title: '家', desc: '出发去公司', time: '07:30', icon: 'fa-location-dot' },
+            { title: '公司', desc: '工作 / 开会', time: '09:00', icon: 'fa-circle' },
+            { title: '餐厅', desc: '午餐', time: '12:00', icon: 'fa-circle' },
+            { title: '公司', desc: '继续工作', time: '13:30', icon: 'fa-circle' },
+            { title: '咖啡厅', desc: '下班后放松', time: '17:30', icon: 'fa-circle' },
+            { title: '家', desc: '回家', time: '19:00', icon: 'fa-location-dot' },
+        ];
+    } else {
+        tracks = [
+            { title: '家', desc: '出发', time: '07:30', icon: 'fa-location-dot' },
+            { title: '学校', desc: '上课 / 学习', time: '09:00', icon: 'fa-circle' },
+            { title: '图书馆', desc: '自习', time: '12:00', icon: 'fa-circle' },
+            { title: '咖啡厅', desc: '休息', time: '14:30', icon: 'fa-circle' },
+            { title: '家', desc: '回家', time: '17:30', icon: 'fa-location-dot' },
         ];
     }
 
-    // 从聊天中提取地点
+    // 从聊天中提取地点替换
     var places = [];
     var placePatterns = ['在', '去', '到', '回', '从', '往', '家', '学校', '公司', '图书馆', '咖啡厅', '书店', '公园', '商场', '餐厅', '电影院', '琴房', '画室', '音乐厅'];
     placePatterns.forEach(function(p) {
         var regex = new RegExp(p + '([^\s,，。；;、]{1,6})', 'g');
         var match;
         while ((match = regex.exec(chatText)) !== null) {
-            if (match[1] && match[1].length > 1 && match[1] !== '家' && match[1] !== '公司') {
+            if (match[1] && match[1].length > 1 && match[1] !== '家' && match[1] !== '公司' && match[1] !== '学校') {
                 places.push(match[1]);
             }
         }
     });
 
     if (places.length > 0) {
-        var finalPlaces = places.slice(0, 3);
-        defaultTracks = defaultTracks.map(function(t, idx) {
-            if (idx < finalPlaces.length) {
-                return { title: finalPlaces[idx], desc: '经过', time: t.time, icon: idx === 0 ? 'fa-location-dot' : 'fa-circle' };
+        var uniquePlaces = [];
+        places.forEach(function(p) { if (uniquePlaces.indexOf(p) === -1) uniquePlaces.push(p); });
+        var finalPlaces = uniquePlaces.slice(0, 3);
+        var replacedCount = 0;
+        tracks = tracks.map(function(t) {
+            if (replacedCount < finalPlaces.length && t.title !== '家' && t.title !== '琴房' && t.title !== '图书馆' && t.title !== '画室' && t.title !== '公司') {
+                var newTrack = { title: finalPlaces[replacedCount], desc: t.desc, time: t.time, icon: t.icon };
+                replacedCount++;
+                return newTrack;
             }
             return t;
         });
     }
 
-    setRoleTracks(role.id, defaultTracks);
+    setRoleTracks(role.id, tracks);
 }
 
 // ===== 朋友圈 =====
 function generateMoments(role) {
     if (!role) return;
     var now = Date.now();
-
-    // 清理（每15天）
     var moments = getRoleMoments(role.id);
     var lastCleanup = phoneData.lastMomentCleanup ? new Date(phoneData.lastMomentCleanup).getTime() : 0;
     if (now - lastCleanup > PHONE_CONFIG.momentsCleanupDays * 86400000) {
@@ -1280,7 +1258,6 @@ function generateMoments(role) {
         setRoleMoments(role.id, moments);
     }
 
-    // 每天最多2条
     var today = new Date().toDateString();
     var todayMoments = moments.filter(function(m) {
         return new Date(m.createdAt).toDateString() === today;
@@ -1293,7 +1270,6 @@ function generateMoments(role) {
     var persona = (role.persona || '').toLowerCase();
     var bg = (role.background || '').toLowerCase();
 
-    // 根据人设生成有质感的朋友圈
     var templates = [];
     var isGentle = persona.indexOf('温柔') !== -1 || persona.indexOf('暖') !== -1;
     var isCold = persona.indexOf('冷') !== -1 || persona.indexOf('高冷') !== -1;
@@ -1329,7 +1305,6 @@ function generateMoments(role) {
         ];
     }
 
-    // 从聊天中提取关键词匹配
     var matched = [];
     templates.forEach(function(t) {
         var words = t.text.split(' ');
@@ -1531,7 +1506,6 @@ function renderMaps() {
         var icon = track.icon || (idx === 0 ? 'fa-location-dot' : 'fa-circle');
         html += '<div class="track-point">' +
             '<div class="tp-dot"></div>' +
-            (idx < tracks.length - 1 ? '<div class="tp-line"></div>' : '') +
             '<div class="tp-info"><div class="tp-title"><i class="fas ' + icon + '" style="font-size:12px;color:#2ed573;margin-right:6px;"></i>' + track.title + '</div><div class="tp-desc">' + (track.desc || '') + '</div></div>' +
             '<div class="tp-time">' + (track.time || '') + '</div>' +
             '</div>';
@@ -1570,7 +1544,6 @@ function renderMoments() {
     });
     body.innerHTML = html;
 
-    // 点击头像或名字进入个人主页
     body.querySelectorAll('.m-avatar, .m-name').forEach(function(el) {
         el.addEventListener('click', function() {
             var name = this.dataset.role || 'TA';
@@ -1606,7 +1579,6 @@ function openMomentsProfile(name, avatar) {
     }
     document.getElementById('profileCoverName').textContent = name;
 
-    // 显示该角色的朋友圈
     var moments = getRoleMoments(role ? role.id : null);
     var body = document.getElementById('profileBody');
     if (!moments || moments.length === 0) {
@@ -1652,14 +1624,14 @@ function renderSettings() {
         '<div class="wpr-label">桌面壁纸</div>' +
         '<div class="wpr-preview" id="desktopPreview">' + (desktopWallpaper ? '<img src="' + desktopWallpaper + '" />' : '🏠') + '</div>' +
         '<button class="wpr-btn" id="setDesktopWallpaper">更换</button>' +
-        (desktopWallpaper ? '<button class="wpr-btn" id="removeDesktopWallpaper" style="color:#ff6b81;">移除</button>' : '') +
+        (desktopWallpaper ? '<button class="wpr-btn danger" id="removeDesktopWallpaper">移除</button>' : '') +
         '</div>' +
 
         '<div class="wallpaper-preview-row">' +
         '<div class="wpr-label">朋友圈壁纸</div>' +
         '<div class="wpr-preview" id="momentsPreview">' + (momentsWallpaper ? '<img src="' + momentsWallpaper + '" />' : '📷') + '</div>' +
         '<button class="wpr-btn" id="setMomentsWallpaper">更换</button>' +
-        (momentsWallpaper ? '<button class="wpr-btn" id="removeMomentsWallpaper" style="color:#ff6b81;">移除</button>' : '') +
+        (momentsWallpaper ? '<button class="wpr-btn danger" id="removeMomentsWallpaper">移除</button>' : '') +
         '</div>' +
 
         '</div>' +
@@ -1670,35 +1642,48 @@ function renderSettings() {
 
     body.innerHTML = html;
 
-    // 壁纸更换事件
-    document.getElementById('setDesktopWallpaper').addEventListener('click', function() {
-        if (CONFIG.permission === 'denied') { showToast('🚫 相册权限已被拒绝'); return; }
-        selectImage(function(dataUrl) {
-            setRoleDesktopWallpaper(role.id, dataUrl);
-            showToast('✅ 桌面壁纸已更新');
+    // 壁纸更换事件 - 使用更可靠的绑定方式
+    var setDesktopBtn = document.getElementById('setDesktopWallpaper');
+    if (setDesktopBtn) {
+        setDesktopBtn.onclick = function() {
+            selectImage(function(dataUrl) {
+                setRoleDesktopWallpaper(role.id, dataUrl);
+                showToast('✅ 桌面壁纸已更新');
+                renderSettings();
+                loadPhoneHome();
+            });
+        };
+    }
+
+    var removeDesktopBtn = document.getElementById('removeDesktopWallpaper');
+    if (removeDesktopBtn) {
+        removeDesktopBtn.onclick = function() {
+            setRoleDesktopWallpaper(role.id, '');
+            showToast('✅ 桌面壁纸已移除');
             renderSettings();
             loadPhoneHome();
-        });
-    });
-    document.getElementById('removeDesktopWallpaper') && document.getElementById('removeDesktopWallpaper').addEventListener('click', function() {
-        setRoleDesktopWallpaper(role.id, '');
-        showToast('✅ 桌面壁纸已移除');
-        renderSettings();
-        loadPhoneHome();
-    });
-    document.getElementById('setMomentsWallpaper').addEventListener('click', function() {
-        if (CONFIG.permission === 'denied') { showToast('🚫 相册权限已被拒绝'); return; }
-        selectImage(function(dataUrl) {
-            setRoleMomentsWallpaper(role.id, dataUrl);
-            showToast('✅ 朋友圈壁纸已更新');
+        };
+    }
+
+    var setMomentsBtn = document.getElementById('setMomentsWallpaper');
+    if (setMomentsBtn) {
+        setMomentsBtn.onclick = function() {
+            selectImage(function(dataUrl) {
+                setRoleMomentsWallpaper(role.id, dataUrl);
+                showToast('✅ 朋友圈壁纸已更新');
+                renderSettings();
+            });
+        };
+    }
+
+    var removeMomentsBtn = document.getElementById('removeMomentsWallpaper');
+    if (removeMomentsBtn) {
+        removeMomentsBtn.onclick = function() {
+            setRoleMomentsWallpaper(role.id, '');
+            showToast('✅ 朋友圈壁纸已移除');
             renderSettings();
-        });
-    });
-    document.getElementById('removeMomentsWallpaper') && document.getElementById('removeMomentsWallpaper').addEventListener('click', function() {
-        setRoleMomentsWallpaper(role.id, '');
-        showToast('✅ 朋友圈壁纸已移除');
-        renderSettings();
-    });
+        };
+    }
 }
 
 // ===== 图片选择 =====
@@ -1708,28 +1693,22 @@ function selectImage(callback) {
     input.accept = 'image/*';
     input.onchange = function(e) {
         var file = e.target.files[0];
-        if (!file) return;
+        if (!file) {
+            showToast('⚠️ 未选择图片');
+            return;
+        }
+        if (file.size > 5 * 1024 * 1024) {
+            showToast('⚠️ 图片超过5MB，请压缩后上传');
+            return;
+        }
         var reader = new FileReader();
         reader.onload = function(ev) {
-            // 压缩
-            var img = new Image();
-            img.onload = function() {
-                var canvas = document.createElement('canvas');
-                var ctx = canvas.getContext('2d');
-                var maxDim = 800;
-                var w = img.width, h = img.height;
-                if (w > maxDim || h > maxDim) {
-                    var ratio = Math.min(maxDim / w, maxDim / h);
-                    w = Math.round(w * ratio);
-                    h = Math.round(h * ratio);
-                }
-                canvas.width = w;
-                canvas.height = h;
-                ctx.drawImage(img, 0, 0, w, h);
-                var result = canvas.toDataURL('image/jpeg', 0.7);
-                callback(result);
-            };
-            img.src = ev.target.result;
+            var dataUrl = ev.target.result;
+            // 直接使用原图，不再压缩（简化流程，确保能用）
+            callback(dataUrl);
+        };
+        reader.onerror = function() {
+            showToast('⚠️ 读取图片失败');
         };
         reader.readAsDataURL(file);
     };
@@ -1739,7 +1718,9 @@ function selectImage(callback) {
 // ===== 刷新所有 App =====
 function refreshAllApps() {
     var role = getCurrentPhoneRole();
-    if (role) generateAllData(role);
+    if (role) {
+        generateAllData(role);
+    }
     renderBrowser();
     renderNotes();
     renderWechat();
@@ -1756,7 +1737,6 @@ function exitPhone() {
 
 // ===== 事件绑定 =====
 function initEvents() {
-    // 锁屏键盘
     document.querySelectorAll('#lockKeypad button[data-key]').forEach(function(btn) {
         btn.addEventListener('click', function() {
             handleLockKey(this.dataset.key);
@@ -1766,7 +1746,6 @@ function initEvents() {
         handleLockKey('delete');
     });
 
-    // App 点击
     document.querySelectorAll('.phone-app[data-app]').forEach(function(btn) {
         btn.addEventListener('click', function() {
             var app = this.dataset.app;
@@ -1786,7 +1765,6 @@ function initEvents() {
         });
     });
 
-    // App 返回
     document.querySelectorAll('.back-btn[data-back]').forEach(function(btn) {
         btn.addEventListener('click', function() {
             var pageId = this.dataset.back + 'Page';
@@ -1795,28 +1773,31 @@ function initEvents() {
         });
     });
 
-    // 微信聊天返回
     document.getElementById('wxChatBack').addEventListener('click', function() {
         document.getElementById('wxChatPage').classList.remove('open');
         renderWechat();
     });
 
-    // 朋友圈个人主页返回
     document.getElementById('momentsProfileBack').addEventListener('click', function() {
         document.getElementById('momentsProfilePage').classList.remove('open');
     });
 
-    // 角色切换
     document.getElementById('phSwitchBtn').addEventListener('click', startRoleSwitch);
     document.getElementById('phoneHeader').addEventListener('click', startRoleSwitch);
 
-    // 刷新按钮
     document.getElementById('safariRefresh').addEventListener('click', function() { var r = getCurrentPhoneRole(); if (r) generateBrowserHistory(r); renderBrowser(); showToast('🔄 已刷新'); });
     document.getElementById('notesRefresh').addEventListener('click', function() { var r = getCurrentPhoneRole(); if (r) generateNotes(r); renderNotes(); showToast('🔄 已刷新'); });
     document.getElementById('wechatRefresh').addEventListener('click', function() { var r = getCurrentPhoneRole(); if (r) { generateWxMessages(r); syncMainChatToWx(r); } renderWechat(); showToast('🔄 已刷新'); });
     document.getElementById('musicRefresh').addEventListener('click', function() { var r = getCurrentPhoneRole(); if (r) generateSongs(r); renderMusic(); showToast('🔄 歌单已刷新'); });
     document.getElementById('mapsRefresh').addEventListener('click', function() { var r = getCurrentPhoneRole(); if (r) generateTracks(r); renderMaps(); showToast('🔄 已刷新'); });
     document.getElementById('momentsRefresh').addEventListener('click', function() { var r = getCurrentPhoneRole(); if (r) generateMoments(r); renderMoments(); showToast('🔄 已刷新'); });
+
+    // 点击遮罩关闭角色切换弹窗
+    document.getElementById('roleSwitchOverlay').addEventListener('click', function(e) {
+        if (e.target === this) {
+            this.classList.remove('active');
+        }
+    });
 }
 
 // ===== 初始化 =====
@@ -1824,10 +1805,15 @@ function init() {
     loadRolesFromMain();
     loadPhoneData();
 
-    // 显示角色选择进入界面
+    // 重置状态
+    isPhoneUnlocked = false;
+    pendingSwitchRoleId = null;
+    isSwitchingRole = false;
+
+    // 显示角色选择界面
     renderEntryScreen();
 
-    // 如果有之前选择的角色，直接显示锁屏
+    // 如果有之前选择的角色，显示锁屏
     if (phoneData.currentRoleId && getRoleById(phoneData.currentRoleId)) {
         currentRoleId = phoneData.currentRoleId;
         document.getElementById('entryOverlay').classList.add('hidden');
@@ -1840,23 +1826,13 @@ function init() {
 
     initEvents();
 
-    // 如果锁屏已解锁（从进入界面直接解锁的），加载数据
-    if (document.getElementById('lockScreen').classList.contains('unlocked')) {
-        var role2 = getCurrentPhoneRole();
-        if (role2) {
-            generateAllData(role2);
-            loadPhoneHome();
-        }
-    }
-
-    console.log('📱 他的手机 v2.0 已启动');
+    console.log('📱 他的手机 v2.1 已启动');
     console.log('角色数:', allRoles.length);
-    console.log('当前角色:', currentRoleId ? getRoleById(currentRoleId)?.name : '未选择');
+    console.log('当前角色:', currentRoleId ? (getRoleById(currentRoleId)?.name || '未知') : '未选择');
 }
 
-// 监听锁屏解锁事件
 document.addEventListener('DOMContentLoaded', function() {
-    // 等待锁屏解锁后加载数据
+    // 监听锁屏解锁
     var observer = new MutationObserver(function() {
         if (document.getElementById('lockScreen').classList.contains('unlocked')) {
             var role = getCurrentPhoneRole();
@@ -1864,6 +1840,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 generateAllData(role);
                 loadPhoneHome();
                 refreshAllApps();
+                // 移除解锁后自动关闭所有 App 页面
+                document.querySelectorAll('.app-page.open').forEach(function(p) {
+                    p.classList.remove('open');
+                });
             }
             observer.disconnect();
         }
