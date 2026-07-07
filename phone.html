@@ -9,13 +9,27 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
         body { background: #000; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 0; margin: 0; }
         .phone-frame { width: 100%; max-width: 430px; height: 100vh; max-height: 100vh; background: #000; border-radius: 0; overflow: hidden; position: relative; box-shadow: none; }
-        :root { --safe-top: 0px; --safe-bottom: 0px; }
+        :root { --safe-top: 0px; --safe-bottom: 0px; --desktop-bg: #000; --moments-bg: #000; }
         @supports (padding: env(safe-area-inset-top)) { :root { --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px); } }
 
         .hidden { display: none !important; }
         ::-webkit-scrollbar { width: 3px; }
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
+
+        /* ===== 角色选择进入 ===== */
+        .entry-overlay { position: absolute; inset: 0; z-index: 150; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px 20px; }
+        .entry-overlay.hidden { display: none; }
+        .entry-overlay .entry-title { font-size: 22px; font-weight: 600; color: #fff; margin-bottom: 6px; }
+        .entry-overlay .entry-sub { font-size: 14px; color: rgba(255,255,255,0.3); margin-bottom: 24px; }
+        .entry-overlay .entry-role-list { width: 100%; max-width: 300px; max-height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+        .entry-overlay .entry-role-btn { display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; cursor: pointer; transition: 0.2s; font-family: inherit; width: 100%; text-align: left; }
+        .entry-overlay .entry-role-btn:active { transform: scale(0.97); background: rgba(255,255,255,0.08); }
+        .entry-overlay .entry-role-btn .er-avatar { width: 44px; height: 44px; border-radius: 50%; background-color: #2ed573; background-size: cover; background-position: center; flex-shrink: 0; }
+        .entry-overlay .entry-role-btn .er-info { flex: 1; }
+        .entry-overlay .entry-role-btn .er-info .er-name { font-size: 15px; font-weight: 600; color: #fff; }
+        .entry-overlay .entry-role-btn .er-info .er-hint { font-size: 11px; color: rgba(255,255,255,0.2); }
+        .entry-overlay .entry-role-btn .er-lock { font-size: 14px; color: rgba(255,255,255,0.15); }
 
         /* ===== 锁屏 ===== */
         .lock-screen { width: 100%; height: 100%; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; position: absolute; top: 0; left: 0; z-index: 100; transition: opacity 0.5s ease; }
@@ -37,13 +51,12 @@
         .lock-screen .lock-keypad .key-delete { font-size: 18px; color: rgba(255,255,255,0.5); }
 
         /* ===== 主界面 ===== */
-        .phone-home { width: 100%; height: 100%; background: #000; display: flex; flex-direction: column; position: absolute; top: 0; left: 0; z-index: 10; }
-
-        .phone-status { display: flex; justify-content: space-between; padding: calc(8px + var(--safe-top, 0px)) 20px 8px; font-size: 12px; color: #fff; flex-shrink: 0; }
+        .phone-home { width: 100%; height: 100%; background: var(--desktop-bg, #000); display: flex; flex-direction: column; position: absolute; top: 0; left: 0; z-index: 10; transition: background 0.3s; }
+        .phone-status { display: flex; justify-content: space-between; padding: calc(8px + var(--safe-top, 0px)) 20px 8px; font-size: 12px; color: #fff; flex-shrink: 0; background: transparent; }
         .phone-status .status-time { font-weight: 600; }
         .phone-status .status-icons { display: flex; gap: 6px; font-size: 13px; }
 
-        .phone-header { display: flex; align-items: center; gap: 12px; padding: 4px 20px 12px; border-bottom: 1px solid rgba(255,255,255,0.06); flex-shrink: 0; cursor: pointer; }
+        .phone-header { display: flex; align-items: center; gap: 12px; padding: 4px 20px 12px; border-bottom: 1px solid rgba(255,255,255,0.06); flex-shrink: 0; cursor: pointer; background: transparent; }
         .phone-header .ph-avatar { width: 36px; height: 36px; border-radius: 50%; background-color: #2ed573; background-size: cover; background-position: center; flex-shrink: 0; border: 2px solid rgba(255,255,255,0.1); }
         .phone-header .ph-info { flex: 1; }
         .phone-header .ph-info .ph-name { font-size: 16px; font-weight: 600; color: #fff; }
@@ -65,7 +78,7 @@
         .phone-app .app-icon.back { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.4); }
         .phone-app .app-name { font-size: 10px; color: rgba(255,255,255,0.7); text-align: center; line-height: 1.2; }
 
-        .phone-dock { display: flex; justify-content: center; gap: 24px; padding: 12px 20px calc(12px + var(--safe-bottom, 0px)); border-top: 1px solid rgba(255,255,255,0.06); flex-shrink: 0; }
+        .phone-dock { display: flex; justify-content: center; gap: 24px; padding: 12px 20px calc(12px + var(--safe-bottom, 0px)); border-top: 1px solid rgba(255,255,255,0.06); flex-shrink: 0; background: transparent; }
         .phone-dock .phone-app .app-icon { width: 48px; height: 48px; border-radius: 12px; font-size: 20px; }
 
         /* ===== App 页面 ===== */
@@ -148,10 +161,13 @@
         .track-map-card .track-point .tp-time { font-size: 10px; color: rgba(255,255,255,0.2); flex-shrink: 0; }
 
         /* ===== 朋友圈 ===== */
-        .moments-item { background: rgba(255,255,255,0.03); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.04); }
+        .moments-item { background: rgba(255,255,255,0.03); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.04); cursor: pointer; transition: 0.15s; }
+        .moments-item:active { transform: scale(0.98); }
         .moments-item .m-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
-        .moments-item .m-header .m-avatar { width: 36px; height: 36px; border-radius: 50%; background-color: #2ed573; background-size: cover; background-position: center; flex-shrink: 0; }
-        .moments-item .m-header .m-name { font-size: 14px; font-weight: 500; color: #fff; }
+        .moments-item .m-header .m-avatar { width: 36px; height: 36px; border-radius: 50%; background-color: #2ed573; background-size: cover; background-position: center; flex-shrink: 0; cursor: pointer; }
+        .moments-item .m-header .m-avatar:active { transform: scale(0.92); }
+        .moments-item .m-header .m-name { font-size: 14px; font-weight: 500; color: #fff; cursor: pointer; }
+        .moments-item .m-header .m-name:active { opacity: 0.6; }
         .moments-item .m-header .m-time { font-size: 10px; color: rgba(255,255,255,0.2); margin-left: auto; }
         .moments-item .m-header .m-privacy { font-size: 10px; color: rgba(255,255,255,0.15); }
         .moments-item .m-content { font-size: 14px; color: rgba(255,255,255,0.85); line-height: 1.6; }
@@ -160,22 +176,17 @@
         .moments-item.m-private { border-left: 3px solid rgba(255,255,255,0.1); }
         .moments-item.m-private .m-header .m-privacy { color: #ff6b81; }
 
-        /* ===== 角色切换弹窗 ===== */
-        .role-switch-overlay { position: absolute; inset: 0; z-index: 200; background: rgba(0,0,0,0.6); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: none; justify-content: center; align-items: center; }
-        .role-switch-overlay.active { display: flex; }
-        .role-switch-panel { background: rgba(30,30,40,0.95); border-radius: 20px; padding: 24px 20px 20px; max-width: 320px; width: 90%; border: 1px solid rgba(255,255,255,0.06); }
-        .role-switch-panel h3 { color: #fff; font-size: 17px; text-align: center; margin-bottom: 4px; }
-        .role-switch-panel p { color: rgba(255,255,255,0.3); font-size: 13px; text-align: center; margin-bottom: 16px; }
-        .role-switch-panel .rs-list { display: flex; flex-direction: column; gap: 8px; max-height: 300px; overflow-y: auto; }
-        .role-switch-panel .rs-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 12px; background: rgba(255,255,255,0.03); cursor: pointer; transition: 0.15s; border: 1px solid transparent; }
-        .role-switch-panel .rs-item:active { transform: scale(0.97); }
-        .role-switch-panel .rs-item.active { border-color: #2ed573; background: rgba(46,213,115,0.06); }
-        .role-switch-panel .rs-item .rs-avatar { width: 36px; height: 36px; border-radius: 50%; background-color: #2ed573; background-size: cover; background-position: center; flex-shrink: 0; }
-        .role-switch-panel .rs-item .rs-name { flex: 1; font-size: 14px; color: #fff; }
-        .role-switch-panel .rs-item .rs-check { color: #2ed573; font-size: 16px; }
-        .role-switch-panel .rs-cancel { width: 100%; margin-top: 12px; padding: 10px; border: none; border-radius: 12px; background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.4); font-size: 14px; cursor: pointer; font-family: inherit; transition: 0.15s; }
-        .role-switch-panel .rs-cancel:active { transform: scale(0.97); }
+        /* ===== 朋友圈个人主页 ===== */
+        .moments-profile { background: var(--moments-bg, #000); }
+        .moments-profile .profile-cover { width: 100%; height: 160px; background: linear-gradient(135deg, #2d3436, #636e72); background-size: cover; background-position: center; position: relative; }
+        .moments-profile .profile-cover .cover-avatar { position: absolute; bottom: -32px; left: 20px; width: 64px; height: 64px; border-radius: 50%; background-color: #2ed573; background-size: cover; background-position: center; border: 3px solid #000; }
+        .moments-profile .profile-cover .cover-name { position: absolute; bottom: -20px; left: 96px; font-size: 18px; font-weight: 600; color: #fff; }
+        .moments-profile .profile-body { padding: 40px 16px 16px; }
 
+        /* ===== 角色切换锁屏 ===== */
+        .lock-screen .lock-switch-hint { font-size: 13px; color: rgba(255,255,255,0.2); margin-top: 4px; }
+
+        /* ===== Toast ===== */
         .phone-toast { position: absolute; bottom: 120px; left: 50%; transform: translateX(-50%); background: rgba(255,255,255,0.12); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: #fff; padding: 10px 24px; border-radius: 12px; font-size: 13px; z-index: 300; animation: fadeInUp 0.3s ease; text-align: center; max-width: 80%; border: 1px solid rgba(255,255,255,0.06); }
         .phone-toast.hidden { display: none; }
         @keyframes fadeInUp { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
@@ -184,18 +195,35 @@
         .exit-btn-wrap .exit-btn { width: 100%; padding: 10px; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; background: rgba(255,255,255,0.02); color: rgba(255,255,255,0.2); font-size: 13px; cursor: pointer; font-family: inherit; transition: 0.15s; }
         .exit-btn-wrap .exit-btn:active { background: rgba(255,255,255,0.04); transform: scale(0.97); }
 
+        /* ===== 设置里的壁纸预览 ===== */
+        .wallpaper-preview-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+        .wallpaper-preview-row .wpr-label { flex: 1; font-size: 14px; color: rgba(255,255,255,0.7); }
+        .wallpaper-preview-row .wpr-preview { width: 40px; height: 40px; border-radius: 6px; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.06); overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 16px; color: rgba(255,255,255,0.1); }
+        .wallpaper-preview-row .wpr-preview img { width: 100%; height: 100%; object-fit: cover; }
+        .wallpaper-preview-row .wpr-btn { padding: 4px 12px; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; background: transparent; color: rgba(255,255,255,0.4); font-size: 11px; cursor: pointer; font-family: inherit; transition: 0.15s; }
+        .wallpaper-preview-row .wpr-btn:active { background: rgba(255,255,255,0.05); transform: scale(0.95); }
+
         @media (min-width: 431px) { .phone-frame { border-radius: 32px; height: 780px; max-height: 90vh; box-shadow: 0 20px 60px rgba(0,0,0,0.8); } body { padding: 12px; } }
         @media (max-width: 460px) { .phone-frame { border-radius: 0; height: 100vh; max-height: 100vh; } body { padding: 0; } }
     </style>
 </head>
 <body>
 <div class="phone-frame" id="app">
+
+    <!-- ===== 角色选择进入弹窗 ===== -->
+    <div class="entry-overlay" id="entryOverlay">
+        <div class="entry-title">📱 他的手机</div>
+        <div class="entry-sub">选择要进入的角色手机</div>
+        <div class="entry-role-list" id="entryRoleList"></div>
+    </div>
+
     <!-- ===== 锁屏 ===== -->
     <div class="lock-screen" id="lockScreen">
         <div class="lock-time" id="lockTime">09:41</div>
         <div class="lock-date" id="lockDate">2026年7月7日</div>
         <div class="lock-avatar" id="lockAvatar" style="background-color:#2ed573;"></div>
         <div class="lock-name" id="lockName">未绑定</div>
+        <div class="lock-switch-hint" id="lockSwitchHint"></div>
         <div class="lock-pin-dots" id="lockDots">
             <span class="dot" data-i="0"></span>
             <span class="dot" data-i="1"></span>
@@ -260,14 +288,17 @@
     <div class="app-page" id="momentsPage"><div class="app-page-header"><button class="back-btn" data-back="moments"><i class="fas fa-chevron-left"></i></button><div class="title">📷 朋友圈</div><button class="action-btn" id="momentsRefresh" title="刷新"><i class="fas fa-rotate"></i></button></div><div class="app-page-body" id="momentsBody"></div></div>
     <div class="app-page" id="settingsPage"><div class="app-page-header"><button class="back-btn" data-back="settings"><i class="fas fa-chevron-left"></i></button><div class="title">⚙️ 设置</div></div><div class="app-page-body" id="settingsBody"></div></div>
 
-    <!-- ===== 角色切换弹窗 ===== -->
-    <div class="role-switch-overlay" id="roleSwitchOverlay">
-        <div class="role-switch-panel">
-            <h3>切换角色</h3>
-            <p>选择要作为「手机主人」的角色</p>
-            <div class="rs-list" id="roleSwitchList"></div>
-            <button class="rs-cancel" id="roleSwitchCancel">取消</button>
+    <!-- ===== 朋友圈个人主页 ===== -->
+    <div class="app-page moments-profile" id="momentsProfilePage">
+        <div class="app-page-header">
+            <button class="back-btn" id="momentsProfileBack"><i class="fas fa-chevron-left"></i></button>
+            <div class="title" id="momentsProfileTitle">朋友圈</div>
         </div>
+        <div class="profile-cover" id="profileCover">
+            <div class="cover-avatar" id="profileCoverAvatar" style="background-color:#2ed573;"></div>
+            <div class="cover-name" id="profileCoverName">TA</div>
+        </div>
+        <div class="profile-body" id="profileBody"></div>
     </div>
 
     <!-- ===== Toast ===== -->
@@ -276,7 +307,8 @@
 
 <script>
 // ============================================================
-//  📱 他的手机 - 完整功能
+//  📱 他的手机 - 完整重构版
+//  特性：独立密码、角色切换锁屏、人设深度定制
 // ============================================================
 
 // ===== 配置 =====
@@ -292,9 +324,12 @@ var PHONE_CONFIG = {
 // ===== 数据 =====
 var phoneData = {};
 var allRoles = [];
+var currentRoleId = null;
 var lockPin = '';
 var lockAttempts = 0;
 var wxChatTarget = null;
+var isSwitchingRole = false;
+var pendingSwitchRoleId = null;
 
 // ===== 工具 =====
 function generateId() { return 'id_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6); }
@@ -309,6 +344,16 @@ function showToast(msg) {
 
 function getRoleById(id) { return allRoles.find(function(r) { return r.id === id; }) || null; }
 
+function getRolePassword(roleId) {
+    if (!roleId) return PHONE_CONFIG.defaultPassword;
+    return phoneData.passwords[roleId] || PHONE_CONFIG.defaultPassword;
+}
+
+function setRolePassword(roleId, password) {
+    phoneData.passwords[roleId] = password;
+    savePhoneData();
+}
+
 // ===== 数据持久化 =====
 function loadPhoneData() {
     try {
@@ -317,46 +362,55 @@ function loadPhoneData() {
             phoneData = JSON.parse(raw);
         } else {
             phoneData = {
-                password: PHONE_CONFIG.defaultPassword,
-                roleId: null,
+                passwords: {},
                 notes: [],
-                browserHistory: [],
-                wxContacts: [],
+                browserHistory: {},
+                wxContacts: {},
                 wxMessages: {},
-                songs: [],
-                tracks: [],
-                moments: [],
-                lastWxGen: null,
-                lastSongGen: null,
+                songs: {},
+                tracks: {},
+                moments: {},
+                lastWxGen: {},
+                lastSongGen: {},
                 lastNoteCleanup: null,
                 lastMomentCleanup: null,
-                passwordChangedByAI: false,
-                passwordChangeReason: '',
-                mentionedSongs: [],
+                desktopWallpaper: {},
+                momentsWallpaper: {},
+                currentRoleId: null,
             };
             savePhoneData();
         }
     } catch (_) {
         phoneData = {
-            password: PHONE_CONFIG.defaultPassword,
-            roleId: null,
+            passwords: {},
             notes: [],
-            browserHistory: [],
-            wxContacts: [],
+            browserHistory: {},
+            wxContacts: {},
             wxMessages: {},
-            songs: [],
-            tracks: [],
-            moments: [],
-            lastWxGen: null,
-            lastSongGen: null,
+            songs: {},
+            tracks: {},
+            moments: {},
+            lastWxGen: {},
+            lastSongGen: {},
             lastNoteCleanup: null,
             lastMomentCleanup: null,
-            passwordChangedByAI: false,
-            passwordChangeReason: '',
-            mentionedSongs: [],
+            desktopWallpaper: {},
+            momentsWallpaper: {},
+            currentRoleId: null,
         };
         savePhoneData();
     }
+    if (!phoneData.passwords) phoneData.passwords = {};
+    if (!phoneData.desktopWallpaper) phoneData.desktopWallpaper = {};
+    if (!phoneData.momentsWallpaper) phoneData.momentsWallpaper = {};
+    if (!phoneData.browserHistory) phoneData.browserHistory = {};
+    if (!phoneData.wxContacts) phoneData.wxContacts = {};
+    if (!phoneData.wxMessages) phoneData.wxMessages = {};
+    if (!phoneData.songs) phoneData.songs = {};
+    if (!phoneData.tracks) phoneData.tracks = {};
+    if (!phoneData.moments) phoneData.moments = {};
+    if (!phoneData.lastWxGen) phoneData.lastWxGen = {};
+    if (!phoneData.lastSongGen) phoneData.lastSongGen = {};
 }
 
 function savePhoneData() {
@@ -374,19 +428,6 @@ function loadRolesFromMain() {
     } catch (_) {}
     allRoles = [];
     return [];
-}
-
-function getCurrentPhoneRole() {
-    if (phoneData.roleId) {
-        var role = getRoleById(phoneData.roleId);
-        if (role) return role;
-    }
-    if (allRoles.length > 0) {
-        phoneData.roleId = allRoles[0].id;
-        savePhoneData();
-        return allRoles[0];
-    }
-    return null;
 }
 
 // ===== 提取生日 =====
@@ -411,14 +452,12 @@ function extractBirthdayFromMemory(role) {
     return null;
 }
 
-function updatePasswordFromMemory(role) {
+function updateRolePasswordFromMemory(role) {
     if (!role) return false;
     var birthday = extractBirthdayFromMemory(role);
     if (birthday) {
-        phoneData.password = birthday;
-        phoneData.passwordChangedByAI = false;
-        savePhoneData();
-        showToast('🔐 密码已更新为生日：' + birthday);
+        setRolePassword(role.id, birthday);
+        showToast('🔐 ' + role.name + ' 的密码已更新为生日：' + birthday);
         return true;
     }
     return false;
@@ -427,10 +466,7 @@ function updatePasswordFromMemory(role) {
 function aiChangePassword(role, reason) {
     if (!role) return null;
     var newPass = String(1000 + Math.floor(Math.random() * 9000));
-    phoneData.password = newPass;
-    phoneData.passwordChangedByAI = true;
-    phoneData.passwordChangeReason = reason || 'AI 主动更换密码';
-    savePhoneData();
+    setRolePassword(role.id, newPass);
     if (Array.isArray(role.memory)) {
         var memText = '🔐 手机密码已更改为：' + newPass + '（' + (reason || 'AI 主动更换') + '）';
         role.memory.push({ text: memText, sourceMessageId: 'phone_ai_change_' + Date.now() });
@@ -447,35 +483,90 @@ function aiChangePassword(role, reason) {
             }
         } catch (_) {}
     }
-    showToast('🔐 AI 已更改密码为：' + newPass);
+    showToast('🔐 ' + role.name + ' 的密码已更改为：' + newPass);
     return newPass;
 }
 
+// ===== 角色数据管理（按角色隔离） =====
+function getRoleData(roleId, key, defaultVal) {
+    if (!roleId) return defaultVal;
+    var data = phoneData[key] || {};
+    return data[roleId] !== undefined ? data[roleId] : defaultVal;
+}
+
+function setRoleData(roleId, key, value) {
+    if (!roleId) return;
+    if (!phoneData[key]) phoneData[key] = {};
+    phoneData[key][roleId] = value;
+    savePhoneData();
+}
+
+function getRoleNotes(roleId) { return getRoleData(roleId, 'notes', []); }
+function setRoleNotes(roleId, notes) { setRoleData(roleId, 'notes', notes); }
+
+function getRoleBrowserHistory(roleId) { return getRoleData(roleId, 'browserHistory', []); }
+function setRoleBrowserHistory(roleId, history) { setRoleData(roleId, 'browserHistory', history); }
+
+function getRoleWxContacts(roleId) { return getRoleData(roleId, 'wxContacts', []); }
+function setRoleWxContacts(roleId, contacts) { setRoleData(roleId, 'wxContacts', contacts); }
+
+function getRoleWxMessages(roleId) { return getRoleData(roleId, 'wxMessages', {}); }
+function setRoleWxMessages(roleId, messages) { setRoleData(roleId, 'wxMessages', messages); }
+
+function getRoleSongs(roleId) { return getRoleData(roleId, 'songs', []); }
+function setRoleSongs(roleId, songs) { setRoleData(roleId, 'songs', songs); }
+
+function getRoleTracks(roleId) { return getRoleData(roleId, 'tracks', []); }
+function setRoleTracks(roleId, tracks) { setRoleData(roleId, 'tracks', tracks); }
+
+function getRoleMoments(roleId) { return getRoleData(roleId, 'moments', []); }
+function setRoleMoments(roleId, moments) { setRoleData(roleId, 'moments', moments); }
+
+function getRoleLastWxGen(roleId) { return getRoleData(roleId, 'lastWxGen', null); }
+function setRoleLastWxGen(roleId, time) { setRoleData(roleId, 'lastWxGen', time); }
+
+function getRoleLastSongGen(roleId) { return getRoleData(roleId, 'lastSongGen', null); }
+function setRoleLastSongGen(roleId, time) { setRoleData(roleId, 'lastSongGen', time); }
+
+function getRoleDesktopWallpaper(roleId) { return getRoleData(roleId, 'desktopWallpaper', ''); }
+function setRoleDesktopWallpaper(roleId, url) { setRoleData(roleId, 'desktopWallpaper', url); }
+
+function getRoleMomentsWallpaper(roleId) { return getRoleData(roleId, 'momentsWallpaper', ''); }
+function setRoleMomentsWallpaper(roleId, url) { setRoleData(roleId, 'momentsWallpaper', url); }
+
 // ===== 锁屏 =====
-function renderLockScreen() {
+function renderLockScreen(roleId, isSwitch) {
+    var role = roleId ? getRoleById(roleId) : getCurrentPhoneRole();
+    if (!role) {
+        document.getElementById('lockName').textContent = '未绑定';
+        document.getElementById('lockAvatar').style.backgroundImage = '';
+        document.getElementById('lockAvatar').style.backgroundColor = '#2ed573';
+        return;
+    }
+
     var now = new Date();
     var hours = String(now.getHours()).padStart(2, '0');
     var mins = String(now.getMinutes()).padStart(2, '0');
     document.getElementById('lockTime').textContent = hours + ':' + mins;
     document.getElementById('lockDate').textContent = now.getFullYear() + '年' + (now.getMonth()+1) + '月' + now.getDate() + '日';
 
-    var role = getCurrentPhoneRole();
-    if (role) {
-        var avatarEl = document.getElementById('lockAvatar');
-        if (role.avatar) {
-            avatarEl.style.backgroundImage = 'url(' + role.avatar + ')';
-            avatarEl.style.backgroundSize = 'cover';
-            avatarEl.style.backgroundPosition = 'center';
-            avatarEl.style.backgroundColor = 'transparent';
-        } else {
-            avatarEl.style.backgroundImage = '';
-            avatarEl.style.backgroundColor = '#2ed573';
-        }
-        document.getElementById('lockName').textContent = role.name;
+    var avatarEl = document.getElementById('lockAvatar');
+    if (role.avatar) {
+        avatarEl.style.backgroundImage = 'url(' + role.avatar + ')';
+        avatarEl.style.backgroundSize = 'cover';
+        avatarEl.style.backgroundPosition = 'center';
+        avatarEl.style.backgroundColor = 'transparent';
     } else {
-        document.getElementById('lockAvatar').style.backgroundImage = '';
-        document.getElementById('lockAvatar').style.backgroundColor = '#2ed573';
-        document.getElementById('lockName').textContent = '未绑定';
+        avatarEl.style.backgroundImage = '';
+        avatarEl.style.backgroundColor = '#2ed573';
+    }
+    document.getElementById('lockName').textContent = role.name;
+
+    var hint = document.getElementById('lockSwitchHint');
+    if (isSwitch) {
+        hint.textContent = '🔁 切换至「' + role.name + '」的手机，请输入密码';
+    } else {
+        hint.textContent = '';
     }
 
     lockPin = '';
@@ -505,16 +596,27 @@ function handleLockKey(key) {
     updateLockDots();
 
     if (lockPin.length === 4) {
-        if (lockPin === phoneData.password) {
+        var targetRoleId = pendingSwitchRoleId || currentRoleId;
+        var correctPassword = getRolePassword(targetRoleId);
+
+        if (lockPin === correctPassword) {
             document.getElementById('lockScreen').classList.add('unlocked');
             document.getElementById('lockError').textContent = '';
             lockPin = '';
             updateLockDots();
+
+            if (pendingSwitchRoleId) {
+                currentRoleId = pendingSwitchRoleId;
+                pendingSwitchRoleId = null;
+                isSwitchingRole = false;
+                phoneData.currentRoleId = currentRoleId;
+                savePhoneData();
+                showToast('✅ 已切换至「' + getRoleById(currentRoleId).name + '」的手机');
+            }
             loadPhoneHome();
-            // 后台更新数据
             var role = getCurrentPhoneRole();
             if (role) {
-                updatePasswordFromMemory(role);
+                updateRolePasswordFromMemory(role);
                 generateAllData(role);
             }
         } else {
@@ -540,28 +642,96 @@ function handleLockKey(key) {
     }
 }
 
+// ===== 角色选择进入 =====
+function renderEntryScreen() {
+    var list = document.getElementById('entryRoleList');
+    list.innerHTML = '';
+    loadRolesFromMain();
+    if (allRoles.length === 0) {
+        list.innerHTML = '<div style="text-align:center;color:rgba(255,255,255,0.3);padding:40px 0;font-size:14px;">暂无角色，请先在主应用创建</div>';
+        return;
+    }
+    allRoles.forEach(function(role) {
+        var btn = document.createElement('button');
+        btn.className = 'entry-role-btn';
+        var avatarStyle = role.avatar ? 'background-image:url(' + role.avatar + ');background-size:cover;background-position:center;' : 'background-color:#2ed573;';
+        var hasPassword = getRolePassword(role.id) !== PHONE_CONFIG.defaultPassword;
+        btn.innerHTML = '<div class="er-avatar" style="' + avatarStyle + '"></div>' +
+            '<div class="er-info"><div class="er-name">' + role.name + '</div><div class="er-hint">' + (hasPassword ? '🔐 已设置密码' : '🔓 默认密码 0000') + '</div></div>' +
+            '<div class="er-lock"><i class="fas fa-chevron-right"></i></div>';
+        btn.addEventListener('click', function() {
+            currentRoleId = role.id;
+            phoneData.currentRoleId = currentRoleId;
+            savePhoneData();
+            document.getElementById('entryOverlay').classList.add('hidden');
+            // 尝试从记忆库更新密码
+            updateRolePasswordFromMemory(role);
+            renderLockScreen(role.id, false);
+            // 解锁后进入
+            document.getElementById('lockScreen').classList.remove('unlocked');
+        });
+        list.appendChild(btn);
+    });
+}
+
+function getCurrentPhoneRole() {
+    if (currentRoleId) {
+        var role = getRoleById(currentRoleId);
+        if (role) return role;
+    }
+    if (phoneData.currentRoleId) {
+        var role2 = getRoleById(phoneData.currentRoleId);
+        if (role2) {
+            currentRoleId = phoneData.currentRoleId;
+            return role2;
+        }
+    }
+    if (allRoles.length > 0) {
+        currentRoleId = allRoles[0].id;
+        phoneData.currentRoleId = currentRoleId;
+        savePhoneData();
+        return allRoles[0];
+    }
+    return null;
+}
+
 // ===== 加载主界面 =====
 function loadPhoneHome() {
     var role = getCurrentPhoneRole();
-    if (role) {
-        var avatarEl = document.getElementById('phAvatar');
-        if (role.avatar) {
-            avatarEl.style.backgroundImage = 'url(' + role.avatar + ')';
-            avatarEl.style.backgroundSize = 'cover';
-            avatarEl.style.backgroundPosition = 'center';
-            avatarEl.style.backgroundColor = 'transparent';
-        } else {
-            avatarEl.style.backgroundImage = '';
-            avatarEl.style.backgroundColor = '#2ed573';
-        }
-        document.getElementById('phName').textContent = role.name;
-        document.getElementById('phStatus').textContent = '点击切换角色';
-    } else {
+    if (!role) {
         document.getElementById('phAvatar').style.backgroundImage = '';
         document.getElementById('phAvatar').style.backgroundColor = '#2ed573';
         document.getElementById('phName').textContent = '未绑定';
         document.getElementById('phStatus').textContent = '请先在主应用创建角色';
+        return;
     }
+
+    var avatarEl = document.getElementById('phAvatar');
+    if (role.avatar) {
+        avatarEl.style.backgroundImage = 'url(' + role.avatar + ')';
+        avatarEl.style.backgroundSize = 'cover';
+        avatarEl.style.backgroundPosition = 'center';
+        avatarEl.style.backgroundColor = 'transparent';
+    } else {
+        avatarEl.style.backgroundImage = '';
+        avatarEl.style.backgroundColor = '#2ed573';
+    }
+    document.getElementById('phName').textContent = role.name;
+    document.getElementById('phStatus').textContent = '点击切换角色';
+
+    // 应用桌面壁纸
+    var wallpaper = getRoleDesktopWallpaper(role.id);
+    if (wallpaper) {
+        document.getElementById('phoneHome').style.setProperty('--desktop-bg', 'url(' + wallpaper + ')');
+        document.getElementById('phoneHome').style.backgroundImage = 'url(' + wallpaper + ')';
+        document.getElementById('phoneHome').style.backgroundSize = 'cover';
+        document.getElementById('phoneHome').style.backgroundPosition = 'center';
+    } else {
+        document.getElementById('phoneHome').style.setProperty('--desktop-bg', '#000');
+        document.getElementById('phoneHome').style.backgroundImage = 'none';
+        document.getElementById('phoneHome').style.backgroundColor = '#000';
+    }
+
     updateStatusTime();
     setInterval(updateStatusTime, 30000);
 }
@@ -573,34 +743,34 @@ function updateStatusTime() {
     document.getElementById('statusTime').textContent = hours + ':' + mins;
 }
 
-// ===== 角色切换 =====
-function openRoleSwitch() {
+// ===== 切换角色 =====
+function startRoleSwitch() {
     var list = document.getElementById('roleSwitchList');
     list.innerHTML = '';
     var current = getCurrentPhoneRole();
     allRoles.forEach(function(role) {
+        if (role.id === current.id) return;
         var item = document.createElement('div');
-        item.className = 'rs-item' + (current && current.id === role.id ? ' active' : '');
+        item.className = 'rs-item';
         var avatarStyle = role.avatar ? 'background-image:url(' + role.avatar + ');background-size:cover;background-position:center;' : 'background-color:#2ed573;';
-        item.innerHTML = '<div class="rs-avatar" style="' + avatarStyle + '"></div><span class="rs-name">' + role.name + '</span>' + (current && current.id === role.id ? '<span class="rs-check"><i class="fas fa-check-circle"></i></span>' : '');
+        var hasPassword = getRolePassword(role.id) !== PHONE_CONFIG.defaultPassword;
+        item.innerHTML = '<div class="rs-avatar" style="' + avatarStyle + '"></div><span class="rs-name">' + role.name + ' <span style="font-size:11px;color:rgba(255,255,255,0.2);">' + (hasPassword ? '🔐' : '') + '</span></span>';
         item.addEventListener('click', function() {
-            phoneData.roleId = role.id;
-            savePhoneData();
             document.getElementById('roleSwitchOverlay').classList.remove('active');
-            updatePasswordFromMemory(role);
-            renderLockScreen();
-            if (document.getElementById('lockScreen').classList.contains('unlocked')) {
-                loadPhoneHome();
-                generateAllData(role);
-            }
-            showToast('✅ 已切换至「' + role.name + '」');
+            // 切换到目标角色，需要锁屏验证
+            pendingSwitchRoleId = role.id;
+            isSwitchingRole = true;
+            document.getElementById('lockScreen').classList.remove('unlocked');
+            renderLockScreen(role.id, true);
+            // 提示用户输入密码
+            showToast('🔐 请输入 ' + role.name + ' 的密码');
         });
         list.appendChild(item);
     });
     document.getElementById('roleSwitchOverlay').classList.add('active');
 }
 
-// ===== 生成所有数据 =====
+// ===== 生成所有数据（按角色） =====
 function generateAllData(role) {
     if (!role) return;
     generateBrowserHistory(role);
@@ -617,72 +787,97 @@ function generateAllData(role) {
 function generateBrowserHistory(role) {
     if (!role) return;
     var messages = role.messages || [];
-    var userMessages = messages.filter(function(m) { return m.role === 'user'; }).slice(-10);
+    var userMessages = messages.filter(function(m) { return m.role === 'user'; }).slice(-15);
     var contexts = userMessages.map(function(m) { return m.content; }).filter(function(c) { return c && c.length > 2; });
-    if (contexts.length === 0) {
-        phoneData.browserHistory = [
-            { query: '如何与人相处', time: new Date(Date.now() - 3600000).toLocaleString(), tag: '日常' },
-            { query: '今天天气怎么样', time: new Date(Date.now() - 7200000).toLocaleString(), tag: '日常' },
+    var persona = (role.persona || '').toLowerCase();
+    var bg = (role.background || '').toLowerCase();
+    var isCold = persona.indexOf('冷') !== -1 || persona.indexOf('高冷') !== -1 || persona.indexOf('沉默') !== -1;
+    var isGentle = persona.indexOf('温柔') !== -1 || persona.indexOf('暖') !== -1 || persona.indexOf('细腻') !== -1;
+    var isArt = persona.indexOf('音乐') !== -1 || persona.indexOf('艺术') !== -1 || persona.indexOf('创作') !== -1 || bg.indexOf('琴') !== -1 || bg.indexOf('画') !== -1;
+
+    var queryTemplates = [];
+    if (isCold) {
+        queryTemplates = [
+            '怎么让人对你上心', '冷漠的人怎么表达爱', '为什么总是独来独往',
+            '如何变得更有温度', '喜欢一个人会有什么表现', '沉默的人在想什么'
         ];
-        savePhoneData();
-        return;
+    } else if (isGentle) {
+        queryTemplates = [
+            '怎么更好地关心别人', '温柔的人有哪些特质', '如何让关系更亲密',
+            '倾听是最好的安慰吗', '怎么表达爱意', '让人感到温暖的细节'
+        ];
+    } else if (isArt) {
+        queryTemplates = [
+            '音乐如何治愈人心', '艺术家的内心世界', '创作灵感从哪里来',
+            '最打动人的一首歌', '艺术与生活的关系', '如何把情感写成歌'
+        ];
+    } else {
+        queryTemplates = [
+            '如何与人相处', '怎么表达真实的自己', '关系中的安全感从哪里来',
+            '如何让生活更有意义', '每天都在想什么', '怎么判断一段感情'
+        ];
     }
 
+    // 从上下文中提取关键词，匹配模板
     var contextText = contexts.join(' ');
-    var searchQueries = [];
+    var matched = [];
     var templates = [
-        { keywords: ['生气', '难过', '伤心', '不开心', '烦', '焦虑', '压力'], queries: ['怎么哄人开心', '如何安慰人', '焦虑怎么办', '放松心情的方法'] },
+        { keywords: ['生气', '难过', '伤心', '不开心', '烦', '焦虑', '压力'], queries: ['怎么哄人开心', '如何安慰人', '焦虑怎么办', '怎么缓解压力'] },
         { keywords: ['礼物', '送', '买', '纪念日', '生日', '节日'], queries: ['纪念日送什么礼物', '生日礼物推荐', '送什么给喜欢的人'] },
-        { keywords: ['工作', '累', '加班', '忙'], queries: ['如何缓解工作压力', '职场减压方法', '提高工作效率的技巧'] },
-        { keywords: ['旅行', '想去', '玩', '假期', '周末'], queries: ['国内旅行推荐', '周末去哪儿玩', '小众旅行目的地'] },
-        { keywords: ['学', '读', '看', '推荐', '书', '电影'], queries: ['好书推荐', '值得一看的电影', '学习新技能的方法'] },
-        { keywords: ['吃', '喝', '好吃', '美食', '餐厅', '做饭'], queries: ['本地美食推荐', '必去的餐厅', '简单好吃的菜谱'] },
+        { keywords: ['工作', '累', '加班', '忙', '压力'], queries: ['如何缓解工作压力', '职场减压方法', '怎么平衡工作生活'] },
+        { keywords: ['旅行', '想去', '玩', '假期', '周末'], queries: ['旅行推荐', '周末去哪儿', '小众旅行地'] },
+        { keywords: ['学', '读', '看', '推荐', '书', '电影'], queries: ['好书推荐', '值得看的电影', '学新技能的方法'] },
+        { keywords: ['吃', '喝', '好吃', '美食', '餐厅'], queries: ['美食推荐', '必去的餐厅', '好吃的店'] },
         { keywords: ['喜欢', '爱', '心动', '好感'], queries: ['怎么判断对方喜欢你', '爱情中的小细节', '如何表达爱意'] },
-        { keywords: ['猫', '狗', '宠物', '养'], queries: ['养猫注意事项', '狗狗训练方法', '宠物用品推荐'] },
     ];
-
     for (var i = 0; i < templates.length; i++) {
         var t = templates[i];
         for (var j = 0; j < t.keywords.length; j++) {
             if (contextText.indexOf(t.keywords[j]) !== -1) {
-                searchQueries.push(t.queries[Math.floor(Math.random() * t.queries.length)]);
+                matched.push(t.queries[Math.floor(Math.random() * t.queries.length)]);
                 break;
             }
         }
     }
 
-    var unique = [];
-    searchQueries.forEach(function(q) { if (unique.indexOf(q) === -1) unique.push(q); });
-    if (unique.length < 3) {
-        var fallbacks = ['如何让生活更有意义', '每天都开心的秘诀', '人与人之间的温暖'];
-        while (unique.length < 3) {
-            var fb = fallbacks[Math.floor(Math.random() * fallbacks.length)];
-            if (unique.indexOf(fb) === -1) unique.push(fb);
-        }
+    var finalQueries = [];
+    // 先加匹配到的
+    matched.forEach(function(q) { if (finalQueries.indexOf(q) === -1) finalQueries.push(q); });
+    // 再补人设模板
+    var shuffled = queryTemplates.slice().sort(function() { return Math.random() - 0.5; });
+    shuffled.forEach(function(q) { if (finalQueries.indexOf(q) === -1 && finalQueries.length < 6) finalQueries.push(q); });
+    // 如果还不够，补通用
+    var fallbacks = ['如何让生活更有意义', '每天都开心的秘诀', '怎么做一个更好的人'];
+    while (finalQueries.length < 3) {
+        var fb = fallbacks[Math.floor(Math.random() * fallbacks.length)];
+        if (finalQueries.indexOf(fb) === -1) finalQueries.push(fb);
     }
 
-    var tags = ['日常', '情感', '生活', '成长', '关系', '知识'];
-    phoneData.browserHistory = unique.slice(0, 6).map(function(q, idx) {
+    var tags = ['日常', '情感', '生活', '成长', '关系', '内心'];
+    var history = finalQueries.slice(0, 6).map(function(q, idx) {
         return {
             query: q,
             time: new Date(Date.now() - (idx + 1) * 600000).toLocaleString(),
             tag: tags[idx % tags.length],
         };
     });
-    savePhoneData();
+    setRoleBrowserHistory(role.id, history);
 }
 
 // ===== 备忘录 =====
 function generateNotes(role) {
     if (!role) return;
     var messages = role.messages || [];
-    var recentMsgs = messages.slice(-20);
+    var recentMsgs = messages.slice(-25);
     var noteTexts = [];
-
     var userMsgs = recentMsgs.filter(function(m) { return m.role === 'user'; }).map(function(m) { return m.content; }).join(' ');
+    var persona = (role.persona || '').toLowerCase();
+    var bg = (role.background || '').toLowerCase();
+
+    // 从聊天提取待办
     var patterns = [
         { regex: /(?:我|今天|明天|后天|下周|这周)(?:要|想|打算|准备|需要)(.+?)[。！？,.!?]/, label: '待办' },
-        { regex: /(?:记住|记得|别忘了|不要忘记)(.+?)[。！？,.!?]/, label: '重要' },
+        { regex: /(?:记住|记得|别忘了|不要忘记)(.+?)[。！？,.!?]/, label: '重要', important: true },
         { regex: /(?:纪念日|在一起|一周年|第\d+年)(?:是|的?)(.+?)[。！？,.!?]/, label: '重要', important: true },
     ];
     for (var i = 0; i < patterns.length; i++) {
@@ -692,6 +887,7 @@ function generateNotes(role) {
         }
     }
 
+    // 生日
     var birthday = extractBirthdayFromMemory(role);
     if (birthday) {
         var month = birthday.substring(0,2);
@@ -699,22 +895,34 @@ function generateNotes(role) {
         noteTexts.push({ text: '🎂 用户生日：' + month + '月' + day + '日', label: '重要', important: true });
     }
 
-    if (role.background) {
-        var nameMatch = role.background.match(/(?:有好朋友|好友|闺蜜|兄弟|室友|家人|父母|妈妈|爸爸|姐姐|妹妹|哥哥|弟弟)(?:叫|是|：|\s+)([^\s,，。；;、]{2,4})/);
-        if (nameMatch) {
-            noteTexts.push({ text: '👥 重要联系人：' + nameMatch[1], label: '联系人', important: true });
+    // 从背景提取人设相关
+    if (bg.indexOf('琴') !== -1 || bg.indexOf('音乐') !== -1 || persona.indexOf('音乐') !== -1) {
+        noteTexts.push({ text: '🎵 练琴计划：每天2小时', label: '日常' });
+    }
+    if (bg.indexOf('猫') !== -1 || bg.indexOf('宠物') !== -1 || bg.indexOf('养') !== -1) {
+        var petMatch = bg.match(/(?:猫|狗|宠物)(?:叫|是|：|\s+)([^\s,，。；;、]{1,4})/);
+        if (petMatch) {
+            noteTexts.push({ text: '🐱 给 ' + petMatch[1] + ' 买罐头', label: '日常' });
+        } else {
+            noteTexts.push({ text: '🐱 买宠物零食', label: '日常' });
         }
     }
+    if (bg.indexOf('书店') !== -1 || bg.indexOf('阅读') !== -1 || persona.indexOf('阅读') !== -1) {
+        noteTexts.push({ text: '📚 新书到了，记得去取', label: '日常' });
+    }
 
+    // 日常待办
     var dayNames = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
     var dayIndex = new Date().getDay();
     var todayName = dayNames[dayIndex === 0 ? 6 : dayIndex - 1];
-    noteTexts.push({ text: '📋 ' + todayName + '待办：整理房间、回消息', label: '日常' });
+    noteTexts.push({ text: '📋 ' + todayName + '待办：整理房间', label: '日常' });
 
-    var existingTexts = phoneData.notes.map(function(n) { return n.text; });
+    // 去重保存
+    var existing = getRoleNotes(role.id);
+    var existingTexts = existing.map(function(n) { return n.text; });
     noteTexts.forEach(function(n) {
         if (!existingTexts.some(function(e) { return e.indexOf(n.text.substring(0, 10)) !== -1; })) {
-            phoneData.notes.push({
+            existing.push({
                 id: generateId(),
                 text: n.text,
                 label: n.label || '日常',
@@ -724,18 +932,15 @@ function generateNotes(role) {
         }
     });
 
-    cleanupNotes();
-    savePhoneData();
-}
-
-function cleanupNotes() {
+    // 清理
     var threeDaysAgo = Date.now() - PHONE_CONFIG.noteCleanupDays * 86400000;
-    var importantNotes = phoneData.notes.filter(function(n) { return n.important; });
-    var regularNotes = phoneData.notes.filter(function(n) {
+    var important = existing.filter(function(n) { return n.important; });
+    var regular = existing.filter(function(n) {
         return !n.important && new Date(n.createdAt).getTime() > threeDaysAgo;
     });
-    phoneData.notes = importantNotes.concat(regularNotes);
-    if (phoneData.notes.length > 100) phoneData.notes = phoneData.notes.slice(-100);
+    var cleaned = important.concat(regular);
+    if (cleaned.length > 100) cleaned = cleaned.slice(-100);
+    setRoleNotes(role.id, cleaned);
 }
 
 // ===== 微信联系人 =====
@@ -748,20 +953,29 @@ function generateWxContacts(role) {
     }
 
     var bgText = (role.persona || '') + ' ' + (role.background || '') + ' ' + (role.extra || '');
-    var nameMatches = bgText.match(/(?:好朋友|好友|闺蜜|兄弟|室友|家人|父母|妈妈|爸爸|姐姐|妹妹|哥哥|弟弟|同学|同事|老师|(?:叫|是|：|\s+))([^\s,，。；;、]{2,4})/g);
+    // 更精确的人名提取
+    var patterns = [
+        /好友(?:叫|是|：|\s+)([^\s,，。；;、]{2,4})/,
+        /好朋友(?:叫|是|：|\s+)([^\s,，。；;、]{2,4})/,
+        /闺蜜(?:叫|是|：|\s+)([^\s,，。；;、]{2,4})/,
+        /兄弟(?:叫|是|：|\s+)([^\s,，。；;、]{2,4})/,
+        /室友(?:叫|是|：|\s+)([^\s,，。；;、]{2,4})/,
+        /家人(?:叫|是|：|\s+)([^\s,，。；;、]{2,4})/,
+        /同学(?:叫|是|：|\s+)([^\s,，。；;、]{2,4})/,
+        /(?:妈妈|爸爸|姐姐|妹妹|哥哥|弟弟)(?:叫|是|：|\s+)([^\s,，。；;、]{2,4})/,
+        /(?:叫|是|：|\s+)([^\s,，。；;、]{2,4})(?:是)?(?:我的)?(?:好朋友|好友|闺蜜|兄弟|室友|家人|同学)/,
+    ];
     var extractedNames = [];
-    if (nameMatches) {
-        nameMatches.forEach(function(m) {
-            var cleaned = m.replace(/^(?:好朋友|好友|闺蜜|兄弟|室友|家人|父母|妈妈|爸爸|姐姐|妹妹|哥哥|弟弟|同学|同事|老师|叫|是|：|\s+)/, '').trim();
-            if (cleaned.length >= 2 && cleaned.length <= 4 && cleaned !== role.name) {
-                extractedNames.push(cleaned);
+    patterns.forEach(function(p) {
+        var match = bgText.match(p);
+        if (match && match[1] && match[1].length >= 2 && match[1].length <= 4) {
+            if (extractedNames.indexOf(match[1]) === -1 && match[1] !== role.name) {
+                extractedNames.push(match[1]);
             }
-        });
-    }
+        }
+    });
 
-    var uniqueNames = [];
-    extractedNames.forEach(function(n) { if (uniqueNames.indexOf(n) === -1) uniqueNames.push(n); });
-    uniqueNames.slice(0, 6).forEach(function(name) {
+    extractedNames.slice(0, 5).forEach(function(name) {
         contacts.push({ id: 'wx_' + generateId(), name: name, avatar: '', isMe: false, isUser: false });
     });
 
@@ -769,86 +983,82 @@ function generateWxContacts(role) {
         contacts.push({ id: 'wx_user', name: '你', avatar: '', isMe: false, isUser: true });
     }
 
-    phoneData.wxContacts = contacts;
-    savePhoneData();
+    setRoleWxContacts(role.id, contacts);
 }
 
 // ===== 微信消息 =====
 function generateWxMessages(role) {
     if (!role) return;
     var now = Date.now();
-    var lastGen = phoneData.lastWxGen ? new Date(phoneData.lastWxGen).getTime() : 0;
-    if (now - lastGen < PHONE_CONFIG.wxAutoGenInterval) return;
+    var lastGen = getRoleLastWxGen(role.id);
+    if (lastGen && now - new Date(lastGen).getTime() < PHONE_CONFIG.wxAutoGenInterval) return;
 
-    var contacts = phoneData.wxContacts.filter(function(c) { return !c.isMe; });
+    var contacts = getRoleWxContacts(role.id).filter(function(c) { return !c.isMe; });
     if (contacts.length === 0) return;
 
-    var personaKeywords = (role.persona || '').toLowerCase();
+    var persona = (role.persona || '').toLowerCase();
+    var messages = getRoleWxMessages(role.id);
+
     var templates = [
-        { sender: 'other', text: '今天过得怎么样？', time: new Date(now - 600000).toISOString() },
-        { sender: 'other', text: '要不要一起吃饭？', time: new Date(now - 1200000).toISOString() },
-        { sender: 'other', text: '周末有空吗？', time: new Date(now - 1800000).toISOString() },
-        { sender: 'other', text: '最近在忙什么呢？', time: new Date(now - 2400000).toISOString() },
-        { sender: 'other', text: '我买了你喜欢的东西！', time: new Date(now - 3000000).toISOString() },
-        { sender: 'other', text: '今天好累啊...', time: new Date(now - 3600000).toISOString() },
-        { sender: 'other', text: '晚安，早点休息', time: new Date(now - 4800000).toISOString() },
-        { sender: 'other', text: '好想你啊', time: new Date(now - 5400000).toISOString() },
-        { sender: 'other', text: '我发现一家超棒的店！', time: new Date(now - 6000000).toISOString() },
-        { sender: 'other', text: '你上次说的那件事，我考虑好了', time: new Date(now - 4200000).toISOString() },
+        '今天过得怎么样？', '要不要一起吃饭？', '周末有空吗？', '最近在忙什么呢？',
+        '我买了你喜欢的东西！', '今天好累啊...', '晚安，早点休息', '好想你啊',
+        '我发现一家超棒的店！', '你上次说的那件事，我考虑好了', '明天见！', '记得想我',
+        '刚看到个东西，第一个想到你', '什么时候有空见一面？', '最近还好吗？'
     ];
 
-    // 根据人设调整文本风格
-    if (personaKeywords.indexOf('温柔') !== -1 || personaKeywords.indexOf('细腻') !== -1) {
+    // 根据人设调整
+    if (persona.indexOf('温柔') !== -1) {
         templates = templates.map(function(t) {
-            if (t.sender === 'other') {
-                var soft = ['嗯嗯', '好的呀', '没事的', '慢慢来', '我懂'];
-                t.text = soft[Math.floor(Math.random() * soft.length)] + '，' + t.text;
-            }
+            if (t.indexOf('好想你') !== -1) return '好想你呀 💕';
+            if (t.indexOf('晚安') !== -1) return '晚安，做个好梦 🌙';
             return t;
         });
+    }
+    if (persona.indexOf('冷') !== -1 || persona.indexOf('高冷') !== -1) {
+        templates = ['嗯', '好的', '知道了', '随便', '你决定', '...', '还行', '没事'];
     }
 
     contacts.forEach(function(contact) {
         var key = contact.id;
-        if (!phoneData.wxMessages[key]) phoneData.wxMessages[key] = [];
-        var msgs = phoneData.wxMessages[key];
+        if (!messages[key]) messages[key] = [];
+        var msgs = messages[key];
         var count = 1 + Math.floor(Math.random() * 2);
         var shuffled = templates.slice().sort(function() { return Math.random() - 0.5; });
         for (var i = 0; i < Math.min(count, shuffled.length); i++) {
-            var item = shuffled[i];
             msgs.push({
                 id: generateId(),
-                sender: item.sender,
-                text: item.text,
-                time: item.time,
+                sender: 'other',
+                text: shuffled[i],
+                time: new Date(now - (i + 1) * 600000).toISOString(),
                 read: Math.random() > 0.3,
                 fromMain: false,
             });
         }
         if (msgs.length > PHONE_CONFIG.maxWxMessagesPerContact) {
-            phoneData.wxMessages[key] = msgs.slice(-PHONE_CONFIG.maxWxMessagesPerContact);
+            messages[key] = msgs.slice(-PHONE_CONFIG.maxWxMessagesPerContact);
         }
     });
 
-    phoneData.lastWxGen = new Date().toISOString();
-    savePhoneData();
+    setRoleWxMessages(role.id, messages);
+    setRoleLastWxGen(role.id, new Date().toISOString());
 }
 
 // ===== 同步主应用聊天 =====
 function syncMainChatToWx(role) {
     if (!role) return;
     var key = 'wx_user';
-    if (!phoneData.wxMessages[key]) phoneData.wxMessages[key] = [];
+    var messages = getRoleWxMessages(role.id);
+    if (!messages[key]) messages[key] = [];
 
     var mainMsgs = role.messages || [];
-    var wxMsgs = phoneData.wxMessages[key];
+    var wxMsgs = messages[key];
     var lastWxTime = wxMsgs.length > 0 ? new Date(wxMsgs[wxMsgs.length - 1].time).getTime() : 0;
     var newMsgs = mainMsgs.filter(function(m) {
         var t = new Date(m.time || Date.now()).getTime();
         return t > lastWxTime && m.role !== 'system';
     });
 
-    newMsgs.slice(0, 20).forEach(function(m) {
+    newMsgs.slice(0, 15).forEach(function(m) {
         wxMsgs.push({
             id: generateId(),
             sender: m.role === 'user' ? 'other' : 'me',
@@ -860,22 +1070,23 @@ function syncMainChatToWx(role) {
     });
 
     if (wxMsgs.length > PHONE_CONFIG.maxWxMessagesPerContact) {
-        phoneData.wxMessages[key] = wxMsgs.slice(-PHONE_CONFIG.maxWxMessagesPerContact);
+        messages[key] = wxMsgs.slice(-PHONE_CONFIG.maxWxMessagesPerContact);
     }
-    savePhoneData();
+    setRoleWxMessages(role.id, messages);
 }
 
-// ===== 音乐歌单 =====
+// ===== 音乐 =====
 function generateSongs(role) {
     if (!role) return;
     var now = Date.now();
-    var lastGen = phoneData.lastSongGen ? new Date(phoneData.lastSongGen).getTime() : 0;
-    if (now - lastGen < 3600000) return; // 1小时冷却
+    var lastGen = getRoleLastSongGen(role.id);
+    if (lastGen && now - new Date(lastGen).getTime() < 3600000) return;
 
-    // 收集用户提过的歌曲
     var messages = role.messages || [];
     var allText = messages.map(function(m) { return m.content; }).join(' ');
-    var mentioned = [];
+    var persona = (role.persona || '').toLowerCase();
+    var bg = (role.background || '').toLowerCase();
+
     var songPool = [
         { name: '晴天', artist: '周杰伦', style: '温柔' },
         { name: '富士山下', artist: '陈奕迅', style: '温柔' },
@@ -883,7 +1094,6 @@ function generateSongs(role) {
         { name: '起风了', artist: '买辣椒也用券', style: '温柔' },
         { name: '光年之外', artist: '邓紫棋', style: '深情' },
         { name: '刚好遇见你', artist: '李玉刚', style: '深情' },
-        { name: '你是我心内的一首歌', artist: '王力宏', style: '浪漫' },
         { name: '因为爱情', artist: '陈奕迅/王菲', style: '浪漫' },
         { name: '红豆', artist: '王菲', style: '温柔' },
         { name: '十年', artist: '陈奕迅', style: '温柔' },
@@ -894,61 +1104,62 @@ function generateSongs(role) {
         { name: '偏爱', artist: '张芸京', style: '深情' },
         { name: '修炼爱情', artist: '林俊杰', style: '深情' },
         { name: '她说', artist: '林俊杰', style: '温柔' },
-        { name: 'Mojito', artist: '周杰伦', style: '轻快' },
-        { name: '等你下课', artist: '周杰伦', style: '温柔' },
         { name: '告白气球', artist: '周杰伦', style: '浪漫' },
         { name: '不将就', artist: '李荣浩', style: '深情' },
         { name: '年少有为', artist: '李荣浩', style: '温柔' },
         { name: '消愁', artist: '毛不易', style: '温柔' },
         { name: '像我这样的人', artist: '毛不易', style: '温柔' },
         { name: '大鱼', artist: '周深', style: '空灵' },
-        { name: '愿得一人心', artist: '李行亮', style: '深情' },
         { name: '往后余生', artist: '马良', style: '深情' },
         { name: '纸短情长', artist: '烟把儿', style: '温柔' },
-        { name: '那女孩对我说', artist: '黄义达', style: '温柔' },
         { name: '无问', artist: '毛不易', style: '温柔' },
         { name: '平凡的一天', artist: '毛不易', style: '温柔' },
         { name: '你一定要幸福', artist: '何洁', style: '温柔' },
         { name: '后来', artist: '刘若英', style: '温柔' },
         { name: '多远都要在一起', artist: '邓紫棋', style: '深情' },
-        { name: '喜欢你', artist: '邓紫棋', style: '深情' },
         { name: '安静', artist: '周杰伦', style: '温柔' },
         { name: '七里香', artist: '周杰伦', style: '温柔' },
-        { name: '简单爱', artist: '周杰伦', style: '轻快' },
         { name: '知足', artist: '五月天', style: '温柔' },
-        { name: '拥抱', artist: '五月天', style: '温柔' },
-        { name: '天使', artist: '五月天', style: '温柔' },
         { name: '小情歌', artist: '苏打绿', style: '轻快' },
         { name: '无与伦比的美丽', artist: '苏打绿', style: '温柔' },
-        { name: '你被写在我的歌里', artist: '苏打绿/陈嘉桦', style: '轻快' },
+        { name: '冬眠', artist: '司南', style: '温柔' },
+        { name: '云与海', artist: '阿YueYue', style: '深情' },
+        { name: '白月光与朱砂痣', artist: '大籽', style: '深情' },
+        { name: '错位时空', artist: '艾辰', style: '深情' },
+        { name: '星辰大海', artist: '黄霄雲', style: '空灵' },
+        { name: '一路生花', artist: '温奕心', style: '温暖' },
     ];
 
-    // 检测用户提到的歌曲
-    songPool.forEach(function(song) {
-        if (allText.indexOf(song.name) !== -1) {
-            mentioned.push(song);
-        }
+    // 用户提过的歌优先
+    var mentioned = [];
+    songPool.forEach(function(s) {
+        if (allText.indexOf(s.name) !== -1) mentioned.push(s);
     });
 
-    // 根据人设筛选
-    var persona = (role.persona || '').toLowerCase();
-    var styleKeywords = ['温柔', '深情', '浪漫', '思念', '轻快', '空灵'];
+    // 根据人设筛选风格
+    var styleKeys = [];
+    if (persona.indexOf('温柔') !== -1 || persona.indexOf('暖') !== -1) styleKeys.push('温柔', '温暖');
+    if (persona.indexOf('深') !== -1 || persona.indexOf('沉') !== -1) styleKeys.push('深情');
+    if (persona.indexOf('冷') !== -1 || persona.indexOf('高冷') !== -1) styleKeys.push('空灵', '深情');
+    if (persona.indexOf('浪漫') !== -1) styleKeys.push('浪漫');
+    if (persona.indexOf('轻') !== -1 || persona.indexOf('活泼') !== -1) styleKeys.push('轻快');
+    if (bg.indexOf('琴') !== -1 || bg.indexOf('音乐') !== -1) styleKeys.push('温柔', '深情');
+
     var matched = [];
-    styleKeywords.forEach(function(kw) {
-        if (persona.indexOf(kw) !== -1) {
-            songPool.forEach(function(s) {
-                if (s.style === kw && !matched.some(function(m) { return m.name === s.name; })) {
-                    matched.push(s);
-                }
-            });
+    songPool.forEach(function(s) {
+        if (styleKeys.indexOf(s.style) !== -1 && !matched.some(function(m) { return m.name === s.name; })) {
+            matched.push(s);
         }
     });
 
-    // 合并：优先提到过的歌，然后是匹配人设的歌，最后是随机
+    // 合并
     var finalSongs = [];
-    mentioned.forEach(function(s) { if (!finalSongs.some(function(f) { return f.name === s.name; })) finalSongs.push(s); });
-    matched.forEach(function(s) { if (!finalSongs.some(function(f) { return f.name === s.name; })) finalSongs.push(s); });
-
+    mentioned.forEach(function(s) {
+        if (!finalSongs.some(function(f) { return f.name === s.name; })) finalSongs.push(s);
+    });
+    matched.forEach(function(s) {
+        if (!finalSongs.some(function(f) { return f.name === s.name; })) finalSongs.push(s);
+    });
     if (finalSongs.length < PHONE_CONFIG.dailySongsCount) {
         var shuffled = songPool.slice().sort(function() { return Math.random() - 0.5; });
         shuffled.forEach(function(s) {
@@ -958,7 +1169,7 @@ function generateSongs(role) {
         });
     }
 
-    phoneData.songs = finalSongs.slice(0, PHONE_CONFIG.dailySongsCount).map(function(s, idx) {
+    var songs = finalSongs.slice(0, PHONE_CONFIG.dailySongsCount).map(function(s, idx) {
         return {
             id: generateId(),
             name: s.name,
@@ -968,81 +1179,89 @@ function generateSongs(role) {
             index: idx + 1,
         };
     });
-
-    phoneData.lastSongGen = new Date().toISOString();
-    savePhoneData();
-
-    // 如果有歌，设置当前播放
-    if (phoneData.songs.length > 0 && !phoneData.currentSong) {
-        phoneData.currentSong = phoneData.songs[0];
-        savePhoneData();
-    }
+    setRoleSongs(role.id, songs);
+    setRoleLastSongGen(role.id, new Date().toISOString());
 }
 
 // ===== 行动轨迹 =====
 function generateTracks(role) {
     if (!role) return;
-    var tracks = [];
-    var bg = (role.background || '');
-    var persona = (role.persona || '');
-    var extra = (role.extra || '');
-    var context = (bg + ' ' + persona + ' ' + extra).toLowerCase();
-
-    // 从聊天记录中提取地点
+    var bg = (role.background || '').toLowerCase();
+    var persona = (role.persona || '').toLowerCase();
+    var extra = (role.extra || '').toLowerCase();
     var messages = role.messages || [];
     var chatText = messages.map(function(m) { return m.content; }).join(' ');
+
+    var isMusic = bg.indexOf('琴') !== -1 || bg.indexOf('音乐') !== -1 || persona.indexOf('音乐') !== -1;
+    var isBook = bg.indexOf('书') !== -1 || bg.indexOf('阅读') !== -1 || persona.indexOf('阅读') !== -1;
+    var isArt = bg.indexOf('画') !== -1 || bg.indexOf('设计') !== -1 || persona.indexOf('艺术') !== -1;
+    var isCold = persona.indexOf('冷') !== -1 || persona.indexOf('高冷') !== -1;
+
+    var defaultTracks = [
+        { title: '家', desc: '出发', time: '08:30', icon: 'fa-location-dot' },
+        { title: '公司', desc: '工作', time: '09:30', icon: 'fa-circle' },
+        { title: '咖啡厅', desc: '休息', time: '14:00', icon: 'fa-circle' },
+        { title: '健身房', desc: '运动', time: '18:00', icon: 'fa-circle' },
+        { title: '家', desc: '回家', time: '20:00', icon: 'fa-location-dot' },
+    ];
+
+    if (isMusic) {
+        defaultTracks = [
+            { title: '家', desc: '出发', time: '08:30', icon: 'fa-location-dot' },
+            { title: '琴房', desc: '练琴', time: '09:30', icon: 'fa-circle' },
+            { title: '唱片店', desc: '淘唱片', time: '14:00', icon: 'fa-circle' },
+            { title: '音乐厅', desc: '听音乐会', time: '18:00', icon: 'fa-circle' },
+            { title: '家', desc: '回家', time: '21:00', icon: 'fa-location-dot' },
+        ];
+    } else if (isBook) {
+        defaultTracks = [
+            { title: '家', desc: '出发', time: '08:30', icon: 'fa-location-dot' },
+            { title: '图书馆', desc: '阅读', time: '09:30', icon: 'fa-circle' },
+            { title: '书店', desc: '淘书', time: '14:00', icon: 'fa-circle' },
+            { title: '咖啡厅', desc: '写作', time: '17:00', icon: 'fa-circle' },
+            { title: '家', desc: '回家', time: '20:00', icon: 'fa-location-dot' },
+        ];
+    } else if (isArt) {
+        defaultTracks = [
+            { title: '家', desc: '出发', time: '08:30', icon: 'fa-location-dot' },
+            { title: '画室', desc: '创作', time: '09:30', icon: 'fa-circle' },
+            { title: '美术馆', desc: '看展', time: '14:00', icon: 'fa-circle' },
+            { title: '公园', desc: '写生', time: '17:00', icon: 'fa-circle' },
+            { title: '家', desc: '回家', time: '19:00', icon: 'fa-location-dot' },
+        ];
+    } else if (isCold) {
+        defaultTracks = [
+            { title: '家', desc: '出发', time: '08:00', icon: 'fa-location-dot' },
+            { title: '公司', desc: '工作', time: '09:00', icon: 'fa-circle' },
+            { title: '健身房', desc: '独处', time: '18:00', icon: 'fa-circle' },
+            { title: '家', desc: '回家', time: '20:00', icon: 'fa-location-dot' },
+        ];
+    }
+
+    // 从聊天中提取地点
     var places = [];
-    var placePatterns = ['在', '去', '到', '回', '从', '往', '家', '学校', '公司', '图书馆', '咖啡厅', '书店', '公园', '商场', '餐厅', '电影院'];
+    var placePatterns = ['在', '去', '到', '回', '从', '往', '家', '学校', '公司', '图书馆', '咖啡厅', '书店', '公园', '商场', '餐厅', '电影院', '琴房', '画室', '音乐厅'];
     placePatterns.forEach(function(p) {
         var regex = new RegExp(p + '([^\s,，。；;、]{1,6})', 'g');
         var match;
         while ((match = regex.exec(chatText)) !== null) {
-            if (match[1] && match[1].length > 1) places.push(match[1]);
+            if (match[1] && match[1].length > 1 && match[1] !== '家' && match[1] !== '公司') {
+                places.push(match[1]);
+            }
         }
     });
 
-    // 从背景中提取城市
-    var cityMatch = context.match(/(?:在|来自|住在|生于|生长于|生活于)([^\s,，。；;、]{1,6})(?:市|区|县|镇|村|城)/);
-    var city = cityMatch ? cityMatch[1] : '未知';
-
-    // 构建轨迹
-    var timeSlots = ['上午', '中午', '下午', '傍晚', '晚上'];
-    var locations = ['家', '学校', '图书馆', '咖啡厅', '公园', '书店', '公司', '餐厅'];
-
-    // 如果从聊天中提取到了地点，优先使用
-    var uniquePlaces = [];
-    places.forEach(function(p) {
-        if (uniquePlaces.indexOf(p) === -1 && p.length > 1) uniquePlaces.push(p);
-    });
-
-    var finalLocations = uniquePlaces.length > 0 ? uniquePlaces.slice(0, 5) : locations;
-
-    var now = new Date();
-    for (var i = 0; i < Math.min(finalLocations.length, 5); i++) {
-        var timeOffset = (i + 1) * 2;
-        var d = new Date(now);
-        d.setHours(d.getHours() - timeOffset);
-        var timeStr = d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0');
-        tracks.push({
-            title: finalLocations[i] || '未知地点',
-            desc: (i === 0 ? '出发' : (i === finalLocations.length - 1 ? '到达' : '经过')) + ' ' + city,
-            time: timeStr,
-            icon: i === 0 ? 'fa-location-dot' : 'fa-circle',
+    if (places.length > 0) {
+        var finalPlaces = places.slice(0, 3);
+        defaultTracks = defaultTracks.map(function(t, idx) {
+            if (idx < finalPlaces.length) {
+                return { title: finalPlaces[idx], desc: '经过', time: t.time, icon: idx === 0 ? 'fa-location-dot' : 'fa-circle' };
+            }
+            return t;
         });
     }
 
-    if (tracks.length === 0) {
-        tracks = [
-            { title: '家', desc: '出发', time: '08:30', icon: 'fa-location-dot' },
-            { title: '图书馆', desc: '学习', time: '10:00', icon: 'fa-circle' },
-            { title: '咖啡厅', desc: '休息', time: '14:30', icon: 'fa-circle' },
-            { title: '书店', desc: '逛逛', time: '17:00', icon: 'fa-circle' },
-            { title: '家', desc: '回家', time: '19:30', icon: 'fa-location-dot' },
-        ];
-    }
-
-    phoneData.tracks = tracks;
-    savePhoneData();
+    setRoleTracks(role.id, defaultTracks);
 }
 
 // ===== 朋友圈 =====
@@ -1050,80 +1269,99 @@ function generateMoments(role) {
     if (!role) return;
     var now = Date.now();
 
-    // 检查是否需要清理
+    // 清理（每15天）
+    var moments = getRoleMoments(role.id);
     var lastCleanup = phoneData.lastMomentCleanup ? new Date(phoneData.lastMomentCleanup).getTime() : 0;
     if (now - lastCleanup > PHONE_CONFIG.momentsCleanupDays * 86400000) {
-        phoneData.moments = phoneData.moments.filter(function(m) {
+        moments = moments.filter(function(m) {
             return new Date(m.createdAt).getTime() > now - PHONE_CONFIG.momentsCleanupDays * 86400000;
         });
         phoneData.lastMomentCleanup = new Date().toISOString();
-        savePhoneData();
+        setRoleMoments(role.id, moments);
     }
 
-    // 每天最多生成1-2条
+    // 每天最多2条
     var today = new Date().toDateString();
-    var todayMoments = phoneData.moments.filter(function(m) {
+    var todayMoments = moments.filter(function(m) {
         return new Date(m.createdAt).toDateString() === today;
     });
     if (todayMoments.length >= 2) return;
 
-    // 从聊天中提取内容
     var messages = role.messages || [];
     var recentMsgs = messages.slice(-10);
     var chatText = recentMsgs.map(function(m) { return m.content; }).join(' ');
+    var persona = (role.persona || '').toLowerCase();
+    var bg = (role.background || '').toLowerCase();
 
-    var templates = [
-        { text: '今天天气真好，出去走了一圈 ☀️', privacy: 'public' },
-        { text: '最近在看一本书，特别有感触 📖', privacy: 'public' },
-        { text: '想你了 ❤️', privacy: 'private' },
-        { text: '今天学到了新东西，开心！', privacy: 'public' },
-        { text: '有些话，只想说给你听 💕', privacy: 'private' },
-        { text: '生活不完美，但很温暖。', privacy: 'public' },
-        { text: '晚安，好梦 🌙', privacy: 'public' },
-        { text: '今天发生了一件让我很感动的事...', privacy: 'public' },
-        { text: '只对你可见 💝', privacy: 'private' },
-        { text: '时间过得真快啊，又到了这个季节。', privacy: 'public' },
-    ];
+    // 根据人设生成有质感的朋友圈
+    var templates = [];
+    var isGentle = persona.indexOf('温柔') !== -1 || persona.indexOf('暖') !== -1;
+    var isCold = persona.indexOf('冷') !== -1 || persona.indexOf('高冷') !== -1;
+    var isMusic = bg.indexOf('琴') !== -1 || bg.indexOf('音乐') !== -1 || persona.indexOf('音乐') !== -1;
 
-    // 从聊天中匹配关键词
-    var matchedTemplates = [];
-    var keywords = ['想', '喜欢', '爱', '感动', '开心', '难过', '累', '温暖', '感谢', '期待'];
-    for (var i = 0; i < keywords.length; i++) {
-        if (chatText.indexOf(keywords[i]) !== -1) {
-            var filtered = templates.filter(function(t) {
-                return t.text.indexOf(keywords[i]) !== -1 || t.text.indexOf('你') !== -1;
-            });
-            if (filtered.length > 0) {
-                matchedTemplates.push(filtered[Math.floor(Math.random() * filtered.length)]);
+    if (isGentle) {
+        templates = [
+            { text: '今天的风很温柔，就像你说话的语气。', privacy: 'public' },
+            { text: '有些话，只想说给你一个人听。💕', privacy: 'private' },
+            { text: '在琴房待了一下午，弹了你上次说喜欢的那首曲子。', privacy: 'public' },
+            { text: '你笑起来的样子，比今天的阳光还暖。', privacy: 'private' },
+        ];
+    } else if (isCold) {
+        templates = [
+            { text: '风很冷，但不及你转身的温度。', privacy: 'public' },
+            { text: '习惯了独处，却还是期待你的消息。', privacy: 'private' },
+            { text: '...', privacy: 'public' },
+            { text: '有些话，说不出口。', privacy: 'private' },
+        ];
+    } else if (isMusic) {
+        templates = [
+            { text: '今天的琴声里，都是你。🎵', privacy: 'private' },
+            { text: '发现一首好歌，第一时间想分享给你。', privacy: 'public' },
+            { text: '在唱片店淘到了很珍贵的黑胶。', privacy: 'public' },
+            { text: '演奏的时候，希望你在听。', privacy: 'private' },
+        ];
+    } else {
+        templates = [
+            { text: '想你了。', privacy: 'private' },
+            { text: '今天的心情，很适合听一首慢歌。', privacy: 'public' },
+            { text: '有些瞬间，只想和你分享。💕', privacy: 'private' },
+            { text: '日子平淡，但有你很特别。', privacy: 'public' },
+        ];
+    }
+
+    // 从聊天中提取关键词匹配
+    var matched = [];
+    templates.forEach(function(t) {
+        var words = t.text.split(' ');
+        for (var i = 0; i < words.length; i++) {
+            if (chatText.indexOf(words[i]) !== -1 && words[i].length > 1) {
+                matched.push(t);
                 break;
             }
         }
-    }
-
-    if (matchedTemplates.length === 0) {
-        matchedTemplates.push(templates[Math.floor(Math.random() * templates.length)]);
-    }
-
-    matchedTemplates.forEach(function(t) {
-        var isPrivate = t.privacy === 'private' || Math.random() > 0.6;
-        phoneData.moments.push({
-            id: generateId(),
-            content: t.text,
-            privacy: isPrivate ? 'private' : 'public',
-            createdAt: new Date().toISOString(),
-            roleName: role.name,
-            roleAvatar: role.avatar || '',
-        });
     });
 
-    savePhoneData();
+    var finalTemplate = matched.length > 0 ? matched[Math.floor(Math.random() * matched.length)] : templates[Math.floor(Math.random() * templates.length)];
+
+    var newMoment = {
+        id: generateId(),
+        content: finalTemplate.text,
+        privacy: finalTemplate.privacy || (Math.random() > 0.5 ? 'public' : 'private'),
+        createdAt: new Date().toISOString(),
+        roleName: role.name,
+        roleAvatar: role.avatar || '',
+    };
+    moments.push(newMoment);
+    setRoleMoments(role.id, moments);
 }
 
 // ===== 渲染函数 =====
 function renderBrowser() {
+    var role = getCurrentPhoneRole();
+    if (!role) return;
+    var history = getRoleBrowserHistory(role.id);
     var body = document.getElementById('safariBody');
-    var history = phoneData.browserHistory || [];
-    if (history.length === 0) {
+    if (!history || history.length === 0) {
         body.innerHTML = '<div class="browser-empty"><i class="fas fa-compass"></i><p>暂无浏览记录</p></div>';
         return;
     }
@@ -1139,9 +1377,11 @@ function renderBrowser() {
 }
 
 function renderNotes() {
+    var role = getCurrentPhoneRole();
+    if (!role) return;
+    var notes = getRoleNotes(role.id);
     var body = document.getElementById('notesBody');
-    var notes = phoneData.notes || [];
-    if (notes.length === 0) {
+    if (!notes || notes.length === 0) {
         body.innerHTML = '<div class="note-empty"><i class="fas fa-pencil"></i><p>暂无备忘录</p></div>';
         return;
     }
@@ -1160,9 +1400,13 @@ function renderNotes() {
 }
 
 function renderWechat() {
+    var role = getCurrentPhoneRole();
+    if (!role) return;
+    var contacts = getRoleWxContacts(role.id);
+    var messages = getRoleWxMessages(role.id);
     var body = document.getElementById('wechatBody');
-    var contacts = phoneData.wxContacts || [];
-    if (contacts.length === 0) {
+
+    if (!contacts || contacts.length === 0) {
         body.innerHTML = '<div class="note-empty"><i class="fab fa-weixin"></i><p>暂无联系人</p></div>';
         return;
     }
@@ -1170,7 +1414,7 @@ function renderWechat() {
     var html = '';
     contacts.forEach(function(contact) {
         var key = contact.id;
-        var msgs = phoneData.wxMessages[key] || [];
+        var msgs = messages[key] || [];
         var lastMsg = msgs.length > 0 ? msgs[msgs.length - 1] : null;
         var preview = lastMsg ? (lastMsg.sender === 'me' ? '我：' : '') + lastMsg.text : '暂无消息';
         var unread = msgs.filter(function(m) { return !m.read && m.sender === 'other'; }).length;
@@ -1191,7 +1435,7 @@ function renderWechat() {
     body.querySelectorAll('.wx-contact-item').forEach(function(el) {
         el.addEventListener('click', function() {
             var id = this.dataset.id;
-            var contact = phoneData.wxContacts.find(function(c) { return c.id === id; });
+            var contact = contacts.find(function(c) { return c.id === id; });
             if (contact) openWxChat(contact);
         });
     });
@@ -1205,16 +1449,18 @@ function openWxChat(contact) {
 }
 
 function renderWxChat(contact) {
+    var role = getCurrentPhoneRole();
+    if (!role) return;
+    var messages = getRoleWxMessages(role.id);
     var body = document.getElementById('wxChatMessages');
     var key = contact.id;
-    var msgs = phoneData.wxMessages[key] || [];
+    var msgs = messages[key] || [];
 
-    // 标记已读
     msgs.forEach(function(m) { if (m.sender === 'other') m.read = true; });
-    savePhoneData();
+    setRoleWxMessages(role.id, messages);
 
     if (msgs.length === 0) {
-        body.innerHTML = '<div style="text-align:center;padding:40px 0;color:rgba(255,255,255,0.2);">暂无消息，开始聊天吧</div>';
+        body.innerHTML = '<div style="text-align:center;padding:40px 0;color:rgba(255,255,255,0.2);">暂无消息</div>';
         return;
     }
 
@@ -1236,9 +1482,11 @@ function renderWxChat(contact) {
 }
 
 function renderMusic() {
+    var role = getCurrentPhoneRole();
+    if (!role) return;
+    var songs = getRoleSongs(role.id);
     var body = document.getElementById('musicBody');
-    var songs = phoneData.songs || [];
-    var current = phoneData.currentSong || (songs.length > 0 ? songs[0] : null);
+    var current = songs.length > 0 ? songs[0] : null;
 
     var html = '';
     if (current) {
@@ -1254,38 +1502,26 @@ function renderMusic() {
 
     html += '<div class="music-playlist"><div style="font-size:13px;color:rgba(255,255,255,0.3);margin-bottom:8px;">🎵 歌单 · ' + (songs.length || 0) + ' 首</div>';
     if (songs.length === 0) {
-        html += '<div style="text-align:center;padding:20px 0;color:rgba(255,255,255,0.15);">暂无歌单，AI 正在生成...</div>';
+        html += '<div style="text-align:center;padding:20px 0;color:rgba(255,255,255,0.15);">暂无歌单</div>';
     } else {
         songs.forEach(function(song) {
-            var isActive = current && song.id === current.id;
-            html += '<div class="playlist-item" style="' + (isActive ? 'background:rgba(255,255,255,0.04);border-radius:8px;' : '') + '">' +
+            html += '<div class="playlist-item">' +
                 '<span class="pl-index">' + (song.index || 0) + '</span>' +
-                '<div class="pl-info"><div class="pl-name" style="' + (isActive ? 'color:#2ed573;' : '') + '">' + song.name + '</div><div class="pl-artist">' + song.artist + '</div></div>' +
+                '<div class="pl-info"><div class="pl-name">' + song.name + '</div><div class="pl-artist">' + song.artist + '</div></div>' +
                 '<span class="pl-duration">' + (song.duration || '3:30') + '</span>' +
                 '</div>';
         });
     }
     html += '</div>';
-
     body.innerHTML = html;
-
-    // 点击歌曲播放
-    body.querySelectorAll('.playlist-item').forEach(function(el, idx) {
-        el.addEventListener('click', function() {
-            if (phoneData.songs[idx]) {
-                phoneData.currentSong = phoneData.songs[idx];
-                savePhoneData();
-                renderMusic();
-                showToast('🎵 正在播放：' + phoneData.songs[idx].name);
-            }
-        });
-    });
 }
 
 function renderMaps() {
+    var role = getCurrentPhoneRole();
+    if (!role) return;
+    var tracks = getRoleTracks(role.id);
     var body = document.getElementById('mapsBody');
-    var tracks = phoneData.tracks || [];
-    if (tracks.length === 0) {
+    if (!tracks || tracks.length === 0) {
         body.innerHTML = '<div class="track-map-card"><div class="map-placeholder"><i class="fas fa-map"></i><p>暂无轨迹数据</p></div></div>';
         return;
     }
@@ -1305,9 +1541,11 @@ function renderMaps() {
 }
 
 function renderMoments() {
+    var role = getCurrentPhoneRole();
+    if (!role) return;
+    var moments = getRoleMoments(role.id);
     var body = document.getElementById('momentsBody');
-    var moments = phoneData.moments || [];
-    if (moments.length === 0) {
+    if (!moments || moments.length === 0) {
         body.innerHTML = '<div class="note-empty"><i class="fas fa-images"></i><p>暂无朋友圈</p></div>';
         return;
     }
@@ -1321,8 +1559,8 @@ function renderMoments() {
         var avatarStyle = m.roleAvatar ? 'background-image:url(' + m.roleAvatar + ');background-size:cover;background-position:center;' : 'background-color:#2ed573;';
         html += '<div class="moments-item' + (isPrivate ? ' m-private' : '') + '">' +
             '<div class="m-header">' +
-            '<div class="m-avatar" style="' + avatarStyle + '"></div>' +
-            '<span class="m-name">' + (m.roleName || 'TA') + '</span>' +
+            '<div class="m-avatar" style="' + avatarStyle + '" data-role="' + (m.roleName || '') + '" data-avatar="' + (m.roleAvatar || '') + '"></div>' +
+            '<span class="m-name" data-role="' + (m.roleName || '') + '">' + (m.roleName || 'TA') + '</span>' +
             '<span class="m-time">' + new Date(m.createdAt).toLocaleString() + '</span>' +
             '<span class="m-privacy">' + (isPrivate ? '🔒 仅自己可见' : '') + '</span>' +
             '</div>' +
@@ -1331,25 +1569,171 @@ function renderMoments() {
             '</div>';
     });
     body.innerHTML = html;
+
+    // 点击头像或名字进入个人主页
+    body.querySelectorAll('.m-avatar, .m-name').forEach(function(el) {
+        el.addEventListener('click', function() {
+            var name = this.dataset.role || 'TA';
+            var avatar = this.dataset.avatar || '';
+            openMomentsProfile(name, avatar);
+        });
+    });
+}
+
+function openMomentsProfile(name, avatar) {
+    document.getElementById('momentsProfileTitle').textContent = name + ' 的朋友圈';
+    var cover = document.getElementById('profileCover');
+    var role = getCurrentPhoneRole();
+    if (role) {
+        var wallpaper = getRoleMomentsWallpaper(role.id);
+        if (wallpaper) {
+            cover.style.backgroundImage = 'url(' + wallpaper + ')';
+            cover.style.backgroundSize = 'cover';
+            cover.style.backgroundPosition = 'center';
+        } else {
+            cover.style.backgroundImage = 'linear-gradient(135deg, #2d3436, #636e72)';
+        }
+    }
+    var avatarEl = document.getElementById('profileCoverAvatar');
+    if (avatar) {
+        avatarEl.style.backgroundImage = 'url(' + avatar + ')';
+        avatarEl.style.backgroundSize = 'cover';
+        avatarEl.style.backgroundPosition = 'center';
+        avatarEl.style.backgroundColor = 'transparent';
+    } else {
+        avatarEl.style.backgroundImage = '';
+        avatarEl.style.backgroundColor = '#2ed573';
+    }
+    document.getElementById('profileCoverName').textContent = name;
+
+    // 显示该角色的朋友圈
+    var moments = getRoleMoments(role ? role.id : null);
+    var body = document.getElementById('profileBody');
+    if (!moments || moments.length === 0) {
+        body.innerHTML = '<div style="text-align:center;padding:40px 0;color:rgba(255,255,255,0.2);">暂无动态</div>';
+        return;
+    }
+    var html = '';
+    var sorted = moments.slice().sort(function(a, b) {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+    });
+    sorted.forEach(function(m) {
+        var isPrivate = m.privacy === 'private';
+        html += '<div class="moments-item' + (isPrivate ? ' m-private' : '') + '" style="margin-bottom:8px;">' +
+            '<div class="m-header">' +
+            '<span style="font-size:12px;color:rgba(255,255,255,0.3);">' + new Date(m.createdAt).toLocaleString() + '</span>' +
+            '<span class="m-privacy">' + (isPrivate ? '🔒 仅自己可见' : '') + '</span>' +
+            '</div>' +
+            '<div class="m-content">' + m.content + '</div>' +
+            '</div>';
+    });
+    body.innerHTML = html;
+
+    document.getElementById('momentsProfilePage').classList.add('open');
 }
 
 function renderSettings() {
-    var body = document.getElementById('settingsBody');
     var role = getCurrentPhoneRole();
+    if (!role) return;
+    var body = document.getElementById('settingsBody');
+
+    var desktopWallpaper = getRoleDesktopWallpaper(role.id);
+    var momentsWallpaper = getRoleMomentsWallpaper(role.id);
+
     var html = '<div style="padding:4px 0;">' +
-        '<div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.04);"><span style="color:rgba(255,255,255,0.5);">当前密码</span><span style="color:#fff;font-weight:500;">' + phoneData.password + '</span></div>' +
-        '<div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.04);"><span style="color:rgba(255,255,255,0.5);">当前角色</span><span style="color:#fff;font-weight:500;">' + (role ? role.name : '未绑定') + '</span></div>' +
-        '<div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.04);"><span style="color:rgba(255,255,255,0.5);">AI 改过密码</span><span style="color:' + (phoneData.passwordChangedByAI ? '#ff6b81' : 'rgba(255,255,255,0.3)') + ';">' + (phoneData.passwordChangedByAI ? '是' : '否') + '</span></div>' +
-        (phoneData.passwordChangedByAI ? '<div style="padding:8px 0 12px;font-size:12px;color:rgba(255,255,255,0.2);">原因：' + (phoneData.passwordChangeReason || '未知') + '</div>' : '') +
-        '<div style="padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.04);"><span style="color:rgba(255,255,255,0.5);">备忘录</span><span style="color:rgba(255,255,255,0.3);float:right;">' + (phoneData.notes || []).length + ' 条</span></div>' +
-        '<div style="padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.04);"><span style="color:rgba(255,255,255,0.5);">微信消息</span><span style="color:rgba(255,255,255,0.3);float:right;">' + Object.keys(phoneData.wxMessages || {}).reduce(function(sum, k) { return sum + (phoneData.wxMessages[k] || []).length; }, 0) + ' 条</span></div>' +
-        '<div style="padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.04);"><span style="color:rgba(255,255,255,0.5);">歌单</span><span style="color:rgba(255,255,255,0.3);float:right;">' + (phoneData.songs || []).length + ' 首</span></div>' +
-        '<div style="padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.04);"><span style="color:rgba(255,255,255,0.5);">朋友圈</span><span style="color:rgba(255,255,255,0.3);float:right;">' + (phoneData.moments || []).length + ' 条</span></div>' +
+        '<div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.04);"><span style="color:rgba(255,255,255,0.5);">当前密码</span><span style="color:#fff;font-weight:500;">' + getRolePassword(role.id) + '</span></div>' +
+        '<div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.04);"><span style="color:rgba(255,255,255,0.5);">当前角色</span><span style="color:#fff;font-weight:500;">' + role.name + '</span></div>' +
         '</div>' +
+
+        '<div style="margin-top:16px;padding:12px;background:rgba(255,255,255,0.02);border-radius:10px;border:1px solid rgba(255,255,255,0.03);">' +
+        '<div style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:12px;">🖼️ 壁纸设置</div>' +
+
+        '<div class="wallpaper-preview-row">' +
+        '<div class="wpr-label">桌面壁纸</div>' +
+        '<div class="wpr-preview" id="desktopPreview">' + (desktopWallpaper ? '<img src="' + desktopWallpaper + '" />' : '🏠') + '</div>' +
+        '<button class="wpr-btn" id="setDesktopWallpaper">更换</button>' +
+        (desktopWallpaper ? '<button class="wpr-btn" id="removeDesktopWallpaper" style="color:#ff6b81;">移除</button>' : '') +
+        '</div>' +
+
+        '<div class="wallpaper-preview-row">' +
+        '<div class="wpr-label">朋友圈壁纸</div>' +
+        '<div class="wpr-preview" id="momentsPreview">' + (momentsWallpaper ? '<img src="' + momentsWallpaper + '" />' : '📷') + '</div>' +
+        '<button class="wpr-btn" id="setMomentsWallpaper">更换</button>' +
+        (momentsWallpaper ? '<button class="wpr-btn" id="removeMomentsWallpaper" style="color:#ff6b81;">移除</button>' : '') +
+        '</div>' +
+
+        '</div>' +
+
         '<div style="margin-top:16px;padding:12px;background:rgba(255,255,255,0.02);border-radius:10px;border:1px solid rgba(255,255,255,0.03);">' +
         '<div style="font-size:12px;color:rgba(255,255,255,0.2);">💡 密码规则：初始为 0000，检测到生日后自动更新。说 "密码太简单" 或 "换个密码" 可让 AI 帮你改。</div>' +
         '</div>';
+
     body.innerHTML = html;
+
+    // 壁纸更换事件
+    document.getElementById('setDesktopWallpaper').addEventListener('click', function() {
+        if (CONFIG.permission === 'denied') { showToast('🚫 相册权限已被拒绝'); return; }
+        selectImage(function(dataUrl) {
+            setRoleDesktopWallpaper(role.id, dataUrl);
+            showToast('✅ 桌面壁纸已更新');
+            renderSettings();
+            loadPhoneHome();
+        });
+    });
+    document.getElementById('removeDesktopWallpaper') && document.getElementById('removeDesktopWallpaper').addEventListener('click', function() {
+        setRoleDesktopWallpaper(role.id, '');
+        showToast('✅ 桌面壁纸已移除');
+        renderSettings();
+        loadPhoneHome();
+    });
+    document.getElementById('setMomentsWallpaper').addEventListener('click', function() {
+        if (CONFIG.permission === 'denied') { showToast('🚫 相册权限已被拒绝'); return; }
+        selectImage(function(dataUrl) {
+            setRoleMomentsWallpaper(role.id, dataUrl);
+            showToast('✅ 朋友圈壁纸已更新');
+            renderSettings();
+        });
+    });
+    document.getElementById('removeMomentsWallpaper') && document.getElementById('removeMomentsWallpaper').addEventListener('click', function() {
+        setRoleMomentsWallpaper(role.id, '');
+        showToast('✅ 朋友圈壁纸已移除');
+        renderSettings();
+    });
+}
+
+// ===== 图片选择 =====
+function selectImage(callback) {
+    var input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = function(e) {
+        var file = e.target.files[0];
+        if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function(ev) {
+            // 压缩
+            var img = new Image();
+            img.onload = function() {
+                var canvas = document.createElement('canvas');
+                var ctx = canvas.getContext('2d');
+                var maxDim = 800;
+                var w = img.width, h = img.height;
+                if (w > maxDim || h > maxDim) {
+                    var ratio = Math.min(maxDim / w, maxDim / h);
+                    w = Math.round(w * ratio);
+                    h = Math.round(h * ratio);
+                }
+                canvas.width = w;
+                canvas.height = h;
+                ctx.drawImage(img, 0, 0, w, h);
+                var result = canvas.toDataURL('image/jpeg', 0.7);
+                callback(result);
+            };
+            img.src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+    };
+    input.click();
 }
 
 // ===== 刷新所有 App =====
@@ -1391,7 +1775,6 @@ function initEvents() {
             var page = document.getElementById(pageId);
             if (page) {
                 page.classList.add('open');
-                // 渲染对应内容
                 if (app === 'safari') renderBrowser();
                 else if (app === 'notes') renderNotes();
                 else if (app === 'wechat') renderWechat();
@@ -1418,12 +1801,14 @@ function initEvents() {
         renderWechat();
     });
 
-    // 角色切换
-    document.getElementById('phSwitchBtn').addEventListener('click', openRoleSwitch);
-    document.getElementById('phoneHeader').addEventListener('click', openRoleSwitch);
-    document.getElementById('roleSwitchCancel').addEventListener('click', function() {
-        document.getElementById('roleSwitchOverlay').classList.remove('active');
+    // 朋友圈个人主页返回
+    document.getElementById('momentsProfileBack').addEventListener('click', function() {
+        document.getElementById('momentsProfilePage').classList.remove('open');
     });
+
+    // 角色切换
+    document.getElementById('phSwitchBtn').addEventListener('click', startRoleSwitch);
+    document.getElementById('phoneHeader').addEventListener('click', startRoleSwitch);
 
     // 刷新按钮
     document.getElementById('safariRefresh').addEventListener('click', function() { var r = getCurrentPhoneRole(); if (r) generateBrowserHistory(r); renderBrowser(); showToast('🔄 已刷新'); });
@@ -1439,33 +1824,54 @@ function init() {
     loadRolesFromMain();
     loadPhoneData();
 
-    // 如果有角色，尝试更新密码
-    var role = getCurrentPhoneRole();
-    if (role) {
-        updatePasswordFromMemory(role);
-        // 如果已解锁，生成数据
-        if (document.getElementById('lockScreen').classList.contains('unlocked')) {
-            generateAllData(role);
+    // 显示角色选择进入界面
+    renderEntryScreen();
+
+    // 如果有之前选择的角色，直接显示锁屏
+    if (phoneData.currentRoleId && getRoleById(phoneData.currentRoleId)) {
+        currentRoleId = phoneData.currentRoleId;
+        document.getElementById('entryOverlay').classList.add('hidden');
+        var role = getCurrentPhoneRole();
+        if (role) {
+            updateRolePasswordFromMemory(role);
+            renderLockScreen(role.id, false);
         }
     }
 
-    renderLockScreen();
     initEvents();
 
-    // 定时刷新（每小时检查一次）
-    setInterval(function() {
+    // 如果锁屏已解锁（从进入界面直接解锁的），加载数据
+    if (document.getElementById('lockScreen').classList.contains('unlocked')) {
         var role2 = getCurrentPhoneRole();
-        if (role2 && document.getElementById('lockScreen').classList.contains('unlocked')) {
+        if (role2) {
             generateAllData(role2);
+            loadPhoneHome();
         }
-    }, 3600000);
+    }
 
-    console.log('📱 他的手机已启动');
+    console.log('📱 他的手机 v2.0 已启动');
     console.log('角色数:', allRoles.length);
-    console.log('密码:', phoneData.password);
+    console.log('当前角色:', currentRoleId ? getRoleById(currentRoleId)?.name : '未选择');
 }
 
-document.addEventListener('DOMContentLoaded', init);
+// 监听锁屏解锁事件
+document.addEventListener('DOMContentLoaded', function() {
+    // 等待锁屏解锁后加载数据
+    var observer = new MutationObserver(function() {
+        if (document.getElementById('lockScreen').classList.contains('unlocked')) {
+            var role = getCurrentPhoneRole();
+            if (role) {
+                generateAllData(role);
+                loadPhoneHome();
+                refreshAllApps();
+            }
+            observer.disconnect();
+        }
+    });
+    observer.observe(document.getElementById('lockScreen'), { attributes: true, attributeFilter: ['class'] });
+
+    init();
+});
 </script>
 </body>
 </html>
