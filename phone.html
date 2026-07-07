@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
-        body { background: #000; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 0; margin: 0; touch-action: none; }
-        .phone-frame { width: 100%; max-width: 430px; height: 100vh; max-height: 100vh; background: #000; border-radius: 0; overflow: hidden; position: relative; box-shadow: none; touch-action: none; }
+        body { background: #000; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 0; margin: 0; }
+        .phone-frame { width: 100%; max-width: 430px; height: 100vh; max-height: 100vh; background: #000; border-radius: 0; overflow: hidden; position: relative; box-shadow: none; }
         :root { --safe-top: 0px; --safe-bottom: 0px; --desktop-bg: #000; }
         @supports (padding: env(safe-area-inset-top)) { :root { --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px); } }
 
@@ -31,7 +31,7 @@
         .entry-overlay .entry-role-btn .er-info .er-hint { font-size: 11px; color: rgba(255,255,255,0.2); }
         .entry-overlay .entry-role-btn .er-lock { font-size: 14px; color: rgba(255,255,255,0.15); }
 
-        /* ===== 锁屏（无额外提示文字） ===== */
+        /* ===== 锁屏 ===== */
         .lock-screen { width: 100%; height: 100%; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; position: absolute; top: 0; left: 0; z-index: 100; transition: opacity 0.5s ease; }
         .lock-screen.unlocked { opacity: 0; pointer-events: none; }
         .lock-screen .lock-time { font-size: 72px; font-weight: 300; color: #fff; letter-spacing: 2px; }
@@ -51,7 +51,7 @@
         .lock-screen .lock-keypad .key-delete { font-size: 18px; color: rgba(255,255,255,0.5); }
 
         /* ===== 主界面 ===== */
-        .phone-home { width: 100%; height: 100%; background: var(--desktop-bg, #000); display: flex; flex-direction: column; position: absolute; top: 0; left: 0; z-index: 10; transition: background 0.3s; overflow: hidden; touch-action: none; }
+        .phone-home { width: 100%; height: 100%; background: var(--desktop-bg, #000); display: flex; flex-direction: column; position: absolute; top: 0; left: 0; z-index: 10; transition: background 0.3s; overflow: hidden; }
         .phone-status { display: flex; justify-content: space-between; padding: calc(8px + var(--safe-top, 0px)) 20px 8px; font-size: 12px; color: #fff; flex-shrink: 0; background: transparent; }
         .phone-status .status-time { font-weight: 600; }
         .phone-status .status-icons { display: flex; gap: 6px; font-size: 13px; }
@@ -65,7 +65,7 @@
         .phone-header .ph-switch-btn:active { background: rgba(255,255,255,0.05); transform: scale(0.95); }
 
         /* ===== App 网格 ===== */
-        .phone-app-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px 12px; padding: 24px 20px; flex: 1; align-content: start; }
+        .phone-app-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px 12px; padding: 24px 20px; flex: 1; align-content: start; overflow-y: auto; }
         .phone-app { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; padding: 8px 4px; border-radius: 12px; transition: 0.15s; border: none; background: transparent; color: #fff; font-family: inherit; }
         .phone-app:active { transform: scale(0.88); background: rgba(255,255,255,0.05); }
         .phone-app .app-icon { width: 60px; height: 60px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 26px; color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
@@ -90,7 +90,7 @@
         .app-page-header .back-btn { font-size: 20px; color: rgba(255,255,255,0.6); cursor: pointer; border: none; background: none; padding: 4px; }
         .app-page-header .title { font-size: 17px; font-weight: 600; color: #fff; flex: 1; }
         .app-page-header .action-btn { font-size: 16px; color: rgba(255,255,255,0.4); cursor: pointer; border: none; background: none; padding: 4px; }
-        .app-page-body { flex: 1; overflow-y: auto; padding: 12px 16px 20px; }
+        .app-page-body { flex: 1; overflow-y: auto; padding: 12px 16px 20px; touch-action: pan-y; }
 
         /* ===== 浏览器 ===== */
         .browser-record-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: rgba(255,255,255,0.04); border-radius: 10px; margin-bottom: 6px; border: 1px solid rgba(255,255,255,0.04); }
@@ -125,7 +125,7 @@
         .wx-chat-header { display: flex; align-items: center; gap: 12px; padding: calc(12px + var(--safe-top, 0px)) 16px 12px; border-bottom: 1px solid rgba(255,255,255,0.06); flex-shrink: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
         .wx-chat-header .back-btn { font-size: 20px; color: rgba(255,255,255,0.6); cursor: pointer; border: none; background: none; padding: 4px; }
         .wx-chat-header .wx-chat-name { font-size: 17px; font-weight: 600; color: #fff; flex: 1; }
-        .wx-chat-messages { flex: 1; overflow-y: auto; padding: 12px 16px 8px; display: flex; flex-direction: column; gap: 6px; }
+        .wx-chat-messages { flex: 1; overflow-y: auto; padding: 12px 16px 8px; display: flex; flex-direction: column; gap: 6px; touch-action: pan-y; }
         .wx-msg { max-width: 80%; padding: 8px 14px; border-radius: 12px; font-size: 14px; line-height: 1.5; word-break: break-word; }
         .wx-msg.self { align-self: flex-end; background: #07c160; color: #fff; border-bottom-right-radius: 2px; }
         .wx-msg.other { align-self: flex-start; background: rgba(255,255,255,0.08); color: #fff; border-bottom-left-radius: 2px; }
@@ -142,7 +142,10 @@
         .music-player-card .player-controls { display: flex; justify-content: center; gap: 32px; margin-top: 12px; color: rgba(255,255,255,0.5); font-size: 20px; }
         .music-player-card .player-controls .play-btn { color: #fff; font-size: 32px; cursor: pointer; }
         .music-player-card .player-controls .play-btn:active { transform: scale(0.85); }
+        .music-player-card .player-controls .control-btn { cursor: pointer; transition: 0.15s; }
+        .music-player-card .player-controls .control-btn:active { transform: scale(0.85); }
 
+        .music-playlist { touch-action: pan-y; }
         .music-playlist .playlist-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: rgba(255,255,255,0.02); border-radius: 8px; margin-bottom: 4px; cursor: pointer; transition: 0.15s; }
         .music-playlist .playlist-item:active { transform: scale(0.95); background: rgba(255,255,255,0.04); }
         .music-playlist .playlist-item .pl-index { font-size: 12px; color: rgba(255,255,255,0.2); width: 24px; text-align: center; }
@@ -161,7 +164,7 @@
         .track-map-card .track-point .tp-info .tp-desc { font-size: 11px; color: rgba(255,255,255,0.3); }
         .track-map-card .track-point .tp-time { font-size: 10px; color: rgba(255,255,255,0.2); flex-shrink: 0; }
 
-        /* ===== 朋友圈 - 微信卡片样式 ===== */
+        /* ===== 朋友圈 ===== */
         .moments-item { background: rgba(255,255,255,0.03); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.04); cursor: pointer; transition: 0.15s; }
         .moments-item:active { transform: scale(0.98); }
         .moments-item .m-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
@@ -177,12 +180,12 @@
         .moments-item .m-footer .m-comments { color: rgba(255,255,255,0.3); }
 
         /* ===== 朋友圈个人主页 ===== */
-        .moments-profile .profile-cover { width: 100%; height: 160px; background: linear-gradient(135deg, #2d3436, #636e72); background-size: cover; background-position: center; position: relative; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 16px 12px; }
+        .moments-profile .profile-cover { width: 100%; height: 160px; background: linear-gradient(135deg, #2d3436, #636e72); background-size: cover; background-position: center; position: relative; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 16px 12px; flex-shrink: 0; }
         .moments-profile .profile-cover .cover-top { display: flex; align-items: center; gap: 12px; }
         .moments-profile .profile-cover .cover-avatar { width: 56px; height: 56px; border-radius: 50%; background-color: #2ed573; background-size: cover; background-position: center; border: 3px solid #000; flex-shrink: 0; }
         .moments-profile .profile-cover .cover-name { font-size: 18px; font-weight: 600; color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,0.5); }
         .moments-profile .profile-cover .cover-moments-label { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 2px; text-shadow: 0 1px 4px rgba(0,0,0,0.5); }
-        .moments-profile .profile-body { padding: 12px 0 16px; }
+        .moments-profile .profile-body { flex: 1; overflow-y: auto; padding: 12px 0 16px; touch-action: pan-y; }
 
         .phone-toast { position: absolute; bottom: 120px; left: 50%; transform: translateX(-50%); background: rgba(255,255,255,0.12); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: #fff; padding: 10px 24px; border-radius: 12px; font-size: 13px; z-index: 300; animation: fadeInUp 0.3s ease; text-align: center; max-width: 80%; border: 1px solid rgba(255,255,255,0.06); }
         .phone-toast.hidden { display: none; }
@@ -190,7 +193,7 @@
 
         .wallpaper-preview-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
         .wallpaper-preview-row .wpr-label { flex: 1; font-size: 14px; color: rgba(255,255,255,0.7); }
-        .wallpaper-preview-row .wpr-preview { width: 40px; height: 40px; border-radius: 6px; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.06); overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 16px; color: rgba(255,255,255,0.1); }
+        .wallpaper-preview-row .wpr-preview { width: 40px; height: 40px; border-radius: 6px; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.06); overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 16px; color: rgba(255,255,255,0.1); flex-shrink: 0; }
         .wallpaper-preview-row .wpr-preview img { width: 100%; height: 100%; object-fit: cover; }
         .wallpaper-preview-row .wpr-btn { padding: 4px 12px; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; background: transparent; color: rgba(255,255,255,0.4); font-size: 11px; cursor: pointer; font-family: inherit; transition: 0.15s; }
         .wallpaper-preview-row .wpr-btn:active { background: rgba(255,255,255,0.05); transform: scale(0.95); }
@@ -210,12 +213,12 @@
         .role-switch-panel .rs-cancel { width: 100%; margin-top: 12px; padding: 10px; border: none; border-radius: 12px; background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.4); font-size: 14px; cursor: pointer; font-family: inherit; transition: 0.15s; }
         .role-switch-panel .rs-cancel:active { transform: scale(0.97); }
 
-        @media (min-width: 431px) { .phone-frame { border-radius: 32px; height: 780px; max-height: 90vh; box-shadow: 0 20px 60px rgba(0,0,0,0.8); } body { padding: 12px; } }
-        @media (max-width: 460px) { .phone-frame { border-radius: 0; height: 100vh; max-height: 100vh; } body { padding: 0; } }
-
         .loading-spinner { text-align: center; padding: 40px 20px; color: rgba(255,255,255,0.3); }
         .loading-spinner i { font-size: 32px; display: block; margin-bottom: 12px; animation: spin 1s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        @media (min-width: 431px) { .phone-frame { border-radius: 32px; height: 780px; max-height: 90vh; box-shadow: 0 20px 60px rgba(0,0,0,0.8); } body { padding: 12px; } }
+        @media (max-width: 460px) { .phone-frame { border-radius: 0; height: 100vh; max-height: 100vh; } body { padding: 0; } }
     </style>
 </head>
 <body>
@@ -228,7 +231,7 @@
         <div class="entry-role-list" id="entryRoleList"></div>
     </div>
 
-    <!-- ===== 锁屏（无额外文字） ===== -->
+    <!-- ===== 锁屏 ===== -->
     <div class="lock-screen" id="lockScreen">
         <div class="lock-time" id="lockTime">09:41</div>
         <div class="lock-date" id="lockDate">2026年7月7日</div>
@@ -328,9 +331,8 @@
 
 <script>
 // ============================================================
-//  📱 他的手机 - 完整修复版 v2.4
-//  修复：退出重置、切换角色绑定、密码界面、设置/微信按钮、
-//  朋友圈卡片样式、浏览器记录个性化、网易云音乐API
+//  📱 他的手机 - 完整修复版 v2.5
+//  修复：壁纸预览、锁屏状态、微信时间、内存泄漏、触摸事件
 // ============================================================
 
 var PHONE_CONFIG = {
@@ -340,8 +342,7 @@ var PHONE_CONFIG = {
     maxWxMessagesPerContact: 50,
     dailySongsCount: 10,
     wxAutoGenInterval: 86400000,
-    ncmApiUrl: 'https://netease-cloud-music-api-five-roan.vercel.app', // 在线网易云API
-    // 如果用本地：'http://localhost:3000'
+    ncmApiUrl: 'https://netease-cloud-music-api-five-roan.vercel.app',
 };
 
 var phoneData = {};
@@ -355,6 +356,9 @@ var pendingSwitchRoleId = null;
 var isPhoneUnlocked = false;
 var touchStartX = 0;
 var touchStartY = 0;
+var statusInterval = null;
+var musicPlaying = false;
+var currentPlaylistIndex = 0;
 
 function generateId() { return 'id_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6); }
 
@@ -523,7 +527,20 @@ function setRoleDesktopWallpaper(roleId, url) { if (!roleId) return; if (!phoneD
 function getRoleMomentsWallpaper(roleId) { if (!roleId || !phoneData.momentsWallpaper) return ''; return phoneData.momentsWallpaper[roleId] || ''; }
 function setRoleMomentsWallpaper(roleId, url) { if (!roleId) return; if (!phoneData.momentsWallpaper) phoneData.momentsWallpaper = {}; phoneData.momentsWallpaper[roleId] = url; savePhoneData(); }
 
-// ===== 锁屏（无额外文字） =====
+// ===== 壁纸预览统一管理 =====
+function updateWallpaperPreview(type, dataUrl) {
+    var previewId = type === 'desktop' ? 'desktopPreview' : 'momentsPreview';
+    var preview = document.getElementById(previewId);
+    if (preview) {
+        if (dataUrl && dataUrl.startsWith('data:image')) {
+            preview.innerHTML = '<img src="' + dataUrl + '" />';
+        } else {
+            preview.innerHTML = type === 'desktop' ? '🏠' : '📷';
+        }
+    }
+}
+
+// ===== 锁屏 =====
 function renderLockScreen(roleId, isSwitch) {
     var role = roleId ? getRoleById(roleId) : getCurrentPhoneRole();
     if (!role) {
@@ -539,7 +556,6 @@ function renderLockScreen(roleId, isSwitch) {
     document.getElementById('lockTime').textContent = hours + ':' + mins;
     document.getElementById('lockDate').textContent = now.getFullYear() + '年' + (now.getMonth()+1) + '月' + now.getDate() + '日';
 
-    // 更新锁屏头像
     var avatarEl = document.getElementById('lockAvatar');
     if (role.avatar) {
         avatarEl.style.backgroundImage = 'url(' + role.avatar + ')';
@@ -558,6 +574,7 @@ function renderLockScreen(roleId, isSwitch) {
     document.getElementById('lockError').textContent = '';
     document.getElementById('lockKeypad').style.pointerEvents = 'auto';
     document.getElementById('lockScreen').classList.remove('unlocked');
+    isPhoneUnlocked = false;
 }
 
 function updateLockDots() {
@@ -596,7 +613,6 @@ function handleLockKey(key) {
                 phoneData.currentRoleId = currentRoleId;
                 savePhoneData();
                 var newRole = getRoleById(currentRoleId);
-                // 切换后立即更新锁屏和主界面头像
                 if (newRole) {
                     renderLockScreen(currentRoleId, false);
                     showToast('✅ 已切换至「' + newRole.name + '」的手机');
@@ -614,6 +630,9 @@ function handleLockKey(key) {
                 generateAllData(role);
                 loadPhoneHome();
                 refreshAllApps();
+                document.querySelectorAll('.app-page.open').forEach(function(p) {
+                    p.classList.remove('open');
+                });
             }
         } else {
             lockAttempts++;
@@ -689,7 +708,7 @@ function getCurrentPhoneRole() {
     return null;
 }
 
-// ===== 加载主界面（同步更新头像） =====
+// ===== 加载主界面 =====
 function loadPhoneHome() {
     var role = getCurrentPhoneRole();
     if (!role) {
@@ -700,7 +719,6 @@ function loadPhoneHome() {
         return;
     }
 
-    // 更新主界面头像
     var avatarEl = document.getElementById('phAvatar');
     if (role.avatar) {
         avatarEl.style.backgroundImage = 'url(' + role.avatar + ')';
@@ -714,7 +732,6 @@ function loadPhoneHome() {
     document.getElementById('phName').textContent = role.name;
     document.getElementById('phStatus').textContent = '点击切换角色';
 
-    // 同时更新锁屏头像（保持同步）
     var lockAvatar = document.getElementById('lockAvatar');
     if (role.avatar) {
         lockAvatar.style.backgroundImage = 'url(' + role.avatar + ')';
@@ -727,7 +744,6 @@ function loadPhoneHome() {
     }
     document.getElementById('lockName').textContent = role.name;
 
-    // 应用桌面壁纸
     var wallpaper = getRoleDesktopWallpaper(role.id);
     var home = document.getElementById('phoneHome');
     if (wallpaper && wallpaper.startsWith('data:image')) {
@@ -735,19 +751,18 @@ function loadPhoneHome() {
         home.style.backgroundSize = 'cover';
         home.style.backgroundPosition = 'center';
         home.style.backgroundColor = 'transparent';
-        var preview = document.getElementById('desktopPreview');
-        if (preview) { preview.innerHTML = '<img src="' + wallpaper + '" />'; }
     } else {
         home.style.backgroundImage = 'none';
         home.style.backgroundColor = '#000';
-        var preview2 = document.getElementById('desktopPreview');
-        if (preview2) { preview2.innerHTML = '🏠'; }
     }
+    updateWallpaperPreview('desktop', wallpaper);
 
     updateStatusTime();
-    if (!window._statusInterval) {
-        window._statusInterval = setInterval(updateStatusTime, 30000);
+    if (statusInterval) {
+        clearInterval(statusInterval);
+        statusInterval = null;
     }
+    statusInterval = setInterval(updateStatusTime, 30000);
 }
 
 function updateStatusTime() {
@@ -757,7 +772,7 @@ function updateStatusTime() {
     document.getElementById('statusTime').textContent = hours + ':' + mins;
 }
 
-// ===== 切换角色（更新绑定） =====
+// ===== 切换角色 =====
 function startRoleSwitch() {
     var list = document.getElementById('roleSwitchList');
     list.innerHTML = '';
@@ -781,6 +796,30 @@ function startRoleSwitch() {
     document.getElementById('roleSwitchOverlay').classList.add('active');
 }
 
+// ===== 退出 =====
+function exitPhone() {
+    isPhoneUnlocked = false;
+    phoneData.isUnlocked = false;
+    currentRoleId = null;
+    pendingSwitchRoleId = null;
+    isSwitchingRole = false;
+    phoneData.currentRoleId = null;
+    savePhoneData();
+
+    document.querySelectorAll('.app-page.open').forEach(function(p) {
+        p.classList.remove('open');
+    });
+
+    if (statusInterval) {
+        clearInterval(statusInterval);
+        statusInterval = null;
+    }
+
+    document.getElementById('entryOverlay').classList.remove('hidden');
+    renderEntryScreen();
+    showToast('👋 已退出，请重新选择角色');
+}
+
 // ===== 生成所有数据 =====
 function generateAllData(role) {
     if (!role) return;
@@ -794,7 +833,7 @@ function generateAllData(role) {
     generateMoments(role);
 }
 
-// ===== 浏览器记录（角色个性化） =====
+// ===== 浏览器记录 =====
 function generateBrowserHistory(role) {
     if (!role) return;
     var persona = (role.persona || '').toLowerCase();
@@ -821,11 +860,12 @@ function generateBrowserHistory(role) {
         queries = ['如何与人相处', '怎么表达真实的自己', '关系中的安全感从哪里来', '如何让生活更有意义', '每天都在想什么', '怎么判断一段感情'];
     }
 
-    // 每次打乱顺序，增加多样性
     var shuffled = queries.slice().sort(function() { return Math.random() - 0.5; });
     var tags = ['日常', '情感', '生活', '成长', '关系', '内心'];
     var history = shuffled.slice(0, 5).map(function(q, idx) {
-        return { query: q, time: new Date(Date.now() - (idx + 1) * 600000).toLocaleString(), tag: tags[idx % tags.length] };
+        var d = new Date();
+        d.setMinutes(d.getMinutes() - (idx + 1) * 10);
+        return { query: q, time: d.toLocaleString(), tag: tags[idx % tags.length] };
     });
     setRoleBrowserHistory(role.id, history);
 }
@@ -983,11 +1023,12 @@ function generateWxMessages(role) {
         var count = 1 + Math.floor(Math.random() * 2);
         var shuffled = templates.slice().sort(function() { return Math.random() - 0.5; });
         for (var i = 0; i < Math.min(count, shuffled.length); i++) {
+            var d = new Date(now - (i + 1) * 600000);
             msgs.push({
                 id: generateId(),
                 sender: 'other',
                 text: shuffled[i],
-                time: new Date(now - (i + 1) * 600000).toISOString(),
+                time: d.toISOString(),
                 read: Math.random() > 0.3,
                 fromMain: false,
             });
@@ -1062,7 +1103,10 @@ function generateSongsFromNCM(role) {
     var lastGen = getRoleLastSongGen(role.id);
     if (lastGen && now - new Date(lastGen).getTime() < 3600000) {
         var cached = getRoleSongs(role.id);
-        if (cached && cached.length > 0) return;
+        if (cached && cached.length > 0) {
+            renderMusic();
+            return;
+        }
     }
 
     var persona = (role.persona || '').toLowerCase();
@@ -1268,7 +1312,7 @@ function generateTracks(role) {
     setRoleTracks(role.id, tracks);
 }
 
-// ===== 朋友圈（微信卡片样式） =====
+// ===== 朋友圈 =====
 function generateMoments(role) {
     if (!role) return;
     var now = Date.now();
@@ -1473,7 +1517,7 @@ function renderMusic() {
     if (!role) return;
     var songs = getRoleSongs(role.id);
     var body = document.getElementById('musicBody');
-    var current = songs.length > 0 ? songs[0] : null;
+    var current = songs.length > 0 ? songs[currentPlaylistIndex % songs.length] : null;
 
     var html = '';
     if (current) {
@@ -1481,7 +1525,11 @@ function renderMusic() {
             '<div class="player-art">🎵</div>' +
             '<div class="player-name">' + current.name + '</div>' +
             '<div class="player-artist">' + current.artist + '</div>' +
-            '<div class="player-controls"><i class="fas fa-step-backward" id="musicPrev"></i><i class="fas fa-play-circle play-btn" id="musicPlay"></i><i class="fas fa-step-forward" id="musicNext"></i></div>' +
+            '<div class="player-controls">' +
+            '<i class="fas fa-step-backward control-btn" id="musicPrev"></i>' +
+            '<i class="fas fa-' + (musicPlaying ? 'pause-circle' : 'play-circle') + ' play-btn" id="musicPlay"></i>' +
+            '<i class="fas fa-step-forward control-btn" id="musicNext"></i>' +
+            '</div>' +
             '</div>';
     } else {
         html += '<div class="music-player-card"><div class="player-art" style="font-size:32px;padding:30px 0;">🎵</div><div class="player-name" style="color:rgba(255,255,255,0.3);">暂无歌曲</div></div>';
@@ -1494,7 +1542,7 @@ function renderMusic() {
         songs.forEach(function(song, idx) {
             var isActive = current && song.id === current.id;
             var tag = song.fromNCM ? '🌟 ' : '';
-            html += '<div class="playlist-item" data-id="' + song.id + '" style="' + (isActive ? 'background:rgba(255,255,255,0.04);' : '') + '">' +
+            html += '<div class="playlist-item" data-id="' + song.id + '" data-index="' + idx + '" style="' + (isActive ? 'background:rgba(255,255,255,0.04);' : '') + '">' +
                 '<span class="pl-index">' + (idx + 1) + '</span>' +
                 '<div class="pl-info"><div class="pl-name" style="' + (isActive ? 'color:#2ed573;' : '') + '">' + tag + song.name + '</div><div class="pl-artist">' + song.artist + '</div></div>' +
                 '<span class="pl-duration">' + (song.duration || '3:30') + '</span>' +
@@ -1509,12 +1557,11 @@ function renderMusic() {
     if (playBtn) {
         playBtn.addEventListener('click', function(e) {
             e.stopPropagation();
-            var currentSong = songs[0];
+            var currentSong = songs[currentPlaylistIndex % songs.length];
             if (currentSong) {
-                showToast('🎵 正在播放：' + currentSong.name + ' - ' + currentSong.artist);
-                var icon = this.querySelector('i');
-                icon.className = 'fas fa-pause-circle';
-                setTimeout(function() { icon.className = 'fas fa-play-circle'; }, 2000);
+                musicPlaying = !musicPlaying;
+                showToast(musicPlaying ? '▶️ 正在播放：' + currentSong.name : '⏸ 已暂停');
+                renderMusic();
             }
         });
     }
@@ -1522,31 +1569,45 @@ function renderMusic() {
     if (prevBtn) {
         prevBtn.addEventListener('click', function(e) {
             e.stopPropagation();
-            showToast('⏮ 上一首');
+            if (songs.length > 0) {
+                currentPlaylistIndex = (currentPlaylistIndex - 1 + songs.length) % songs.length;
+                var song = songs[currentPlaylistIndex];
+                showToast('⏮ 切换到：' + song.name);
+                musicPlaying = true;
+                renderMusic();
+            }
         });
     }
     var nextBtn = document.getElementById('musicNext');
     if (nextBtn) {
         nextBtn.addEventListener('click', function(e) {
             e.stopPropagation();
-            showToast('⏭ 下一首');
+            if (songs.length > 0) {
+                currentPlaylistIndex = (currentPlaylistIndex + 1) % songs.length;
+                var song = songs[currentPlaylistIndex];
+                showToast('⏭ 切换到：' + song.name);
+                musicPlaying = true;
+                renderMusic();
+            }
         });
     }
     var card = document.getElementById('musicPlayerCard');
     if (card) {
         card.addEventListener('click', function() {
-            var currentSong2 = songs[0];
-            if (currentSong2) {
-                showToast('🎵 ' + currentSong2.name + ' - ' + currentSong2.artist);
+            var currentSong = songs[currentPlaylistIndex % songs.length];
+            if (currentSong) {
+                showToast('🎵 ' + currentSong.name + ' - ' + currentSong.artist);
             }
         });
     }
     body.querySelectorAll('.playlist-item').forEach(function(el) {
         el.addEventListener('click', function() {
-            var id = this.dataset.id;
-            var song = songs.find(function(s) { return s.id === id; });
+            var idx = parseInt(this.dataset.index);
+            var song = songs[idx];
             if (song) {
+                currentPlaylistIndex = idx;
                 showToast('🎵 正在播放：' + song.name + ' - ' + song.artist);
+                musicPlaying = true;
                 renderMusic();
             }
         });
@@ -1597,7 +1658,7 @@ function renderMoments() {
             '<div class="m-avatar" style="' + avatarStyle + '" data-role="' + (m.roleName || '') + '" data-avatar="' + (m.roleAvatar || '') + '"></div>' +
             '<span class="m-name" data-role="' + (m.roleName || '') + '">' + (m.roleName || 'TA') + '</span>' +
             '<span class="m-time">' + new Date(m.createdAt).toLocaleString() + '</span>' +
-            '<span class="m-privacy">' + (isPrivate ? '🔒' : '') + '</span>' +
+            (isPrivate ? '<span style="font-size:12px;color:rgba(255,255,255,0.2);">🔒</span>' : '') +
             '</div>' +
             '<div class="m-content">' + m.content + '</div>' +
             '<div class="m-footer"><span class="m-likes"><i class="fas fa-heart"></i> ' + (m.likes || 0) + '</span><span class="m-comments"><i class="fas fa-comment"></i> ' + (m.comments || 0) + '</span></div>' +
@@ -1628,6 +1689,7 @@ function openMomentsProfile(name, avatar) {
         } else {
             cover.style.backgroundImage = 'linear-gradient(135deg, #2d3436, #636e72)';
         }
+        updateWallpaperPreview('moments', momentsWallpaper);
     }
     var avatarEl = document.getElementById('profileCoverAvatar');
     if (avatar && avatar.startsWith('data:image')) {
@@ -1656,7 +1718,7 @@ function openMomentsProfile(name, avatar) {
         html += '<div class="moments-item' + (isPrivate ? ' m-private' : '') + '" style="margin-bottom:8px;">' +
             '<div class="m-header">' +
             '<span style="font-size:12px;color:rgba(255,255,255,0.3);">' + new Date(m.createdAt).toLocaleString() + '</span>' +
-            '<span class="m-privacy">' + (isPrivate ? '🔒' : '') + '</span>' +
+            (isPrivate ? '<span style="font-size:12px;color:rgba(255,255,255,0.2);">🔒</span>' : '') +
             '</div>' +
             '<div class="m-content">' + m.content + '</div>' +
             '<div class="m-footer"><span class="m-likes"><i class="fas fa-heart"></i> ' + (m.likes || 0) + '</span><span class="m-comments"><i class="fas fa-comment"></i> ' + (m.comments || 0) + '</span></div>' +
@@ -1685,14 +1747,14 @@ function renderSettings() {
 
         '<div class="wallpaper-preview-row">' +
         '<div class="wpr-label">桌面壁纸</div>' +
-        '<div class="wpr-preview" id="desktopPreview">' + (desktopWallpaper ? '<img src="' + desktopWallpaper + '" />' : '🏠') + '</div>' +
+        '<div class="wpr-preview" id="desktopPreview"></div>' +
         '<button class="wpr-btn" id="setDesktopWallpaper">更换</button>' +
         (desktopWallpaper ? '<button class="wpr-btn danger" id="removeDesktopWallpaper">移除</button>' : '') +
         '</div>' +
 
         '<div class="wallpaper-preview-row">' +
         '<div class="wpr-label">朋友圈壁纸</div>' +
-        '<div class="wpr-preview" id="momentsPreview">' + (momentsWallpaper ? '<img src="' + momentsWallpaper + '" />' : '📷') + '</div>' +
+        '<div class="wpr-preview" id="momentsPreview"></div>' +
         '<button class="wpr-btn" id="setMomentsWallpaper">更换</button>' +
         (momentsWallpaper ? '<button class="wpr-btn danger" id="removeMomentsWallpaper">移除</button>' : '') +
         '</div>' +
@@ -1704,6 +1766,10 @@ function renderSettings() {
         '</div>';
 
     body.innerHTML = html;
+
+    // 更新壁纸预览
+    updateWallpaperPreview('desktop', desktopWallpaper);
+    updateWallpaperPreview('moments', momentsWallpaper);
 
     var setDesktopBtn = document.getElementById('setDesktopWallpaper');
     if (setDesktopBtn) {
@@ -1775,40 +1841,22 @@ function refreshAllApps() {
     renderSettings();
 }
 
-// ===== 退出（重置角色选择） =====
-function exitPhone() {
-    // 重置所有状态
-    isPhoneUnlocked = false;
-    phoneData.isUnlocked = false;
-    currentRoleId = null;
-    pendingSwitchRoleId = null;
-    isSwitchingRole = false;
-    phoneData.currentRoleId = null;
-    savePhoneData();
-
-    // 关闭所有打开的页面
-    document.querySelectorAll('.app-page.open').forEach(function(p) {
-        p.classList.remove('open');
-    });
-
-    // 回到角色选择界面
-    document.getElementById('entryOverlay').classList.remove('hidden');
-    renderEntryScreen();
-    showToast('👋 已退出，请重新选择角色');
-}
-
 // ===== 右滑退出 =====
 function initSwipeToExit() {
     var home = document.getElementById('phoneHome');
+    var isSwiping = false;
+    
     home.addEventListener('touchstart', function(e) {
         touchStartX = e.touches[0].clientX;
         touchStartY = e.touches[0].clientY;
+        isSwiping = false;
     }, { passive: true });
 
     home.addEventListener('touchmove', function(e) {
         var dx = e.touches[0].clientX - touchStartX;
         var dy = e.touches[0].clientY - touchStartY;
-        if (dx > 80 && Math.abs(dy) < 50) {
+        if (dx > 80 && Math.abs(dy) < 50 && !isSwiping) {
+            isSwiping = true;
             exitPhone();
         }
     }, { passive: true });
@@ -1822,7 +1870,7 @@ function initEvents() {
     });
     document.getElementById('lockDelete').addEventListener('click', function() { handleLockKey('delete'); });
 
-    // App 点击 - 统一处理所有 app
+    // App 点击
     document.querySelectorAll('.phone-app[data-app]').forEach(function(btn) {
         btn.addEventListener('click', function() {
             var app = this.dataset.app;
@@ -1882,6 +1930,14 @@ function initEvents() {
     document.getElementById('momentsRefresh').addEventListener('click', function() { var r = getCurrentPhoneRole(); if (r) generateMoments(r); renderMoments(); showToast('🔄 已刷新'); });
 
     initSwipeToExit();
+
+    // 清理定时器
+    window.addEventListener('beforeunload', function() {
+        if (statusInterval) {
+            clearInterval(statusInterval);
+            statusInterval = null;
+        }
+    });
 }
 
 // ===== 初始化 =====
@@ -1892,6 +1948,8 @@ function init() {
     isPhoneUnlocked = false;
     pendingSwitchRoleId = null;
     isSwitchingRole = false;
+    currentPlaylistIndex = 0;
+    musicPlaying = false;
 
     renderEntryScreen();
 
@@ -1907,7 +1965,7 @@ function init() {
 
     initEvents();
 
-    console.log('📱 他的手机 v2.4 已启动');
+    console.log('📱 他的手机 v2.5 已启动');
     console.log('角色数:', allRoles.length);
     console.log('当前角色:', currentRoleId ? (getRoleById(currentRoleId)?.name || '未知') : '未选择');
 }
