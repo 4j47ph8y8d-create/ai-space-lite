@@ -9,7 +9,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
         body { background: #000; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 0; margin: 0; touch-action: none; }
         .phone-frame { width: 100%; max-width: 430px; height: 100vh; max-height: 100vh; background: #000; border-radius: 0; overflow: hidden; position: relative; box-shadow: none; touch-action: none; }
-        :root { --safe-top: 0px; --safe-bottom: 0px; --desktop-bg: #000; --moments-bg: #000; }
+        :root { --safe-top: 0px; --safe-bottom: 0px; --desktop-bg: #000; }
         @supports (padding: env(safe-area-inset-top)) { :root { --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px); } }
 
         .hidden { display: none !important; }
@@ -31,7 +31,7 @@
         .entry-overlay .entry-role-btn .er-info .er-hint { font-size: 11px; color: rgba(255,255,255,0.2); }
         .entry-overlay .entry-role-btn .er-lock { font-size: 14px; color: rgba(255,255,255,0.15); }
 
-        /* ===== 锁屏 ===== */
+        /* ===== 锁屏（无额外提示文字） ===== */
         .lock-screen { width: 100%; height: 100%; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; position: absolute; top: 0; left: 0; z-index: 100; transition: opacity 0.5s ease; }
         .lock-screen.unlocked { opacity: 0; pointer-events: none; }
         .lock-screen .lock-time { font-size: 72px; font-weight: 300; color: #fff; letter-spacing: 2px; }
@@ -161,7 +161,7 @@
         .track-map-card .track-point .tp-info .tp-desc { font-size: 11px; color: rgba(255,255,255,0.3); }
         .track-map-card .track-point .tp-time { font-size: 10px; color: rgba(255,255,255,0.2); flex-shrink: 0; }
 
-        /* ===== 朋友圈 ===== */
+        /* ===== 朋友圈 - 微信卡片样式 ===== */
         .moments-item { background: rgba(255,255,255,0.03); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.04); cursor: pointer; transition: 0.15s; }
         .moments-item:active { transform: scale(0.98); }
         .moments-item .m-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
@@ -213,14 +213,13 @@
         @media (min-width: 431px) { .phone-frame { border-radius: 32px; height: 780px; max-height: 90vh; box-shadow: 0 20px 60px rgba(0,0,0,0.8); } body { padding: 12px; } }
         @media (max-width: 460px) { .phone-frame { border-radius: 0; height: 100vh; max-height: 100vh; } body { padding: 0; } }
 
-        /* 加载状态 */
         .loading-spinner { text-align: center; padding: 40px 20px; color: rgba(255,255,255,0.3); }
         .loading-spinner i { font-size: 32px; display: block; margin-bottom: 12px; animation: spin 1s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
-<div class="phone-frame" id="app" ontouchstart="">
+<div class="phone-frame" id="app">
 
     <!-- ===== 角色选择进入 ===== -->
     <div class="entry-overlay" id="entryOverlay">
@@ -229,7 +228,7 @@
         <div class="entry-role-list" id="entryRoleList"></div>
     </div>
 
-    <!-- ===== 锁屏 ===== -->
+    <!-- ===== 锁屏（无额外文字） ===== -->
     <div class="lock-screen" id="lockScreen">
         <div class="lock-time" id="lockTime">09:41</div>
         <div class="lock-date" id="lockDate">2026年7月7日</div>
@@ -329,8 +328,9 @@
 
 <script>
 // ============================================================
-//  📱 他的手机 - 完整修复版 v2.3
-//  包含：网易云音乐API集成、微信卡片样式、浏览器AI思考
+//  📱 他的手机 - 完整修复版 v2.4
+//  修复：退出重置、切换角色绑定、密码界面、设置/微信按钮、
+//  朋友圈卡片样式、浏览器记录个性化、网易云音乐API
 // ============================================================
 
 var PHONE_CONFIG = {
@@ -340,7 +340,8 @@ var PHONE_CONFIG = {
     maxWxMessagesPerContact: 50,
     dailySongsCount: 10,
     wxAutoGenInterval: 86400000,
-    ncmApiUrl: 'http://localhost:3000', // 网易云API地址
+    ncmApiUrl: 'https://netease-cloud-music-api-five-roan.vercel.app', // 在线网易云API
+    // 如果用本地：'http://localhost:3000'
 };
 
 var phoneData = {};
@@ -522,7 +523,7 @@ function setRoleDesktopWallpaper(roleId, url) { if (!roleId) return; if (!phoneD
 function getRoleMomentsWallpaper(roleId) { if (!roleId || !phoneData.momentsWallpaper) return ''; return phoneData.momentsWallpaper[roleId] || ''; }
 function setRoleMomentsWallpaper(roleId, url) { if (!roleId) return; if (!phoneData.momentsWallpaper) phoneData.momentsWallpaper = {}; phoneData.momentsWallpaper[roleId] = url; savePhoneData(); }
 
-// ===== 锁屏 =====
+// ===== 锁屏（无额外文字） =====
 function renderLockScreen(roleId, isSwitch) {
     var role = roleId ? getRoleById(roleId) : getCurrentPhoneRole();
     if (!role) {
@@ -538,6 +539,7 @@ function renderLockScreen(roleId, isSwitch) {
     document.getElementById('lockTime').textContent = hours + ':' + mins;
     document.getElementById('lockDate').textContent = now.getFullYear() + '年' + (now.getMonth()+1) + '月' + now.getDate() + '日';
 
+    // 更新锁屏头像
     var avatarEl = document.getElementById('lockAvatar');
     if (role.avatar) {
         avatarEl.style.backgroundImage = 'url(' + role.avatar + ')';
@@ -594,7 +596,11 @@ function handleLockKey(key) {
                 phoneData.currentRoleId = currentRoleId;
                 savePhoneData();
                 var newRole = getRoleById(currentRoleId);
-                if (newRole) showToast('✅ 已切换至「' + newRole.name + '」的手机');
+                // 切换后立即更新锁屏和主界面头像
+                if (newRole) {
+                    renderLockScreen(currentRoleId, false);
+                    showToast('✅ 已切换至「' + newRole.name + '」的手机');
+                }
             } else {
                 isPhoneUnlocked = true;
                 phoneData.currentRoleId = currentRoleId;
@@ -683,7 +689,7 @@ function getCurrentPhoneRole() {
     return null;
 }
 
-// ===== 加载主界面 =====
+// ===== 加载主界面（同步更新头像） =====
 function loadPhoneHome() {
     var role = getCurrentPhoneRole();
     if (!role) {
@@ -694,6 +700,7 @@ function loadPhoneHome() {
         return;
     }
 
+    // 更新主界面头像
     var avatarEl = document.getElementById('phAvatar');
     if (role.avatar) {
         avatarEl.style.backgroundImage = 'url(' + role.avatar + ')';
@@ -706,6 +713,19 @@ function loadPhoneHome() {
     }
     document.getElementById('phName').textContent = role.name;
     document.getElementById('phStatus').textContent = '点击切换角色';
+
+    // 同时更新锁屏头像（保持同步）
+    var lockAvatar = document.getElementById('lockAvatar');
+    if (role.avatar) {
+        lockAvatar.style.backgroundImage = 'url(' + role.avatar + ')';
+        lockAvatar.style.backgroundSize = 'cover';
+        lockAvatar.style.backgroundPosition = 'center';
+        lockAvatar.style.backgroundColor = 'transparent';
+    } else {
+        lockAvatar.style.backgroundImage = '';
+        lockAvatar.style.backgroundColor = '#2ed573';
+    }
+    document.getElementById('lockName').textContent = role.name;
 
     // 应用桌面壁纸
     var wallpaper = getRoleDesktopWallpaper(role.id);
@@ -737,7 +757,7 @@ function updateStatusTime() {
     document.getElementById('statusTime').textContent = hours + ':' + mins;
 }
 
-// ===== 切换角色 =====
+// ===== 切换角色（更新绑定） =====
 function startRoleSwitch() {
     var list = document.getElementById('roleSwitchList');
     list.innerHTML = '';
@@ -774,13 +794,12 @@ function generateAllData(role) {
     generateMoments(role);
 }
 
-// ===== 浏览器记录（结合角色人设） =====
+// ===== 浏览器记录（角色个性化） =====
 function generateBrowserHistory(role) {
     if (!role) return;
     var persona = (role.persona || '').toLowerCase();
     var bg = (role.background || '').toLowerCase();
 
-    // 根据角色人设生成不同的搜索词
     var queries = [];
     var isCold = persona.indexOf('冷') !== -1 || persona.indexOf('高冷') !== -1 || persona.indexOf('沉默') !== -1;
     var isGentle = persona.indexOf('温柔') !== -1 || persona.indexOf('暖') !== -1 || persona.indexOf('细腻') !== -1;
@@ -802,6 +821,7 @@ function generateBrowserHistory(role) {
         queries = ['如何与人相处', '怎么表达真实的自己', '关系中的安全感从哪里来', '如何让生活更有意义', '每天都在想什么', '怎么判断一段感情'];
     }
 
+    // 每次打乱顺序，增加多样性
     var shuffled = queries.slice().sort(function() { return Math.random() - 0.5; });
     var tags = ['日常', '情感', '生活', '成长', '关系', '内心'];
     var history = shuffled.slice(0, 5).map(function(q, idx) {
@@ -820,7 +840,6 @@ function generateNotes(role) {
     var bg = (role.background || '').toLowerCase();
 
     var userMsgs = recentMsgs.filter(function(m) { return m.role === 'user'; }).map(function(m) { return m.content; }).join(' ');
-    var aiMsgs = recentMsgs.filter(function(m) { return m.role === 'assistant'; }).map(function(m) { return m.content; }).join(' ');
 
     var patterns = [
         { regex: /(?:我|今天|明天|后天|下周|这周)(?:要|想|打算|准备|需要)(.+?)[。！？,.!?]/, label: '待办' },
@@ -841,15 +860,14 @@ function generateNotes(role) {
         noteTexts.push({ text: '🎂 用户生日：' + month + '月' + day + '日', label: '重要', important: true });
     }
 
-    // AI自己的思考
     var thoughts = [];
-    if (isArt) {
+    if (bg.indexOf('琴') !== -1 || bg.indexOf('音乐') !== -1 || persona.indexOf('音乐') !== -1) {
         thoughts = ['🎵 今天练琴的时候想到了新的旋律，想分享给TA', '📝 下个月的演出曲目：肖邦夜曲、德彪西月光'];
-    } else if (isGentle) {
+    } else if (persona.indexOf('温柔') !== -1 || persona.indexOf('暖') !== -1) {
         thoughts = ['💭 今天TA好像不太开心，记得多关心一下', '📝 周末想带TA去那家新开的咖啡馆'];
-    } else if (isCold) {
+    } else if (persona.indexOf('冷') !== -1 || persona.indexOf('高冷') !== -1) {
         thoughts = ['💭 有些话还是说不出口，先写下来吧', '📝 今晚的月色很好，可惜没有人一起看'];
-    } else if (isWork) {
+    } else if (bg.indexOf('公司') !== -1 || bg.indexOf('上班') !== -1) {
         thoughts = ['💭 今天的工作汇报要准备好', '📝 下周的项目截止，要抓紧了'];
     } else {
         thoughts = ['💭 今天想了很多，关于我们之间的事', '📝 记录一些瞬间，怕以后忘了'];
@@ -1015,43 +1033,34 @@ function syncMainChatToWx(role) {
     setRoleWxMessages(role.id, messages);
 }
 
-// ===== 网易云音乐API - 搜索歌曲 =====
+// ===== 网易云音乐API =====
 function searchMusicFromNCM(keyword) {
-    return new Promise(function(resolve, reject) {
-        var url = PHONE_CONFIG.ncmApiUrl + '/search?keywords=' + encodeURIComponent(keyword) + '&limit=30';
-        fetch(url)
-            .then(function(res) {
-                if (!res.ok) throw new Error('API请求失败: ' + res.status);
-                return res.json();
-            })
-            .then(function(data) {
-                if (data.code === 200 && data.result && data.result.songs) {
-                    var songs = data.result.songs.map(function(s) {
-                        return {
-                            name: s.name,
-                            artist: s.artists.map(function(a) { return a.name; }).join(' / '),
-                            id: s.id,
-                            duration: Math.floor(s.duration / 1000),
-                        };
-                    });
-                    resolve(songs);
-                } else {
-                    reject(new Error('搜索无结果'));
-                }
-            })
-            .catch(function(err) {
-                reject(err);
-            });
-    });
+    var url = PHONE_CONFIG.ncmApiUrl + '/search?keywords=' + encodeURIComponent(keyword) + '&limit=30';
+    return fetch(url)
+        .then(function(res) {
+            if (!res.ok) throw new Error('API请求失败');
+            return res.json();
+        })
+        .then(function(data) {
+            if (data.code === 200 && data.result && data.result.songs) {
+                return data.result.songs.map(function(s) {
+                    return {
+                        name: s.name,
+                        artist: s.artists.map(function(a) { return a.name; }).join(' / '),
+                        id: s.id,
+                        duration: Math.floor(s.duration / 1000),
+                    };
+                });
+            }
+            throw new Error('搜索无结果');
+        });
 }
 
-// ===== 生成音乐歌单（通过网易云API） =====
 function generateSongsFromNCM(role) {
     if (!role) return;
     var now = Date.now();
     var lastGen = getRoleLastSongGen(role.id);
     if (lastGen && now - new Date(lastGen).getTime() < 3600000) {
-        // 如果1小时内生成过，直接用缓存的
         var cached = getRoleSongs(role.id);
         if (cached && cached.length > 0) return;
     }
@@ -1059,7 +1068,6 @@ function generateSongsFromNCM(role) {
     var persona = (role.persona || '').toLowerCase();
     var bg = (role.background || '').toLowerCase();
 
-    // 根据角色人设生成搜索关键词
     var keywords = [];
     var isGentle = persona.indexOf('温柔') !== -1 || persona.indexOf('暖') !== -1;
     var isCold = persona.indexOf('冷') !== -1 || persona.indexOf('高冷') !== -1;
@@ -1075,7 +1083,6 @@ function generateSongsFromNCM(role) {
         keywords = ['华语流行', '经典老歌', '治愈系', '轻音乐', '民谣'];
     }
 
-    // 从聊天记录中提取用户提过的歌曲
     var messages = role.messages || [];
     var allText = messages.map(function(m) { return m.content; }).join(' ');
     var mentionedSongs = [];
@@ -1090,25 +1097,20 @@ function generateSongsFromNCM(role) {
         loadingEl.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner"></i>正在搜索推荐歌曲...</div>';
     }
 
-    // 构建搜索任务
+    var allResults = [];
     var searchTasks = [];
-    // 优先搜索用户提过的歌
     mentionedSongs.slice(0, 3).forEach(function(song) {
         searchTasks.push({ keyword: song, priority: 1 });
     });
-    // 然后按人设关键词搜索
     keywords.slice(0, 3).forEach(function(kw) {
         searchTasks.push({ keyword: kw, priority: 0 });
     });
 
-    // 执行搜索
-    var allResults = [];
     var tasks = searchTasks.slice(0, 5).map(function(task) {
         return searchMusicFromNCM(task.keyword)
             .then(function(songs) {
                 if (songs && songs.length > 0) {
                     songs.forEach(function(s) {
-                        // 去重
                         if (!allResults.some(function(r) { return r.name === s.name && r.artist === s.artist; })) {
                             allResults.push(s);
                         }
@@ -1122,7 +1124,6 @@ function generateSongsFromNCM(role) {
     });
 
     Promise.all(tasks).then(function() {
-        // 如果搜索结果太少，用预设歌单补充
         if (allResults.length < PHONE_CONFIG.dailySongsCount) {
             var fallbackSongs = [
                 { name: '晴天', artist: '周杰伦' },
@@ -1143,7 +1144,6 @@ function generateSongsFromNCM(role) {
             });
         }
 
-        // 打乱顺序
         var shuffled = allResults.slice().sort(function() { return Math.random() - 0.5; });
         var songs = shuffled.slice(0, PHONE_CONFIG.dailySongsCount).map(function(s, idx) {
             return {
@@ -1162,7 +1162,6 @@ function generateSongsFromNCM(role) {
         renderMusic();
         showToast('🎵 歌单已更新（来自网易云）');
     }).catch(function() {
-        // 如果API完全失败，用预设歌单
         var fallbackSongs = [
             { name: '晴天', artist: '周杰伦' },
             { name: '小幸运', artist: '田馥甄' },
@@ -1269,7 +1268,7 @@ function generateTracks(role) {
     setRoleTracks(role.id, tracks);
 }
 
-// ===== 朋友圈 =====
+// ===== 朋友圈（微信卡片样式） =====
 function generateMoments(role) {
     if (!role) return;
     var now = Date.now();
@@ -1776,16 +1775,23 @@ function refreshAllApps() {
     renderSettings();
 }
 
-// ===== 退出 =====
+// ===== 退出（重置角色选择） =====
 function exitPhone() {
-    // 重置状态 - 回到角色选择界面
+    // 重置所有状态
     isPhoneUnlocked = false;
     phoneData.isUnlocked = false;
     currentRoleId = null;
     pendingSwitchRoleId = null;
     isSwitchingRole = false;
+    phoneData.currentRoleId = null;
     savePhoneData();
-    document.querySelectorAll('.app-page.open').forEach(function(p) { p.classList.remove('open'); });
+
+    // 关闭所有打开的页面
+    document.querySelectorAll('.app-page.open').forEach(function(p) {
+        p.classList.remove('open');
+    });
+
+    // 回到角色选择界面
     document.getElementById('entryOverlay').classList.remove('hidden');
     renderEntryScreen();
     showToast('👋 已退出，请重新选择角色');
@@ -1810,11 +1816,13 @@ function initSwipeToExit() {
 
 // ===== 事件绑定 =====
 function initEvents() {
+    // 锁屏键盘
     document.querySelectorAll('#lockKeypad button[data-key]').forEach(function(btn) {
         btn.addEventListener('click', function() { handleLockKey(this.dataset.key); });
     });
     document.getElementById('lockDelete').addEventListener('click', function() { handleLockKey('delete'); });
 
+    // App 点击 - 统一处理所有 app
     document.querySelectorAll('.phone-app[data-app]').forEach(function(btn) {
         btn.addEventListener('click', function() {
             var app = this.dataset.app;
@@ -1833,6 +1841,7 @@ function initEvents() {
         });
     });
 
+    // App 返回
     document.querySelectorAll('.back-btn[data-back]').forEach(function(btn) {
         btn.addEventListener('click', function() {
             var pageId = this.dataset.back + 'Page';
@@ -1841,18 +1850,22 @@ function initEvents() {
         });
     });
 
+    // 微信聊天返回
     document.getElementById('wxChatBack').addEventListener('click', function() {
         document.getElementById('wxChatPage').classList.remove('open');
         renderWechat();
     });
 
+    // 朋友圈个人主页返回
     document.getElementById('momentsProfileBack').addEventListener('click', function() {
         document.getElementById('momentsProfilePage').classList.remove('open');
     });
 
+    // 角色切换
     document.getElementById('phSwitchBtn').addEventListener('click', startRoleSwitch);
     document.getElementById('phoneHeader').addEventListener('click', startRoleSwitch);
 
+    // 角色切换弹窗取消
     document.getElementById('roleSwitchCancel').addEventListener('click', function() {
         document.getElementById('roleSwitchOverlay').classList.remove('active');
     });
@@ -1860,6 +1873,7 @@ function initEvents() {
         if (e.target === this) this.classList.remove('active');
     });
 
+    // 刷新按钮
     document.getElementById('safariRefresh').addEventListener('click', function() { var r = getCurrentPhoneRole(); if (r) generateBrowserHistory(r); renderBrowser(); showToast('🔄 已刷新'); });
     document.getElementById('notesRefresh').addEventListener('click', function() { var r = getCurrentPhoneRole(); if (r) generateNotes(r); renderNotes(); showToast('🔄 已刷新'); });
     document.getElementById('wechatRefresh').addEventListener('click', function() { var r = getCurrentPhoneRole(); if (r) { generateWxMessages(r); syncMainChatToWx(r); } renderWechat(); showToast('🔄 已刷新'); });
@@ -1893,7 +1907,7 @@ function init() {
 
     initEvents();
 
-    console.log('📱 他的手机 v2.3 已启动');
+    console.log('📱 他的手机 v2.4 已启动');
     console.log('角色数:', allRoles.length);
     console.log('当前角色:', currentRoleId ? (getRoleById(currentRoleId)?.name || '未知') : '未选择');
 }
