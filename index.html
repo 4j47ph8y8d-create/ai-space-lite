@@ -121,7 +121,7 @@
         [data-theme="light"] .status-bar { color: rgba(0,0,0,0.6); text-shadow: none; }
         .status-bar .icons { display: flex; gap: 6px; }
 
-        /* ===== 主题切换按钮（下移） ===== */
+        /* ===== 主题切换按钮 ===== */
         .theme-toggle-btn {
             position: absolute; 
             top: 44px; 
@@ -434,7 +434,7 @@
         @keyframes dotBounce { 0%,80%,100% { transform: scale(0.6); opacity: 0.5; } 40% { transform: scale(1); opacity: 1; } }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* ===== 输入区域（底部安全区域） ===== */
+        /* ===== 输入区域 ===== */
         .chat-input-area { 
             background: var(--header-bg); 
             backdrop-filter: blur(10px); 
@@ -469,7 +469,7 @@
         .longpress-menu .menu-item i { width: 16px; color: #07c160; }
         .longpress-menu .menu-item.danger i { color: #e74c3c; }
 
-        /* ===== 其他屏幕（记忆库、表情包、日记）顶部安全区域 ===== */
+        /* ===== 其他屏幕 ===== */
         .screen-memory, .screen-meme, .screen-diary { 
             width: 100%; height: 100%; 
             background: var(--bg-secondary); 
@@ -1155,8 +1155,9 @@
 
 <script>
 // ============================================================
-//  🚀 梦女空间 v2.1
-//  修复：壁纸压缩+持久化、点击穿透、安全区域适配
+//  🚀 梦女空间 v2.1 - 修复版
+//  修复内容：角色切换后消息发送问题
+//  修复日期：2026-07-08
 // ============================================================
 
 var CONFIG = {
@@ -1383,7 +1384,6 @@ function compressImage(dataUrl, maxSizeKB, callback) {
 function applyWallpaper(dataUrl) {
     var screen = document.getElementById('launcherScreen');
     if (dataUrl) {
-        // 压缩后保存
         compressImage(dataUrl, 200, function(compressed) {
             screen.style.backgroundImage = 'url(' + compressed + ')';
             screen.style.backgroundSize = 'cover';
@@ -1479,7 +1479,7 @@ function applyChatBgForRole(role) {
 }
 
 // ============================================================
-//  心跳系统（保留完整功能）
+//  心跳系统
 // ============================================================
 var HEART_KEYWORDS = [
     { keywords: ['我爱你', '我喜欢你', '爱死你了', '最爱', '好爱你'], weight: 15, level: '热恋' },
@@ -1882,14 +1882,35 @@ function renderRoleManager() {
     });
 }
 
-// ===== 聊天消息渲染 =====
+// ===== 聊天消息渲染（修复版） =====
 function renderMessages() {
     var role = getCurrentRole();
-    if (!role) return;
-    applyChatBgForRole(role);
+    if (!role) {
+        console.warn('⚠️ 没有当前角色');
+        return;
+    }
+    
+    // ✅ 确保 messages 是数组
+    if (!Array.isArray(role.messages)) {
+        console.warn('⚠️ role.messages 不是数组，已修复');
+        role.messages = [];
+        saveAllData();
+    }
+    
     var container = document.getElementById('messageContainer');
+    if (!container) return;
+    
     var msgs = role.messages || [];
-
+    
+    // ✅ 关键修复：检查 DOM 中的消息数量是否匹配
+    var domMessageCount = container.querySelectorAll('.message-row').length;
+    if (msgs.length !== domMessageCount) {
+        console.log('🔄 消息数量不匹配 (DOM:', domMessageCount, '数据:', msgs.length, ')，强制重新渲染');
+        lastMessageCount = -1;
+    }
+    
+    applyChatBgForRole(role);
+    
     if (lastMessageCount === -1 || msgs.length === 0) {
         container.innerHTML = '';
         if (msgs.length === 0) {
@@ -1914,7 +1935,7 @@ function renderMessages() {
         setTimeout(function() { markVisibleMessagesAsRead(); }, 100);
         return;
     }
-
+    
     if (msgs.length > lastMessageCount) {
         for (var i = lastMessageCount; i < msgs.length; i++) {
             var row = createMessageRow(msgs[i], role);
@@ -1923,6 +1944,8 @@ function renderMessages() {
         lastMessageCount = msgs.length;
         container.scrollTop = container.scrollHeight;
     } else if (msgs.length < lastMessageCount) {
+        // ✅ 如果消息变少了（删除操作），重新渲染
+        console.log('🔄 消息数量减少，重新渲染');
         container.innerHTML = '';
         if (msgs.length === 0) {
             var w2 = document.createElement('div');
@@ -1938,6 +1961,7 @@ function renderMessages() {
         lastMessageCount = msgs.length;
         container.scrollTop = container.scrollHeight;
     }
+    
     applyAvatars();
     applyBubbleStyle(CONFIG.bubbleStyle || 'default');
     applyFontSettings();
@@ -2414,10 +2438,20 @@ function autoExtractMemory(role, sourceMsgId) {
     }
 }
 
+// ===== 发送消息 =====
+var isSending = false; // ✅ 添加发送锁
+
 function handleSend() {
+    // ✅ 防止重复发送
+    if (isSending) {
+        showToast('⏳ 正在发送中，请稍后');
+        return;
+    }
+    
     var input = document.getElementById('messageInput');
     var text = input.value.trim();
     if (!text) return;
+    
     var finalMessage = text;
     if (quotedMsg) {
         var quotedContent = quotedMsg.content.replace(/\n/g, '\n> ');
@@ -2425,14 +2459,20 @@ function handleSend() {
         quotedMsg = null;
         document.getElementById('quoteBar').classList.remove('active');
     }
+    
     var role = getCurrentRole();
     if (!role) { showToast('⚠️ 未找到当前角色'); return; }
+    
+    // 锁定发送
+    isSending = true;
     input.value = '';
     input.disabled = true;
     document.getElementById('sendBtn').disabled = true;
+    
     addMessageToRole(role.id, 'user', finalMessage);
     renderMessages();
     showTyping();
+    
     callDeepSeek(finalMessage, role).then(function(reply) {
         hideTyping();
         reply = detectAndProcessGift(role.id, reply);
@@ -2458,12 +2498,14 @@ function handleSend() {
         sendNext();
     }).catch(function(e) {
         hideTyping();
+        console.error('❌ 发送消息失败:', e);
         addMessageToRole(role.id, 'assistant', '💔 ' + e.message);
         renderMessages();
     }).finally(function() {
         input.disabled = false;
         document.getElementById('sendBtn').disabled = false;
         input.focus();
+        isSending = false; // ✅ 解锁
     });
 }
 
@@ -2871,7 +2913,7 @@ function generateDiary(roleId, showToastMsg) {
     });
 }
 
-// ===== 表情包 - IndexedDB（保留完整功能） =====
+// ===== 表情包 - IndexedDB =====
 var DEFAULT_CATEGORIES = [
     { id: 'cat_happy', name: '表达开心', icon: '😊' },
     { id: 'cat_sad', name: '表达难过', icon: '😢' },
@@ -3385,6 +3427,179 @@ function formatTime(timeStr, mode) {
     } catch (_) { return timeStr; }
 }
 
+// ===== 页面切换（修复版） =====
+function openChat(fromContacts) {
+    fromContacts = fromContacts || false;
+    isFromContacts = fromContacts;
+    
+    // ✅ 关键修复：切换角色时重置消息计数
+    lastMessageCount = -1;
+    readMessages = {};
+    
+    var role = getCurrentRole();
+    if (role) saveDraft(role.id, document.getElementById('messageInput').value);
+    
+    document.getElementById('launcherScreen').classList.add('hidden');
+    if (fromContacts) {
+        document.getElementById('contactsScreen').classList.add('open');
+    } else {
+        document.getElementById('contactsScreen').classList.remove('open');
+    }
+    document.getElementById('chatScreen').classList.add('open');
+    document.getElementById('memoryScreen').classList.remove('open');
+    document.getElementById('memeScreen').classList.remove('open');
+    document.getElementById('diaryScreen').classList.remove('open');
+    
+    var role2 = getCurrentRole();
+    if (role2) {
+        clearUnreadForRole(role2.id);
+        readMessages = {};
+        document.getElementById('messageInput').value = loadDraft(role2.id);
+        setTimeout(function() {
+            document.getElementById('messageInput').focus();
+            document.getElementById('messageInput').select();
+        }, 300);
+    }
+    
+    updateChatTitle();
+    renderMessages();
+    if (document.getElementById('contactsScreen').classList.contains('open')) {
+        renderContacts();
+    }
+    if (CONFIG.heart.floatingEnabled !== false) {
+        setTimeout(showFloatingHeart, 300);
+    }
+}
+
+function closeChat() {
+    var role = getCurrentRole();
+    if (role) saveDraft(role.id, document.getElementById('messageInput').value);
+    
+    // ✅ 关键修复：关闭聊天时重置消息计数
+    lastMessageCount = -1;
+    
+    document.getElementById('chatScreen').classList.remove('open');
+    if (isFromContacts) {
+        document.getElementById('contactsScreen').classList.add('open');
+        document.getElementById('launcherScreen').classList.add('hidden');
+        renderContacts();
+    } else {
+        document.getElementById('launcherScreen').classList.remove('hidden');
+        document.getElementById('contactsScreen').classList.remove('open');
+    }
+}
+
+function openContacts() { 
+    document.getElementById('launcherScreen').classList.add('hidden'); 
+    document.getElementById('chatScreen').classList.remove('open'); 
+    document.getElementById('memoryScreen').classList.remove('open'); 
+    document.getElementById('memeScreen').classList.remove('open'); 
+    document.getElementById('diaryScreen').classList.remove('open'); 
+    document.getElementById('contactsScreen').classList.add('open'); 
+    renderContacts(); 
+    if (CONFIG.heart.floatingEnabled !== false) setTimeout(showFloatingHeart, 300); 
+}
+function closeContacts() { 
+    document.getElementById('contactsScreen').classList.remove('open'); 
+    document.getElementById('launcherScreen').classList.remove('hidden'); 
+}
+function openMemory() { 
+    document.getElementById('launcherScreen').classList.add('hidden'); 
+    document.getElementById('chatScreen').classList.remove('open'); 
+    document.getElementById('contactsScreen').classList.remove('open'); 
+    document.getElementById('memeScreen').classList.remove('open'); 
+    document.getElementById('diaryScreen').classList.remove('open'); 
+    document.getElementById('memoryScreen').classList.add('open'); 
+    renderMemoryScreen(); 
+    if (CONFIG.heart.floatingEnabled !== false) setTimeout(showFloatingHeart, 300); 
+}
+function closeMemory() { 
+    document.getElementById('memoryScreen').classList.remove('open'); 
+    document.getElementById('launcherScreen').classList.remove('hidden'); 
+}
+function openMeme() { 
+    document.getElementById('launcherScreen').classList.add('hidden'); 
+    document.getElementById('chatScreen').classList.remove('open'); 
+    document.getElementById('contactsScreen').classList.remove('open'); 
+    document.getElementById('memoryScreen').classList.remove('open'); 
+    document.getElementById('diaryScreen').classList.remove('open'); 
+    document.getElementById('memeScreen').classList.add('open'); 
+    renderMemeScreen(); 
+    if (CONFIG.heart.floatingEnabled !== false) setTimeout(showFloatingHeart, 300); 
+}
+function closeMeme() { 
+    document.getElementById('memeScreen').classList.remove('open'); 
+    document.getElementById('launcherScreen').classList.remove('hidden'); 
+}
+function openDiary() { 
+    document.getElementById('launcherScreen').classList.add('hidden'); 
+    document.getElementById('chatScreen').classList.remove('open'); 
+    document.getElementById('contactsScreen').classList.remove('open'); 
+    document.getElementById('memoryScreen').classList.remove('open'); 
+    document.getElementById('memeScreen').classList.remove('open'); 
+    document.getElementById('diaryScreen').classList.add('open'); 
+    if (selectedDiaryRoleId === null) selectedDiaryRoleId = currentRoleId; 
+    renderDiaryAll(); 
+    if (CONFIG.heart.floatingEnabled !== false) setTimeout(showFloatingHeart, 300); 
+}
+function closeDiary() { 
+    document.getElementById('diaryScreen').classList.remove('open'); 
+    document.getElementById('launcherScreen').classList.remove('hidden'); 
+}
+function openMall() { window.location.href = 'mall.html'; }
+function openPhone() { window.location.href = 'phone.html'; }
+
+function openSettings() {
+    document.getElementById('apiKeyInput').value = CONFIG.apiKey || '';
+    document.getElementById('modelSelect').value = CONFIG.model || 'deepseek-chat';
+    renderRoleManager();
+    updatePermissionStatusUI();
+    loadTemperature();
+    loadFontSize();
+    loadFontWeight();
+    loadSplitToggle();
+    if (CONFIG.wallpaper) { document.getElementById('wallpaperPreviewImg').src = CONFIG.wallpaper; document.getElementById('wallpaperPreviewImg').style.display = 'block'; document.getElementById('wallpaperStatus').textContent = '自定义'; }
+    else { document.getElementById('wallpaperPreviewImg').style.display = 'none'; document.getElementById('wallpaperStatus').textContent = '默认'; }
+    if (CONFIG.chatBg) { document.getElementById('chatBgPreviewImg').src = CONFIG.chatBg; document.getElementById('chatBgPreviewImg').style.display = 'block'; document.getElementById('chatBgStatus').textContent = '自定义'; }
+    else { document.getElementById('chatBgPreviewImg').style.display = 'none'; document.getElementById('chatBgStatus').textContent = '默认'; }
+    if (CONFIG.userAvatar) { document.getElementById('userAvatarPreviewImg').src = CONFIG.userAvatar; document.getElementById('userAvatarPreviewImg').style.display = 'block'; document.getElementById('userAvatarStatus').textContent = '自定义'; }
+    else { document.getElementById('userAvatarPreviewImg').style.display = 'none'; document.getElementById('userAvatarStatus').textContent = '默认'; }
+    updateStorageDisplay();
+    document.getElementById('settingsOverlay').classList.add('active');
+}
+function closeSettings() { document.getElementById('settingsOverlay').classList.remove('active'); }
+
+function loadTemperature() { var val = parseFloat(CONFIG.temperature) || 0.9; document.getElementById('tempSlider').value = val; document.getElementById('tempDisplay').textContent = val.toFixed(1); }
+function loadFontSize() {
+    var FONT_SIZE_MAP = ['small', 'medium', 'large', 'xlarge'];
+    var FONT_SIZE_LABELS = ['小', '中', '大', '特大'];
+    var key = CONFIG.fontSize || 'medium';
+    var idx = FONT_SIZE_MAP.indexOf(key);
+    if (idx !== -1) { document.getElementById('fontSizeSlider').value = idx; document.getElementById('fontSizeDisplay').textContent = FONT_SIZE_LABELS[idx]; }
+    else { document.getElementById('fontSizeSlider').value = 1; document.getElementById('fontSizeDisplay').textContent = '中'; }
+    applyFontSettings();
+}
+function loadFontWeight() {
+    var FONT_WEIGHT_MAP = ['light', 'regular', 'medium', 'bold'];
+    var FONT_WEIGHT_LABELS = ['细', '常规', '中', '粗'];
+    var key = CONFIG.fontWeight || 'regular';
+    var idx = FONT_WEIGHT_MAP.indexOf(key);
+    if (idx !== -1) { document.getElementById('fontWeightSlider').value = idx; document.getElementById('fontWeightDisplay').textContent = FONT_WEIGHT_LABELS[idx]; }
+    else { document.getElementById('fontWeightSlider').value = 1; document.getElementById('fontWeightDisplay').textContent = '常规'; }
+    applyFontSettings();
+}
+function loadSplitToggle() { var val = CONFIG.splitEnabled !== false ? 1 : 0; document.getElementById('splitToggleSlider').value = val; document.getElementById('splitToggleDisplay').textContent = val === 1 ? '开启' : '关闭'; }
+
+function registerServiceWorker() {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').then(function(reg) {
+            console.log('📱 Service Worker 注册成功');
+        }).catch(function(err) {
+            console.log('📱 Service Worker 注册失败:', err);
+        });
+    }
+}
+
 function renderStylePicker() {
     var iconGrid = document.getElementById('styleOptionGrid');
     if (!iconGrid) return;
@@ -3537,102 +3752,6 @@ function updateStatusTime() {
     if (el) el.textContent = hours + ':' + mins;
 }
 
-// ===== 页面切换 =====
-function openChat(fromContacts) {
-    fromContacts = fromContacts || false;
-    isFromContacts = fromContacts;
-    var role = getCurrentRole();
-    if (role) saveDraft(role.id, document.getElementById('messageInput').value);
-    document.getElementById('launcherScreen').classList.add('hidden');
-    if (fromContacts) document.getElementById('contactsScreen').classList.add('open');
-    else document.getElementById('contactsScreen').classList.remove('open');
-    document.getElementById('chatScreen').classList.add('open');
-    document.getElementById('memoryScreen').classList.remove('open');
-    document.getElementById('memeScreen').classList.remove('open');
-    document.getElementById('diaryScreen').classList.remove('open');
-    var role2 = getCurrentRole();
-    if (role2) {
-        clearUnreadForRole(role2.id);
-        readMessages = {};
-        document.getElementById('messageInput').value = loadDraft(role2.id);
-        setTimeout(function() { document.getElementById('messageInput').focus(); document.getElementById('messageInput').select(); }, 300);
-    }
-    updateChatTitle();
-    renderMessages();
-    if (document.getElementById('contactsScreen').classList.contains('open')) renderContacts();
-    if (CONFIG.heart.floatingEnabled !== false) setTimeout(showFloatingHeart, 300);
-}
-function closeChat() {
-    var role = getCurrentRole();
-    if (role) saveDraft(role.id, document.getElementById('messageInput').value);
-    document.getElementById('chatScreen').classList.remove('open');
-    if (isFromContacts) { document.getElementById('contactsScreen').classList.add('open'); document.getElementById('launcherScreen').classList.add('hidden'); renderContacts(); }
-    else { document.getElementById('launcherScreen').classList.remove('hidden'); document.getElementById('contactsScreen').classList.remove('open'); }
-}
-function openContacts() { document.getElementById('launcherScreen').classList.add('hidden'); document.getElementById('chatScreen').classList.remove('open'); document.getElementById('memoryScreen').classList.remove('open'); document.getElementById('memeScreen').classList.remove('open'); document.getElementById('diaryScreen').classList.remove('open'); document.getElementById('contactsScreen').classList.add('open'); renderContacts(); if (CONFIG.heart.floatingEnabled !== false) setTimeout(showFloatingHeart, 300); }
-function closeContacts() { document.getElementById('contactsScreen').classList.remove('open'); document.getElementById('launcherScreen').classList.remove('hidden'); }
-function openMemory() { document.getElementById('launcherScreen').classList.add('hidden'); document.getElementById('chatScreen').classList.remove('open'); document.getElementById('contactsScreen').classList.remove('open'); document.getElementById('memeScreen').classList.remove('open'); document.getElementById('diaryScreen').classList.remove('open'); document.getElementById('memoryScreen').classList.add('open'); renderMemoryScreen(); if (CONFIG.heart.floatingEnabled !== false) setTimeout(showFloatingHeart, 300); }
-function closeMemory() { document.getElementById('memoryScreen').classList.remove('open'); document.getElementById('launcherScreen').classList.remove('hidden'); }
-function openMeme() { document.getElementById('launcherScreen').classList.add('hidden'); document.getElementById('chatScreen').classList.remove('open'); document.getElementById('contactsScreen').classList.remove('open'); document.getElementById('memoryScreen').classList.remove('open'); document.getElementById('diaryScreen').classList.remove('open'); document.getElementById('memeScreen').classList.add('open'); renderMemeScreen(); if (CONFIG.heart.floatingEnabled !== false) setTimeout(showFloatingHeart, 300); }
-function closeMeme() { document.getElementById('memeScreen').classList.remove('open'); document.getElementById('launcherScreen').classList.remove('hidden'); }
-function openDiary() { document.getElementById('launcherScreen').classList.add('hidden'); document.getElementById('chatScreen').classList.remove('open'); document.getElementById('contactsScreen').classList.remove('open'); document.getElementById('memoryScreen').classList.remove('open'); document.getElementById('memeScreen').classList.remove('open'); document.getElementById('diaryScreen').classList.add('open'); if (selectedDiaryRoleId === null) selectedDiaryRoleId = currentRoleId; renderDiaryAll(); if (CONFIG.heart.floatingEnabled !== false) setTimeout(showFloatingHeart, 300); }
-function closeDiary() { document.getElementById('diaryScreen').classList.remove('open'); document.getElementById('launcherScreen').classList.remove('hidden'); }
-function openMall() { window.location.href = 'mall.html'; }
-function openPhone() {
-    // 跳转到手机页面
-    window.location.href = 'phone.html';
-}
-function openSettings() {
-    document.getElementById('apiKeyInput').value = CONFIG.apiKey || '';
-    document.getElementById('modelSelect').value = CONFIG.model || 'deepseek-chat';
-    renderRoleManager();
-    updatePermissionStatusUI();
-    loadTemperature();
-    loadFontSize();
-    loadFontWeight();
-    loadSplitToggle();
-    if (CONFIG.wallpaper) { document.getElementById('wallpaperPreviewImg').src = CONFIG.wallpaper; document.getElementById('wallpaperPreviewImg').style.display = 'block'; document.getElementById('wallpaperStatus').textContent = '自定义'; }
-    else { document.getElementById('wallpaperPreviewImg').style.display = 'none'; document.getElementById('wallpaperStatus').textContent = '默认'; }
-    if (CONFIG.chatBg) { document.getElementById('chatBgPreviewImg').src = CONFIG.chatBg; document.getElementById('chatBgPreviewImg').style.display = 'block'; document.getElementById('chatBgStatus').textContent = '自定义'; }
-    else { document.getElementById('chatBgPreviewImg').style.display = 'none'; document.getElementById('chatBgStatus').textContent = '默认'; }
-    if (CONFIG.userAvatar) { document.getElementById('userAvatarPreviewImg').src = CONFIG.userAvatar; document.getElementById('userAvatarPreviewImg').style.display = 'block'; document.getElementById('userAvatarStatus').textContent = '自定义'; }
-    else { document.getElementById('userAvatarPreviewImg').style.display = 'none'; document.getElementById('userAvatarStatus').textContent = '默认'; }
-    updateStorageDisplay();
-    document.getElementById('settingsOverlay').classList.add('active');
-}
-function closeSettings() { document.getElementById('settingsOverlay').classList.remove('active'); }
-
-function loadTemperature() { var val = parseFloat(CONFIG.temperature) || 0.9; document.getElementById('tempSlider').value = val; document.getElementById('tempDisplay').textContent = val.toFixed(1); }
-function loadFontSize() {
-    var FONT_SIZE_MAP = ['small', 'medium', 'large', 'xlarge'];
-    var FONT_SIZE_LABELS = ['小', '中', '大', '特大'];
-    var key = CONFIG.fontSize || 'medium';
-    var idx = FONT_SIZE_MAP.indexOf(key);
-    if (idx !== -1) { document.getElementById('fontSizeSlider').value = idx; document.getElementById('fontSizeDisplay').textContent = FONT_SIZE_LABELS[idx]; }
-    else { document.getElementById('fontSizeSlider').value = 1; document.getElementById('fontSizeDisplay').textContent = '中'; }
-    applyFontSettings();
-}
-function loadFontWeight() {
-    var FONT_WEIGHT_MAP = ['light', 'regular', 'medium', 'bold'];
-    var FONT_WEIGHT_LABELS = ['细', '常规', '中', '粗'];
-    var key = CONFIG.fontWeight || 'regular';
-    var idx = FONT_WEIGHT_MAP.indexOf(key);
-    if (idx !== -1) { document.getElementById('fontWeightSlider').value = idx; document.getElementById('fontWeightDisplay').textContent = FONT_WEIGHT_LABELS[idx]; }
-    else { document.getElementById('fontWeightSlider').value = 1; document.getElementById('fontWeightDisplay').textContent = '常规'; }
-    applyFontSettings();
-}
-function loadSplitToggle() { var val = CONFIG.splitEnabled !== false ? 1 : 0; document.getElementById('splitToggleSlider').value = val; document.getElementById('splitToggleDisplay').textContent = val === 1 ? '开启' : '关闭'; }
-
-function registerServiceWorker() {
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js').then(function(reg) {
-            console.log('📱 Service Worker 注册成功');
-        }).catch(function(err) {
-            console.log('📱 Service Worker 注册失败:', err);
-        });
-    }
-}
-
 function init() {
     try { loadAllData(); } catch (e) { console.error('加载数据失败:', e); }
     try { loadMemeData().then(function() { updateStorageDisplay(); }); } catch (e) { console.error('加载表情包失败:', e); }
@@ -3710,6 +3829,7 @@ function init() {
     console.log('表情包数量:', memes.length);
 }
 
+// ===== DOM 事件绑定 =====
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.app-icon[data-app]').forEach(function(btn) {
         btn.addEventListener('click', function() {
