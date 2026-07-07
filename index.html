@@ -1,3 +1,5 @@
+主应用代码5
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -3578,8 +3580,9 @@ function closeMeme() { document.getElementById('memeScreen').classList.remove('o
 function openDiary() { document.getElementById('launcherScreen').classList.add('hidden'); document.getElementById('chatScreen').classList.remove('open'); document.getElementById('contactsScreen').classList.remove('open'); document.getElementById('memoryScreen').classList.remove('open'); document.getElementById('memeScreen').classList.remove('open'); document.getElementById('diaryScreen').classList.add('open'); if (selectedDiaryRoleId === null) selectedDiaryRoleId = currentRoleId; renderDiaryAll(); if (CONFIG.heart.floatingEnabled !== false) setTimeout(showFloatingHeart, 300); }
 function closeDiary() { document.getElementById('diaryScreen').classList.remove('open'); document.getElementById('launcherScreen').classList.remove('hidden'); }
 function openMall() { window.location.href = 'mall.html'; }
-function openPhone() { 
-    showToast('📱 "他的手机" 功能开发中，敬请期待～');
+function openPhone() {
+    // 跳转到手机页面
+    window.location.href = 'phone.html';
 }
 function openSettings() {
     document.getElementById('apiKeyInput').value = CONFIG.apiKey || '';
