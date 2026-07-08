@@ -1155,8 +1155,8 @@
 
 <script>
 // ============================================================
-//  🚀 梦女空间 v2.1 - 修复版
-//  修复内容：角色切换后消息发送问题
+//  🚀 梦女空间 v2.2 - 稳定修复版
+//  修复内容：消息发送状态同步问题
 //  修复日期：2026-07-08
 // ============================================================
 
@@ -1218,6 +1218,8 @@ var memeCurrentCategoryId = null;
 var memeDeleteMode = false;
 var memeSelectedForDelete = [];
 var heartBeatInterval = null;
+
+// ✅ 消息渲染状态 - 修复核心
 var lastMessageCount = -1;
 
 function generateId() { return 'id_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6); }
@@ -1882,7 +1884,7 @@ function renderRoleManager() {
     });
 }
 
-// ===== 聊天消息渲染（修复版） =====
+// ===== 聊天消息渲染（修复版 v2.2） =====
 function renderMessages() {
     var role = getCurrentRole();
     if (!role) {
@@ -1890,7 +1892,6 @@ function renderMessages() {
         return;
     }
     
-    // ✅ 确保 messages 是数组
     if (!Array.isArray(role.messages)) {
         console.warn('⚠️ role.messages 不是数组，已修复');
         role.messages = [];
@@ -1902,8 +1903,10 @@ function renderMessages() {
     
     var msgs = role.messages || [];
     
-    // ✅ 关键修复：检查 DOM 中的消息数量是否匹配
+    // ✅ 核心修复：通过 DOM 实际数量比对，而不是依赖缓存计数
     var domMessageCount = container.querySelectorAll('.message-row').length;
+    
+    // ✅ 如果 DOM 数量与数据不一致，强制重新渲染
     if (msgs.length !== domMessageCount) {
         console.log('🔄 消息数量不匹配 (DOM:', domMessageCount, '数据:', msgs.length, ')，强制重新渲染');
         lastMessageCount = -1;
@@ -1911,6 +1914,7 @@ function renderMessages() {
     
     applyChatBgForRole(role);
     
+    // ✅ 完全重新渲染（当 lastMessageCount === -1 或消息列表为空时）
     if (lastMessageCount === -1 || msgs.length === 0) {
         container.innerHTML = '';
         if (msgs.length === 0) {
@@ -1936,6 +1940,7 @@ function renderMessages() {
         return;
     }
     
+    // ✅ 增量更新：只添加新消息
     if (msgs.length > lastMessageCount) {
         for (var i = lastMessageCount; i < msgs.length; i++) {
             var row = createMessageRow(msgs[i], role);
@@ -1943,8 +1948,9 @@ function renderMessages() {
         }
         lastMessageCount = msgs.length;
         container.scrollTop = container.scrollHeight;
-    } else if (msgs.length < lastMessageCount) {
-        // ✅ 如果消息变少了（删除操作），重新渲染
+    } 
+    // ✅ 如果消息变少了（删除操作），重新渲染
+    else if (msgs.length < lastMessageCount) {
         console.log('🔄 消息数量减少，重新渲染');
         container.innerHTML = '';
         if (msgs.length === 0) {
@@ -2439,10 +2445,9 @@ function autoExtractMemory(role, sourceMsgId) {
 }
 
 // ===== 发送消息 =====
-var isSending = false; // ✅ 添加发送锁
+var isSending = false;
 
 function handleSend() {
-    // ✅ 防止重复发送
     if (isSending) {
         showToast('⏳ 正在发送中，请稍后');
         return;
@@ -2463,7 +2468,6 @@ function handleSend() {
     var role = getCurrentRole();
     if (!role) { showToast('⚠️ 未找到当前角色'); return; }
     
-    // 锁定发送
     isSending = true;
     input.value = '';
     input.disabled = true;
@@ -2505,7 +2509,7 @@ function handleSend() {
         input.disabled = false;
         document.getElementById('sendBtn').disabled = false;
         input.focus();
-        isSending = false; // ✅ 解锁
+        isSending = false;
     });
 }
 
@@ -3477,6 +3481,7 @@ function closeChat() {
     
     // ✅ 关键修复：关闭聊天时重置消息计数
     lastMessageCount = -1;
+    readMessages = {};
     
     document.getElementById('chatScreen').classList.remove('open');
     if (isFromContacts) {
@@ -3823,7 +3828,7 @@ function init() {
 
     try { registerServiceWorker(); } catch (e) { console.log('PWA 注册跳过'); }
 
-    console.log('🚀 梦女空间 v2.1 已启动！');
+    console.log('🚀 梦女空间 v2.2 已启动！');
     console.log('角色数量:', roles.length);
     console.log('日记数量:', CONFIG.diaries ? CONFIG.diaries.length : 0);
     console.log('表情包数量:', memes.length);
