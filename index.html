@@ -451,30 +451,31 @@
         .trim-select-row { display: flex; align-items: center; gap: 8px; margin: 6px 0 4px; }
         .trim-select-row label { font-size: 11px; color: var(--text-secondary); white-space: nowrap; }
         .trim-control-row { display: flex; align-items: center; gap: 10px; margin: 4px 0 2px; }
-        /* ⭐ 语音播放器样式 - 紧凑好看 */
+        /* 🔧 FIX: 语音播放器样式 - 紧凑无文字 */
         .voice-player {
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 4px 10px 4px 6px;
-            margin-top: 4px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
+            gap: 6px;
+            padding: 2px 8px 2px 4px;
+            margin-top: 3px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 20px;
             border: 1px solid rgba(255, 255, 255, 0.06);
-            width: 100%;
-            max-width: 200px;
+            width: auto;
+            min-width: 80px;
+            max-width: 140px;
             transition: all 0.3s ease;
             cursor: default;
-            height: 30px;
+            height: 26px;
         }
         .voice-player .play-btn {
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             border: none;
             background: rgba(149, 236, 105, 0.15);
             color: #95ec69;
-            font-size: 10px;
+            font-size: 9px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -499,7 +500,7 @@
             flex: 1;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
             min-width: 0;
         }
         .voice-player .progress-bar {
@@ -523,8 +524,8 @@
             top: 50%;
             left: 0%;
             transform: translate(-50%, -50%);
-            width: 8px;
-            height: 8px;
+            width: 7px;
+            height: 7px;
             border-radius: 50%;
             background: #95ec69;
             box-shadow: 0 0 8px rgba(149, 236, 105, 0.2);
@@ -532,11 +533,11 @@
             transition: left 0.1s linear;
         }
         .voice-player .time-display {
-            font-size: 9px;
+            font-size: 8px;
             color: rgba(255, 255, 255, 0.2);
             font-variant-numeric: tabular-nums;
             flex-shrink: 0;
-            min-width: 44px;
+            min-width: 28px;
             text-align: right;
             letter-spacing: 0.3px;
         }
@@ -544,12 +545,8 @@
             border-color: rgba(149, 236, 105, 0.12);
         }
         .voice-player .voice-status {
-            font-size: 10px;
-            color: rgba(255, 255, 255, 0.15);
-            padding: 0 4px;
-            flex: 1;
+            display: none;
         }
-        /* ⭐ 气泡底部指示器 - 小巧精致 */
         .bubble-footer {
             display: flex;
             align-items: center;
@@ -559,8 +556,8 @@
         }
         .bubble-footer .voice-indicator {
             font-size: 9px;
-            color: rgba(255, 255, 255, 0.15);
-            display: flex;
+            color: rgba(255, 255, 255, 0.12);
+            display: inline-flex;
             align-items: center;
             gap: 3px;
             cursor: pointer;
@@ -570,17 +567,17 @@
             border-radius: 10px;
         }
         .bubble-footer .voice-indicator:hover {
-            color: rgba(255, 255, 255, 0.35);
+            color: rgba(255, 255, 255, 0.3);
             background: rgba(255, 255, 255, 0.04);
         }
         .bubble-footer .voice-indicator i {
             font-size: 8px;
         }
         [data-theme="light"] .bubble-footer .voice-indicator {
-            color: rgba(0, 0, 0, 0.15);
+            color: rgba(0, 0, 0, 0.12);
         }
         [data-theme="light"] .bubble-footer .voice-indicator:hover {
-            color: rgba(0, 0, 0, 0.35);
+            color: rgba(0, 0, 0, 0.3);
         }
         [data-theme="light"] .voice-player {
             background: rgba(0, 0, 0, 0.04);
@@ -592,13 +589,11 @@
         [data-theme="light"] .voice-player .time-display {
             color: rgba(0, 0, 0, 0.2);
         }
-        [data-theme="light"] .voice-player .voice-status {
-            color: rgba(0, 0, 0, 0.15);
-        }
         @media (max-width: 460px) { .phone-frame { border-radius: 0; height: 100vh; max-height: 100vh; } body { padding: 0; } }
         @media (min-width: 431px) { .phone-frame { border-radius: 32px; height: 780px; max-height: 90vh; box-shadow: 0 20px 60px rgba(0,0,0,0.6); } body { padding: 12px; } }
     </style>
 </head>
+
 <body>
 <div class="phone-frame" id="app">
     <div class="screen-launcher" id="launcherScreen">
@@ -758,8 +753,7 @@
         <div class="setting-group" style="margin-top:8px;border-top:1px solid var(--border-color);padding-top:10px;"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;"><span style="font-size:13px;color:var(--text-primary);"><i class="fas fa-database" style="color:#6c5ce7;"></i> 数据管理</span><span style="font-size:10px;color:var(--text-secondary);">导入/导出</span></div><button id="dataManageBtn" style="width:100%;padding:8px;border:1px solid var(--border-color);border-radius:8px;background:var(--bg-card);color:var(--text-primary);font-size:12px;cursor:pointer;transition:0.15s;display:flex;align-items:center;justify-content:center;gap:6px;"><i class="fas fa-arrow-right"></i> 打开数据管理</button><div style="font-size:10px;color:var(--text-secondary);margin-top:3px;">备份或恢复所有数据，支持分类导出</div></div>
         <div class="setting-group" style="margin-top:8px;border-top:1px solid var(--border-color);padding-top:10px;"><button id="clearAllChatsBtn" style="width:100%;padding:8px;border:1px solid #e74c3c;border-radius:8px;background:var(--bg-card);color:#e74c3c;font-size:12px;cursor:pointer;transition:0.15s;display:flex;align-items:center;justify-content:center;gap:6px;"><i class="fas fa-trash-alt"></i> 清空所有角色的聊天记录</button><div style="font-size:10px;color:var(--text-secondary);margin-top:3px;">此操作将删除所有角色的聊天记录，不可恢复</div></div>
         <button class="save-btn" id="saveSettingsBtn"><i class="fas fa-save"></i> 保存设置</button><div style="margin-top:8px;font-size:10px;color:var(--text-secondary);text-align:center;line-height:1.5;"><i class="fas fa-database"></i> 所有数据仅保存在本地浏览器</div></div></div>
-    <div class="permission-overlay" id="permissionOverlay"><div class="permission-dialog"><div class="icon">📸</div><h3>访问相册</h3><p>为了更换头像、壁纸和发送图片，需要访问你的相册。<br />拒绝后仍可正常聊天，仅无法使用图片相关功能。</p><div class="btn-group"><button class="btn-allow-all" id="permAllowAll">✅ 允许访问</button><button class="btn-deny" id="permDeny">🚫 不允许</button><button class="btn-cancel-perm" id="permCancel">取消</button></div></div></div>
-    <div class="style-picker-overlay" id="stylePickerOverlay"><div class="style-picker-panel"><div class="panel-header"><h3>✨ 个性化</h3><button class="close-btn" id="closeStylePicker">&times;</button></div><div class="style-category-title">📱 桌面图标</div><div class="style-option-grid" id="styleOptionGrid"></div><div class="style-category-title" style="margin-top:14px;">🫧 对话框气泡</div><div class="style-option-grid" id="bubbleOptionGrid"></div><div class="style-category-title" style="margin-top:14px;">🕒 时间显示</div><div class="style-option-grid" id="timeModeGrid"></div><div class="style-category-title" style="margin-top:14px;">💕 心跳悬浮窗</div><div class="style-option-grid" id="floatingSwitchGrid"></div><div class="style-category-title" style="margin-top:14px;">🎨 心跳颜色</div><div class="style-option-grid" id="heartColorGrid"></div><div class="style-category-title" style="margin-top:14px;">🤖 AI 表情包</div><div class="style-option-grid" id="aiMemeSwitchGrid"></div><div class="style-category-title" style="margin-top:14px;">🌓 深色/浅色模式</div><div class="style-option-grid" id="themeModeGrid"></div></div></div>
+    <div class="permission-overlay" id="permissionOverlay"><div class="permission-dialog"><div class="icon">📸</div><h3>访问相册</h3><p>为了更换头像、壁纸和发送图片，需要访问你的相册。<br />拒绝后仍可正常聊天，仅无法使用图片相关功能。</p><div class="btn-group"><button class="btn-allow-all" id="permAllowAll">✅ 允许访问</button><button class="btn-deny" id="permDeny">🚫 不允许</button><button class="btn-cancel-perm" id="permCancel">取消</button></div></div></div> <div class="style-picker-overlay" id="stylePickerOverlay"><div class="style-picker-panel"><div class="panel-header"><h3>✨ 个性化</h3><button class="close-btn" id="closeStylePicker">&times;</button></div><div class="style-category-title">📱 桌面图标</div><div class="style-option-grid" id="styleOptionGrid"></div><div class="style-category-title" style="margin-top:14px;">🫧 对话框气泡</div><div class="style-option-grid" id="bubbleOptionGrid"></div><div class="style-category-title" style="margin-top:14px;">🕒 时间显示</div><div class="style-option-grid" id="timeModeGrid"></div><div class="style-category-title" style="margin-top:14px;">💕 心跳悬浮窗</div><div class="style-option-grid" id="floatingSwitchGrid"></div><div class="style-category-title" style="margin-top:14px;">🎨 心跳颜色</div><div class="style-option-grid" id="heartColorGrid"></div><div class="style-category-title" style="margin-top:14px;">🤖 AI 表情包</div><div class="style-option-grid" id="aiMemeSwitchGrid"></div><div class="style-category-title" style="margin-top:14px;">🌓 深色/浅色模式</div><div class="style-option-grid" id="themeModeGrid"></div></div></div>
     <div class="data-modal-overlay" id="dataModalOverlay"><div class="data-modal"><button class="modal-close" id="dataModalClose">&times;</button><div class="modal-title">💾 数据管理</div><div class="modal-subtitle">选择要导出或导入的数据类型</div><div id="dataModalOptions"><div class="export-option" data-value="all"><input type="checkbox" checked /><span class="opt-label">全部数据 <span class="opt-badge">推荐</span></span><span class="opt-desc">角色 + 聊天 + 记忆 + 日记 + 设置</span></div><div class="export-option" data-value="settings"><input type="checkbox" /><span class="opt-label">仅美化设置</span><span class="opt-desc">壁纸、头像、风格</span></div><div class="export-option" data-value="roles"><input type="checkbox" /><span class="opt-label">仅角色设定</span><span class="opt-desc">不含聊天记录、记忆和日记</span></div><div class="export-option" data-value="chats"><input type="checkbox" /><span class="opt-label">仅聊天记录 + 记忆</span><span class="opt-desc">不含角色设定和日记</span></div><div class="export-option" data-value="diaries"><input type="checkbox" /><span class="opt-label">仅日记数据</span><span class="opt-desc">所有角色的日记</span></div><div class="export-option" data-value="selected"><input type="checkbox" /><span class="opt-label">按角色选择导出</span><span class="opt-desc">选中的角色完整数据（含日记）</span></div><div class="role-select-list" id="roleSelectList" style="display:none;"></div></div><div class="modal-actions"><button class="btn-import" id="dataImportBtn"><i class="fas fa-upload"></i> 导入</button><button class="btn-export" id="dataExportBtn"><i class="fas fa-download"></i> 导出</button><button class="btn-cancel" id="dataModalCancel">取消</button></div><div style="font-size:10px;color:var(--text-secondary);text-align:center;margin-top:8px;"><i class="fas fa-shield-alt"></i> 数据仅保存在本地，不上传任何服务器</div></div></div>
     <div class="diary-notification" id="diaryNotification"><div class="notif-icon">📖</div><h3>他的日记已送达</h3><p id="diaryNotifText">✨ 今晚的故事，他已经写好了...</p><button class="notif-btn" id="diaryNotifBtn">📖 去阅读</button><br /><button class="notif-close" id="diaryNotifClose">稍后再说</button></div>
     <div class="floating-heart" id="floatingHeart"><span class="fh-value" id="fhValue">65</span><span class="fh-label">BPM</span></div>
@@ -770,6 +764,9 @@
 //  🚀 梦女空间 v4.0 - 多模型 + 百炼语音版
 //  修复：语音播放器样式紧凑好看
 //  修复：时间戳 NaN:NaN
+//  修复：数据导出/导入完整实现
+//  修复：语音试听音频叠加
+//  修复：generateContextSummary 加保护
 // ============================================================
 
 var CONSTANTS = {
@@ -845,6 +842,7 @@ var sleepTimers = {}, longpressMenuOpen = false, isSending = false, lastMessageC
 var _saveTimer = null, _idCounter = 0, _lastVisibilityCheck = 0;
 var _regenerating = {};
 var audioPlayers = {};
+var _testAudio = null; // 🔧 FIX: 全局试听音频引用，防止叠加
 
 function generateId() { _idCounter++; return 'id_' + Date.now() + '_' + _idCounter + '_' + Math.random().toString(36).substr(2, 6); }
 function getCurrentRole() { return roles.find(function(r) { return r.id === currentRoleId; }) || roles[0] || null; }
@@ -1218,442 +1216,52 @@ function getTimeDiff(time1, time2) {
     return Math.abs(d2.getTime() - d1.getTime());
 }
 
-// ⭐ 修复：formatTime 处理空值和无效日期
+// 🔧 FIX: formatTime 修复 NaN:NaN
 function formatTime(timeStr, mode) {
     if (mode === 'hidden') return '';
+    var now = new Date();
     if (!timeStr) {
-        var now = new Date();
         return String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
     }
     try {
         var date = new Date(timeStr);
         if (isNaN(date.getTime())) {
-            var now2 = new Date();
             if (mode === 'HH:MM' || mode === undefined || mode === null) {
-                return String(now2.getHours()).padStart(2, '0') + ':' + String(now2.getMinutes()).padStart(2, '0');
+                return String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
             }
-            return timeStr;
+            return String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
         }
         if (mode === 'HH:MM' || mode === undefined || mode === null) {
-            return date.toTimeString().slice(0, 5);
+            var h = String(date.getHours()).padStart(2, '0');
+            var m = String(date.getMinutes()).padStart(2, '0');
+            if (isNaN(date.getHours()) || isNaN(date.getMinutes())) {
+                return String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+            }
+            return h + ':' + m;
         }
         if (mode === 'YYYY-MM-DD HH:MM') {
-            return date.toISOString().slice(0, 10) + ' ' + date.toTimeString().slice(0, 5);
+            var y = date.getFullYear();
+            var mo = String(date.getMonth() + 1).padStart(2, '0');
+            var d = String(date.getDate()).padStart(2, '0');
+            var h2 = String(date.getHours()).padStart(2, '0');
+            var m2 = String(date.getMinutes()).padStart(2, '0');
+            if (isNaN(y) || isNaN(date.getMonth()) || isNaN(date.getDate()) || isNaN(date.getHours()) || isNaN(date.getMinutes())) {
+                return String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+            }
+            return y + '-' + mo + '-' + d + ' ' + h2 + ':' + m2;
         }
         return timeStr;
     } catch (_) {
-        var now3 = new Date();
-        return String(now3.getHours()).padStart(2, '0') + ':' + String(now3.getMinutes()).padStart(2, '0');
+        return String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
     }
 }
 
-function createDefaultRole(name) {
-    var role = {
-        id: 'role_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
-        name: name || '新角色', avatar: '', chatBg: '', voiceId: '',
-        persona: '一个温柔体贴的AI伴侣，善解人意。',
-        background: '生活在充满爱的世界里。',
-        style: '只说对话内容，不要任何动作、表情、环境描写。用短句，像真人微信聊天一样自然分段回复。',
-        extra: '', messages: [], memory: [],
-        heartData: { value: 65, restingValue: 65, peakValue: 65, signature: '今天也很想你 💕', recentTrigger: '初次相遇' },
-        createdAt: new Date().toISOString()
-    };
-    initRoleExtendedState(role);
-    return role;
-}
-
-function isContactPinned(roleId) { if (!CONFIG.pinnedContacts) return false; return CONFIG.pinnedContacts.indexOf(roleId) !== -1; }
-
-function togglePinContact(roleId) {
-    if (!CONFIG.pinnedContacts) CONFIG.pinnedContacts = [];
-    var idx = CONFIG.pinnedContacts.indexOf(roleId);
-    if (idx !== -1) { CONFIG.pinnedContacts.splice(idx, 1); showToast('已取消置顶'); }
-    else { CONFIG.pinnedContacts.push(roleId); showToast('📌 已置顶联系人'); }
-    saveAllData(); renderContacts(); renderRoleManager();
-}
-
-function clearUnreadForRole(roleId) {
-    if (CONFIG.unreadCount) { CONFIG.unreadCount[roleId] = 0; saveAllData(); }
-}
-
-function getLastMessage(roleId) {
-    var role = roles.find(function(r) { return r.id === roleId; });
-    if (!role) return '暂无消息';
-    var msgs = role.messages || [];
-    if (msgs.length === 0) return '暂无消息';
-    var last = msgs[msgs.length - 1];
-    var preview = last.role === 'user' ? '你：' + (last.type === 'gift' ? '🎁 送了礼物' : last.content) : (last.type === 'gift' ? '🎁 送了礼物' : last.content);
-    return preview.length > 30 ? preview.substring(0, 30) + '…' : preview;
-}
-
-function getInitials(name) { if (!name) return '?'; return name.charAt(0).toUpperCase(); }
-
-function isVoiceTrigger(text) {
-    if (!text) return false;
-    var lower = text.toLowerCase();
-    return CONSTANTS.VOICE_KEYWORDS.some(function(kw) {
-        return lower.includes(kw);
-    });
-} // ========== 百炼 TTS 调用 ==========
-async function callBailianTTS(text, role) {
-    var endpoint = getVoiceEndpoint();
-    var apiKey = getVoiceApiKey();
-    var model = getVoiceModel();
-    var voiceId = role.voiceId || '';
-    if (!apiKey) throw new Error('未配置语音 API Key，请在设置中填写');
-    if (!voiceId) throw new Error('当前角色未配置 Voice ID，请在设置中填写');
-    if (!text || text.trim().length === 0) throw new Error('没有可朗读的文本');
-    var cleanText = text.replace(/\[表情包：[^\]]+\]/g, '').trim();
-    if (!cleanText) throw new Error('文本为空（可能只有表情包）');
-    if (cleanText.length > 500) cleanText = cleanText.substring(0, 500) + '……';
-    var url = endpoint.replace(/\/+$/, '') + '/api/v1/services/audio/tts/SpeechSynthesizer';
-    var response = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Authorization': 'Bearer ' + apiKey,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            model: model,
-            input: { text: cleanText },
-            voice: voiceId,
-            parameters: {
-                rate: CONFIG.voice.rate || 1.0,
-                pitch: CONFIG.voice.pitch || 1.0,
-                volume: 50
-            }
-        })
-    });
-    if (!response.ok) {
-        var errText = await response.text();
-        var errMsg = '百炼 TTS 错误 (' + response.status + ')';
-        try { var j = JSON.parse(errText); errMsg = j.message || errMsg; } catch (_) {}
-        throw new Error(errMsg);
-    }
-    var audioBlob = await response.blob();
-    return URL.createObjectURL(audioBlob);
-}
-
-function speakWithBrowser(text, callback) {
-    if (!window.speechSynthesis) {
-        if (callback) callback();
-        return;
-    }
-    var cleanText = text.replace(/\[表情包：[^\]]+\]/g, '').trim();
-    if (!cleanText) { if (callback) callback(); return; }
-    window.speechSynthesis.cancel();
-    var utterance = new SpeechSynthesisUtterance(cleanText);
-    utterance.lang = 'zh-CN';
-    utterance.rate = CONFIG.voice.rate || 1.0;
-    utterance.pitch = CONFIG.voice.pitch || 1.0;
-    utterance.onend = callback;
-    utterance.onerror = callback;
-    try {
-        var voices = window.speechSynthesis.getVoices();
-        var zhVoice = voices.find(function(v) { return v.lang.startsWith('zh'); });
-        if (zhVoice) utterance.voice = zhVoice;
-    } catch (e) {}
-    window.speechSynthesis.speak(utterance);
-}
-
-// ========== 语音播放器管理 ==========
-function createVoicePlayer(msgId, audioUrl, duration) {
-    var container = document.querySelector('.message-row[data-msgid="' + msgId + '"] .bubble-container');
-    if (!container) return;
-    var existing = container.querySelector('.voice-player');
-    if (existing) existing.remove();
-
-    var player = document.createElement('div');
-    player.className = 'voice-player has-audio';
-    player.dataset.msgid = msgId;
-
-    var isPlaying = false;
-    var progress = 0;
-    var audio = new Audio(audioUrl);
-    var durationSec = duration || 10;
-
-    player.innerHTML = `
-        <button class="play-btn"><i class="fas fa-play"></i></button>
-        <div class="progress-wrapper">
-            <div class="progress-bar">
-                <div class="progress-fill" style="width:0%;"></div>
-                <div class="progress-dot" style="left:0%;"></div>
-            </div>
-            <span class="time-display">00:00 / ${formatTimeDisplay(durationSec)}</span>
-        </div>
-    `;
-
-    container.appendChild(player);
-
-    var playBtn = player.querySelector('.play-btn');
-    var fill = player.querySelector('.progress-fill');
-    var dot = player.querySelector('.progress-dot');
-    var timeDisplay = player.querySelector('.time-display');
-    var progressBar = player.querySelector('.progress-bar');
-    var animFrame = null;
-
-    function updateProgress(pct) {
-        pct = Math.max(0, Math.min(100, pct));
-        fill.style.width = pct + '%';
-        dot.style.left = pct + '%';
-        var current = (pct / 100) * durationSec;
-        timeDisplay.textContent = formatTimeDisplay(current) + ' / ' + formatTimeDisplay(durationSec);
-    }
-
-    function playAudio() {
-        if (audio.paused) {
-            audio.play();
-            playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-            playBtn.classList.add('playing');
-            isPlaying = true;
-            updateFooterStatus(msgId, true);
-            function tick() {
-                if (!isPlaying || audio.paused) return;
-                var pct = (audio.currentTime / durationSec) * 100;
-                updateProgress(pct);
-                if (pct >= 100) {
-                    isPlaying = false;
-                    playBtn.innerHTML = '<i class="fas fa-play"></i>';
-                    playBtn.classList.remove('playing');
-                    updateFooterStatus(msgId, false);
-                    animFrame = null;
-                    return;
-                }
-                animFrame = requestAnimationFrame(tick);
-            }
-            if (animFrame) cancelAnimationFrame(animFrame);
-            tick();
-        } else {
-            audio.pause();
-            playBtn.innerHTML = '<i class="fas fa-play"></i>';
-            playBtn.classList.remove('playing');
-            isPlaying = false;
-            updateFooterStatus(msgId, false);
-            if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
-        }
-    }
-
-    playBtn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        playAudio();
-    });
-
-    progressBar.addEventListener('click', function(e) {
-        e.stopPropagation();
-        var rect = this.getBoundingClientRect();
-        var x = (e.clientX - rect.left) / rect.width;
-        var pct = Math.max(0, Math.min(100, x * 100));
-        audio.currentTime = (pct / 100) * durationSec;
-        updateProgress(pct);
-    });
-
-    audio.addEventListener('ended', function() {
-        isPlaying = false;
-        playBtn.innerHTML = '<i class="fas fa-play"></i>';
-        playBtn.classList.remove('playing');
-        updateProgress(100);
-        updateFooterStatus(msgId, false);
-        if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
-    });
-
-    audio.addEventListener('error', function() {
-        showToast('⚠️ 语音播放失败');
-        playBtn.innerHTML = '<i class="fas fa-play"></i>';
-        playBtn.classList.remove('playing');
-        isPlaying = false;
-        if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
-    });
-
-    audioPlayers[msgId] = { audio: audio, player: player, animFrame: animFrame };
-    setTimeout(function() { playAudio(); }, 300);
-    return player;
-}
-
-function formatTimeDisplay(seconds) {
-    var m = Math.floor(seconds / 60);
-    var s = Math.floor(seconds % 60);
-    return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
-}
-
-function updateFooterStatus(msgId, isPlaying) {
-    var row = document.querySelector('.message-row[data-msgid="' + msgId + '"]');
-    if (!row) return;
-    var footer = row.querySelector('.bubble-footer .voice-indicator');
-    if (!footer) return;
-    if (isPlaying) {
-        footer.innerHTML = '<i class="fas fa-waveform"></i> 播放中';
-        footer.style.color = 'rgba(149,236,105,0.5)';
-    } else {
-        footer.innerHTML = '<i class="fas fa-volume-up"></i> 语音已生成';
-        footer.style.color = 'rgba(255,255,255,0.15)';
-    }
-}
-
-function cleanupVoicePlayer(msgId) {
-    if (audioPlayers[msgId]) {
-        var ap = audioPlayers[msgId];
-        if (ap.audio) {
-            ap.audio.pause();
-            ap.audio.src = '';
-            ap.audio.load();
-        }
-        if (ap.animFrame) cancelAnimationFrame(ap.animFrame);
-        if (ap.player) ap.player.remove();
-        delete audioPlayers[msgId];
-    }
-    var role = getCurrentRole();
-    if (role && role.messages) {
-        var msg = role.messages.find(function(m) { return m.id === msgId; });
-        if (msg && msg.audioUrl) {
-            URL.revokeObjectURL(msg.audioUrl);
-            msg.audioUrl = null;
-            msg.hasAudio = false;
-        }
-    }
-}
-
-async function generateVoiceForMessage(msgId, role) {
-    if (!role) return;
-    var msg = role.messages.find(function(m) { return m.id === msgId; });
-    if (!msg) return;
-    if (msg.hasAudio && msg.audioUrl) {
-        createVoicePlayer(msgId, msg.audioUrl, msg.audioDuration);
-        return;
-    }
-    if (!msg.content || msg.content.trim().length === 0) return;
-    if (CONFIG.voice.mode === 'none') return;
-    try {
-        var audioUrl;
-        if (CONFIG.voice.mode === 'bailian') {
-            audioUrl = await callBailianTTS(msg.content, role);
-        } else if (CONFIG.voice.mode === 'browser') {
-            speakWithBrowser(msg.content);
-            return;
-        } else {
-            return;
-        }
-        msg.hasAudio = true;
-        msg.audioUrl = audioUrl;
-        var audio = new Audio(audioUrl);
-        audio.addEventListener('loadedmetadata', function() {
-            msg.audioDuration = audio.duration || 10;
-            createVoicePlayer(msgId, audioUrl, msg.audioDuration);
-            debouncedSaveAllData();
-        });
-        audio.addEventListener('error', function() {
-            msg.audioDuration = 10;
-            createVoicePlayer(msgId, audioUrl, 10);
-            debouncedSaveAllData();
-        });
-        setTimeout(function() {
-            if (!msg.audioDuration) {
-                msg.audioDuration = 10;
-                createVoicePlayer(msgId, audioUrl, 10);
-                debouncedSaveAllData();
-            }
-        }, 2000);
-    } catch (e) {
-        console.error('生成语音失败:', e);
-        showToast('🔊 语音生成失败: ' + e.message);
-        if (CONFIG.voice.mode === 'bailian') {
-            speakWithBrowser(msg.content);
-        }
-    }
-}
-
-function resetMessageAudio(msgId) {
-    cleanupVoicePlayer(msgId);
-    var role = getCurrentRole();
-    if (role && role.messages) {
-        var msg = role.messages.find(function(m) { return m.id === msgId; });
-        if (msg) {
-            if (msg.audioUrl) { URL.revokeObjectURL(msg.audioUrl); }
-            msg.hasAudio = false;
-            msg.audioUrl = null;
-            msg.audioDuration = 0;
-        }
-    }
-    var row = document.querySelector('.message-row[data-msgid="' + msgId + '"]');
-    if (row) {
-        var player = row.querySelector('.voice-player');
-        if (player) player.remove();
-        var footer = row.querySelector('.bubble-footer .voice-indicator');
-        if (footer) {
-            footer.innerHTML = '<i class="fas fa-play"></i> 点击朗读';
-            footer.style.color = 'rgba(255,255,255,0.1)';
-        }
-    }
-}
-
-function addMessageToRole(roleId, role, content, type, giftData) {
-    type = type || 'text';
-    var r = roles.find(function(ro) { return ro.id === roleId; });
-    if (!r) return;
-    if (!Array.isArray(r.messages)) r.messages = [];
-    var msgId = generateId();
-    var timeStr = new Date().toISOString();
-    var msg = {
-        id: msgId,
-        role: role,
-        content: content,
-        type: type,
-        time: timeStr,
-        hasAudio: false,
-        audioUrl: null,
-        audioDuration: 0
-    };
-    if (giftData) msg.giftData = giftData;
-    r.messages.push(msg);
-    if (role === 'user') {
-        detectSleepMode(roleId, content);
-        updateContextMemory(r, content, null);
-        updateIntimacy(r);
-        CONFIG.lastChatVisit[roleId] = Date.now();
-        r.extendedState.lastUserMessageTime = Date.now();
-    }
-    if (role === 'assistant') {
-        r.extendedState.lastAiMessageTime = Date.now();
-        if (!CONFIG.unreadCount) CONFIG.unreadCount = {};
-        CONFIG.unreadCount[roleId] = (CONFIG.unreadCount[roleId] || 0) + 1;
-        if (r.messages.length % 5 === 0 && r.messages.length > 3) {
-            generateContextSummary(r);
-        }
-    }
-    if (role === 'user' || role === 'assistant') {
-        detectHeartKeywords(r.id, content, role);
-    }
-    debouncedSaveAllData();
-    updateHeartDisplay();
-    return msgId;
-}
-
-function deleteMessageAndMemory(roleId, messageId) {
-    var role = roles.find(function(r) { return r.id === roleId; });
-    if (!role) return;
-    var msgIndex = role.messages.findIndex(function(m) { return m.id === messageId; });
-    if (msgIndex === -1) return;
-    cleanupVoicePlayer(messageId);
-    var msg = role.messages[msgIndex];
-    if (msg && msg.audioUrl) {
-        URL.revokeObjectURL(msg.audioUrl);
-    }
-    role.messages.splice(msgIndex, 1);
-    if (Array.isArray(role.memory)) {
-        role.memory = role.memory.filter(function(mem) {
-            if (!mem.sourceMessageId) return true;
-            return mem.sourceMessageId !== messageId;
-        });
-    }
-    saveAllData();
-    renderMessages();
-    renderContacts();
-    renderRoleManager();
-}
-
+// 🔧 FIX: generateContextSummary 加保护
 function generateContextSummary(role) {
     if (!role || !Array.isArray(role.messages) || role.messages.length < 3) return;
     var apiKey = CONFIG.accessMode === 'direct' ? CONFIG.apiKey : CONFIG.relayApiKey;
-    if (!apiKey) {
+    var endpoint = CONFIG.accessMode === 'direct' ? 'https://api.deepseek.com/v1' : CONFIG.relayEndpoint;
+    if (!apiKey || !endpoint) {
         var lastMsgs = role.messages.slice(-6);
         var topics = [];
         var userMsgs = lastMsgs.filter(function(m) { return m.role === 'user'; });
@@ -1680,7 +1288,6 @@ function generateContextSummary(role) {
         conversationText += sender + '：' + content + '\n';
     });
     var systemPrompt = '你是一个擅长总结对话的人。请用1-2句话总结下面这段对话的核心内容。\n要求：\n1. 只总结「用户说了什么、AI回应了什么」，不要说空话\n2. 如果用户在分享自己的事，要点出具体内容\n3. 如果用户在表达情绪，要点出是什么情绪\n4. 格式：直接输出总结，不要有任何前缀\n5. 控制在50字以内';
-    var endpoint = CONFIG.accessMode === 'direct' ? 'https://api.deepseek.com/v1' : CONFIG.relayEndpoint;
     var model = CONFIG.accessMode === 'direct' ? CONFIG.model : CONFIG.relayModel;
     var controller = new AbortController();
     var timeoutId = setTimeout(function() { controller.abort(); }, 15000);
@@ -1724,9 +1331,7 @@ function generateContextSummary(role) {
         role.extendedState.contextSummary = summary2;
         debouncedSaveAllData();
     });
-}
-
-function fetchWithRetry(url, options, maxRetries) {
+} function fetchWithRetry(url, options, maxRetries) {
     maxRetries = maxRetries || 1;
     var retryCount = 0;
     function doFetch() {
@@ -1757,7 +1362,6 @@ function fetchWithRetry(url, options, maxRetries) {
     return doFetch();
 }
 
-// ========== 消息渲染 ==========
 function renderMessages() {
     var role = getCurrentRole();
     if (!role) return;
@@ -1837,7 +1441,6 @@ function renderMessages() {
     }
 }
 
-// ========== 创建消息行 ==========
 function createMessageRow(msg, role) {
     var row = document.createElement('div');
     row.className = 'message-row ' + (msg.role === 'user' ? 'self' : '');
@@ -1877,12 +1480,13 @@ function createMessageRow(msg, role) {
         actionsHtml = '<div class="msg-actions"><button class="action-btn delete-btn" data-msgid="' + msg.id + '" title="删除"><i class="fas fa-trash-alt"></i></button></div>';
     }
 
+    // 🔧 FIX: 气泡底部指示器 - 只显示小图标
     var footerHtml = '';
     if (msg.role === 'assistant' && msg.type !== 'gift') {
         if (msg.hasAudio && msg.audioUrl) {
-            footerHtml = '<div class="bubble-footer"><span class="voice-indicator"><i class="fas fa-volume-up"></i> 语音已生成</span></div>';
+            footerHtml = '<div class="bubble-footer"><span class="voice-indicator"><i class="fas fa-volume-up"></i></span></div>';
         } else {
-            footerHtml = '<div class="bubble-footer"><span class="voice-indicator" style="cursor:pointer;" onclick="triggerVoiceForMessage(\'' + msg.id + '\')"><i class="fas fa-play"></i> 点击朗读</span></div>';
+            footerHtml = '<div class="bubble-footer"><span class="voice-indicator" style="cursor:pointer;" onclick="triggerVoiceForMessage(\'' + msg.id + '\')"><i class="fas fa-play"></i></span></div>';
         }
     }
 
@@ -1895,6 +1499,7 @@ function createMessageRow(msg, role) {
     return row;
 }
 
+// 🔧 FIX: 触发语音 - 使用无文字样式
 function triggerVoiceForMessage(msgId) {
     var role = getCurrentRole();
     if (!role) { showToast('⚠️ 未找到当前角色'); return; }
@@ -1921,8 +1526,8 @@ function triggerVoiceForMessage(msgId) {
         if (row) {
             var footer = row.querySelector('.bubble-footer .voice-indicator');
             if (footer) {
-                footer.innerHTML = '<i class="fas fa-volume-up"></i> 语音已生成';
-                footer.style.color = 'rgba(255,255,255,0.15)';
+                footer.innerHTML = '<i class="fas fa-volume-up"></i>';
+                footer.style.color = 'rgba(255,255,255,0.12)';
                 footer.style.cursor = 'default';
                 footer.onclick = null;
             }
@@ -2101,7 +1706,8 @@ function regenerateMessage(roleId, messageId) {
         addMessageToRole(role.id, 'assistant', '💔 ' + e.message);
         renderMessages();
     });
-} // ========== 发送消息 ==========
+}
+
 function handleSend() {
     if (isSending) { showToast('⏳ 正在发送中，请稍后'); return; }
     var input = document.getElementById('messageInput');
@@ -2982,9 +2588,8 @@ document.addEventListener('visibilitychange', function() {
             setTimeout(function() { checkAllRolesForActiveMessages(); }, 3000);
         }
     }
-}); // ========== 以下保留原有功能 ==========
+});
 
-// ========== 长按菜单 ==========
 function setupLongPress() {
     var container = document.getElementById('messageContainer');
     var longpressTimer = null;
@@ -3051,7 +2656,6 @@ function setupLongPress() {
     });
 }
 
-// ========== 图片选择 ==========
 function openImagePicker(action) {
     currentPickerTarget = action;
     var titles = {
@@ -3210,7 +2814,6 @@ function compressImage(dataUrl, maxSizeKB, callback) {
     img.src = dataUrl;
 }
 
-// ========== 壁纸 IndexedDB ==========
 function openWallpaperDB() {
     return new Promise(function(resolve, reject) {
         var request = indexedDB.open('WallpaperDB', 1);
@@ -3411,7 +3014,6 @@ function toggleTheme() {
     showToast('🌓 已切换至 ' + (next === 'dark' ? '深色' : '浅色') + ' 模式');
 }
 
-// ========== 联系人渲染 ==========
 function renderContacts() {
     var contactsList = document.getElementById('contactsList');
     if (!contactsList) return;
@@ -3453,7 +3055,6 @@ function renderContacts() {
     });
 }
 
-// ========== 角色管理器 ==========
 function renderRoleManager() {
     var container = document.getElementById('roleManagerContainer');
     if (!container) return;
@@ -3591,7 +3192,6 @@ function renderRoleManager() {
     });
 }
 
-// ========== 日记系统 ==========
 function renderDiaryAll() {
     var roleId = selectedDiaryRoleId || currentRoleId;
     renderDiaryRoleSelector();
@@ -3885,7 +3485,6 @@ function startDiaryAutoCheck() {
     console.log('📖 日记自动书写系统已启动（每小时检查一次）');
 }
 
-// ========== 表情包系统 ==========
 var DEFAULT_CATEGORIES = [
     { id: 'cat_happy', name: '表达开心', icon: '😊' },
     { id: 'cat_sad', name: '表达难过', icon: '😢' },
@@ -4049,7 +3648,6 @@ function updateStorageDisplay() {
     });
 }
 
-// ========== 模型拉取 ==========
 async function fetchModelsFromRelay() {
     var endpoint = document.getElementById('relayEndpoint').value.trim();
     var apiKey = document.getElementById('relayApiKey').value.trim();
@@ -4172,7 +3770,6 @@ async function fetchTtsModels() {
     }
 }
 
-// ========== 界面切换 ==========
 function openChat(fromContacts) {
     fromContacts = fromContacts || false;
     isFromContacts = fromContacts;
@@ -4638,7 +4235,6 @@ function cleanupResources() {
 
 window.addEventListener('beforeunload', function() { cleanupResources(); });
 
-// ========== 表情包 UI ==========
 function renderMemeScreen() { renderCategoryList(); }
 
 function renderCategoryList() {
@@ -4953,7 +4549,6 @@ function getSelectedRoleIds() {
     return ids;
 }
 
-// ========== 个性化样式 ==========
 function renderStylePicker() {
     var iconGrid = document.getElementById('styleOptionGrid');
     if (!iconGrid) return;
@@ -5253,6 +4848,633 @@ function openStylePicker() {
     }
 }
 
+// 🔧 FIX: 创建语音播放器 - 无文字版本
+function createVoicePlayer(msgId, audioUrl, duration) {
+    var container = document.querySelector('.message-row[data-msgid="' + msgId + '"] .bubble-container');
+    if (!container) return;
+    var existing = container.querySelector('.voice-player');
+    if (existing) existing.remove();
+
+    var player = document.createElement('div');
+    player.className = 'voice-player has-audio';
+    player.dataset.msgid = msgId;
+
+    var isPlaying = false;
+    var audio = new Audio(audioUrl);
+    var durationSec = duration || 10;
+
+    player.innerHTML = `
+        <button class="play-btn"><i class="fas fa-play"></i></button>
+        <div class="progress-wrapper">
+            <div class="progress-bar">
+                <div class="progress-fill" style="width:0%;"></div>
+                <div class="progress-dot" style="left:0%;"></div>
+            </div>
+            <span class="time-display">00:00</span>
+        </div>
+    `;
+
+    container.appendChild(player);
+
+    var playBtn = player.querySelector('.play-btn');
+    var fill = player.querySelector('.progress-fill');
+    var dot = player.querySelector('.progress-dot');
+    var timeDisplay = player.querySelector('.time-display');
+    var progressBar = player.querySelector('.progress-bar');
+    var animFrame = null;
+
+    function updateProgress(pct) {
+        pct = Math.max(0, Math.min(100, pct));
+        fill.style.width = pct + '%';
+        dot.style.left = pct + '%';
+        var current = (pct / 100) * durationSec;
+        timeDisplay.textContent = formatTimeDisplay(current);
+    }
+
+    function playAudio() {
+        if (audio.paused) {
+            audio.play();
+            playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            playBtn.classList.add('playing');
+            isPlaying = true;
+            function tick() {
+                if (!isPlaying || audio.paused) return;
+                var pct = (audio.currentTime / durationSec) * 100;
+                updateProgress(pct);
+                if (pct >= 100) {
+                    isPlaying = false;
+                    playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                    playBtn.classList.remove('playing');
+                    animFrame = null;
+                    return;
+                }
+                animFrame = requestAnimationFrame(tick);
+            }
+            if (animFrame) cancelAnimationFrame(animFrame);
+            tick();
+        } else {
+            audio.pause();
+            playBtn.innerHTML = '<i class="fas fa-play"></i>';
+            playBtn.classList.remove('playing');
+            isPlaying = false;
+            if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
+        }
+    }
+
+    playBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        playAudio();
+    });
+
+    progressBar.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var rect = this.getBoundingClientRect();
+        var x = (e.clientX - rect.left) / rect.width;
+        var pct = Math.max(0, Math.min(100, x * 100));
+        audio.currentTime = (pct / 100) * durationSec;
+        updateProgress(pct);
+    });
+
+    audio.addEventListener('ended', function() {
+        isPlaying = false;
+        playBtn.innerHTML = '<i class="fas fa-play"></i>';
+        playBtn.classList.remove('playing');
+        updateProgress(100);
+        if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
+    });
+
+    audio.addEventListener('error', function() {
+        showToast('⚠️ 语音播放失败');
+        playBtn.innerHTML = '<i class="fas fa-play"></i>';
+        playBtn.classList.remove('playing');
+        isPlaying = false;
+        if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
+    });
+
+    audioPlayers[msgId] = { audio: audio, player: player, animFrame: animFrame };
+    return player;
+}
+
+function formatTimeDisplay(seconds) {
+    var m = Math.floor(seconds / 60);
+    var s = Math.floor(seconds % 60);
+    return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+}
+
+function updateFooterStatus(msgId, isPlaying) {
+    var row = document.querySelector('.message-row[data-msgid="' + msgId + '"]');
+    if (!row) return;
+    var footer = row.querySelector('.bubble-footer .voice-indicator');
+    if (!footer) return;
+    if (isPlaying) {
+        footer.innerHTML = '<i class="fas fa-waveform"></i>';
+        footer.style.color = 'rgba(149,236,105,0.5)';
+    } else {
+        footer.innerHTML = '<i class="fas fa-volume-up"></i>';
+        footer.style.color = 'rgba(255,255,255,0.12)';
+    }
+}
+
+function cleanupVoicePlayer(msgId) {
+    if (audioPlayers[msgId]) {
+        var ap = audioPlayers[msgId];
+        if (ap.audio) {
+            ap.audio.pause();
+            ap.audio.src = '';
+            ap.audio.load();
+        }
+        if (ap.animFrame) cancelAnimationFrame(ap.animFrame);
+        if (ap.player) ap.player.remove();
+        delete audioPlayers[msgId];
+    }
+    var role = getCurrentRole();
+    if (role && role.messages) {
+        var msg = role.messages.find(function(m) { return m.id === msgId; });
+        if (msg && msg.audioUrl) {
+            URL.revokeObjectURL(msg.audioUrl);
+            msg.audioUrl = null;
+            msg.hasAudio = false;
+        }
+    }
+}
+
+async function generateVoiceForMessage(msgId, role) {
+    if (!role) return;
+    var msg = role.messages.find(function(m) { return m.id === msgId; });
+    if (!msg) return;
+    if (msg.hasAudio && msg.audioUrl) {
+        createVoicePlayer(msgId, msg.audioUrl, msg.audioDuration);
+        return;
+    }
+    if (!msg.content || msg.content.trim().length === 0) return;
+    if (CONFIG.voice.mode === 'none') return;
+    try {
+        var audioUrl;
+        if (CONFIG.voice.mode === 'bailian') {
+            audioUrl = await callBailianTTS(msg.content, role);
+        } else if (CONFIG.voice.mode === 'browser') {
+            speakWithBrowser(msg.content);
+            return;
+        } else {
+            return;
+        }
+        msg.hasAudio = true;
+        msg.audioUrl = audioUrl;
+        var audio = new Audio(audioUrl);
+        audio.addEventListener('loadedmetadata', function() {
+            msg.audioDuration = audio.duration || 10;
+            createVoicePlayer(msgId, audioUrl, msg.audioDuration);
+            debouncedSaveAllData();
+        });
+        audio.addEventListener('error', function() {
+            msg.audioDuration = 10;
+            createVoicePlayer(msgId, audioUrl, 10);
+            debouncedSaveAllData();
+        });
+        setTimeout(function() {
+            if (!msg.audioDuration) {
+                msg.audioDuration = 10;
+                createVoicePlayer(msgId, audioUrl, 10);
+                debouncedSaveAllData();
+            }
+        }, 2000);
+    } catch (e) {
+        console.error('生成语音失败:', e);
+        showToast('🔊 语音生成失败: ' + e.message);
+        if (CONFIG.voice.mode === 'bailian') {
+            speakWithBrowser(msg.content);
+        }
+    }
+}
+
+function resetMessageAudio(msgId) {
+    cleanupVoicePlayer(msgId);
+    var role = getCurrentRole();
+    if (role && role.messages) {
+        var msg = role.messages.find(function(m) { return m.id === msgId; });
+        if (msg) {
+            if (msg.audioUrl) { URL.revokeObjectURL(msg.audioUrl); }
+            msg.hasAudio = false;
+            msg.audioUrl = null;
+            msg.audioDuration = 0;
+        }
+    }
+    var row = document.querySelector('.message-row[data-msgid="' + msgId + '"]');
+    if (row) {
+        var player = row.querySelector('.voice-player');
+        if (player) player.remove();
+        var footer = row.querySelector('.bubble-footer .voice-indicator');
+        if (footer) {
+            footer.innerHTML = '<i class="fas fa-play"></i>';
+            footer.style.color = 'rgba(255,255,255,0.12)';
+            footer.style.cursor = 'pointer';
+            footer.onclick = function() { triggerVoiceForMessage(msgId); };
+        }
+    }
+}
+
+function addMessageToRole(roleId, role, content, type, giftData) {
+    type = type || 'text';
+    var r = roles.find(function(ro) { return ro.id === roleId; });
+    if (!r) return;
+    if (!Array.isArray(r.messages)) r.messages = [];
+    var msgId = generateId();
+    var timeStr = new Date().toISOString();
+    var msg = {
+        id: msgId,
+        role: role,
+        content: content,
+        type: type,
+        time: timeStr,
+        hasAudio: false,
+        audioUrl: null,
+        audioDuration: 0
+    };
+    if (giftData) msg.giftData = giftData;
+    r.messages.push(msg);
+    if (role === 'user') {
+        detectSleepMode(roleId, content);
+        updateContextMemory(r, content, null);
+        updateIntimacy(r);
+        CONFIG.lastChatVisit[roleId] = Date.now();
+        r.extendedState.lastUserMessageTime = Date.now();
+    }
+    if (role === 'assistant') {
+        r.extendedState.lastAiMessageTime = Date.now();
+        if (!CONFIG.unreadCount) CONFIG.unreadCount = {};
+        CONFIG.unreadCount[roleId] = (CONFIG.unreadCount[roleId] || 0) + 1;
+        if (r.messages.length % 5 === 0 && r.messages.length > 3) {
+            generateContextSummary(r);
+        }
+    }
+    if (role === 'user' || role === 'assistant') {
+        detectHeartKeywords(r.id, content, role);
+    }
+    debouncedSaveAllData();
+    updateHeartDisplay();
+    return msgId;
+}
+
+function deleteMessageAndMemory(roleId, messageId) {
+    var role = roles.find(function(r) { return r.id === roleId; });
+    if (!role) return;
+    var msgIndex = role.messages.findIndex(function(m) { return m.id === messageId; });
+    if (msgIndex === -1) return;
+    cleanupVoicePlayer(messageId);
+    var msg = role.messages[msgIndex];
+    if (msg && msg.audioUrl) {
+        URL.revokeObjectURL(msg.audioUrl);
+    }
+    role.messages.splice(msgIndex, 1);
+    if (Array.isArray(role.memory)) {
+        role.memory = role.memory.filter(function(mem) {
+            if (!mem.sourceMessageId) return true;
+            return mem.sourceMessageId !== messageId;
+        });
+    }
+    saveAllData();
+    renderMessages();
+    renderContacts();
+    renderRoleManager();
+}
+
+// 🔧 FIX: 试听 - 停止旧音频防止叠加
+document.getElementById('testVoiceBtn').addEventListener('click', async function() {
+    var roleId = document.getElementById('voiceRoleSelector').value;
+    var role = roles.find(function(r) { return r.id === roleId; });
+    if (!role) { showToast('⚠️ 请选择角色'); return; }
+    var voiceId = document.getElementById('voiceIdInput').value.trim();
+    if (!voiceId) { showToast('⚠️ 请先填写 Voice ID'); return; }
+    role.voiceId = voiceId;
+    saveAllData();
+
+    if (CONFIG.voice.mode === 'none') {
+        showToast('🔇 语音已关闭，请在设置中开启');
+        return;
+    }
+
+    showToast('🔊 正在生成试听语音...');
+    try {
+        var audioUrl = await callBailianTTS('我已经准备好了，随时可以开始。', role);
+        if (_testAudio) {
+            _testAudio.pause();
+            _testAudio.src = '';
+            _testAudio.load();
+        }
+        _testAudio = new Audio(audioUrl);
+        _testAudio.play();
+        showToast('✅ 试听中...');
+    } catch (e) {
+        showToast('❌ 试听失败: ' + e.message);
+    }
+});
+
+// 🔧 FIX: 数据导出 - 完整实现
+document.getElementById('dataExportBtn').addEventListener('click', function() {
+    var exportType = getSelectedExportType();
+    var exportData = {
+        exportTime: new Date().toISOString(),
+        version: '4.0',
+        type: exportType
+    };
+
+    switch(exportType) {
+        case 'all':
+            exportData.config = JSON.parse(JSON.stringify(CONFIG));
+            exportData.roles = roles.map(function(r) { return deepCloneRole(r); });
+            exportData.diaries = CONFIG.diaries || [];
+            break;
+        case 'settings':
+            exportData.config = {
+                wallpaper: CONFIG.wallpaper,
+                chatBg: CONFIG.chatBg,
+                userAvatar: CONFIG.userAvatar,
+                iconStyle: CONFIG.iconStyle,
+                bubbleStyle: CONFIG.bubbleStyle,
+                timeMode: CONFIG.timeMode,
+                theme: CONFIG.theme,
+                fontSize: CONFIG.fontSize,
+                fontWeight: CONFIG.fontWeight,
+                heart: {
+                    color: CONFIG.heart.color,
+                    floatingEnabled: CONFIG.heart.floatingEnabled,
+                    signature: CONFIG.heart.signature
+                }
+            };
+            break;
+        case 'roles':
+            exportData.roles = roles.map(function(r) {
+                var clone = deepCloneRole(r);
+                clone.messages = [];
+                clone.memory = [];
+                return clone;
+            });
+            break;
+        case 'chats':
+            exportData.roles = roles.map(function(r) {
+                var clone = {
+                    id: r.id,
+                    name: r.name,
+                    messages: r.messages ? r.messages.slice() : [],
+                    memory: r.memory ? r.memory.slice() : []
+                };
+                return clone;
+            });
+            break;
+        case 'diaries':
+            exportData.diaries = CONFIG.diaries || [];
+            break;
+        case 'selected':
+            var selectedIds = getSelectedRoleIds();
+            exportData.roles = roles.filter(function(r) { return selectedIds.indexOf(r.id) !== -1; }).map(function(r) { return deepCloneRole(r); });
+            exportData.diaries = (CONFIG.diaries || []).filter(function(d) { return selectedIds.indexOf(d.roleId) !== -1; });
+            break;
+        default:
+            exportData.roles = roles.map(function(r) { return deepCloneRole(r); });
+            exportData.diaries = CONFIG.diaries || [];
+            break;
+    }
+
+    var json = JSON.stringify(exportData, null, 2);
+    var blob = new Blob([json], { type: 'application/json' });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement('a');
+    link.href = url;
+    var filename = '梦女空间数据_' + exportType + '_' + new Date().toISOString().slice(0,10) + '.json';
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    showToast('✅ 数据已导出: ' + filename);
+    closeDataModal();
+});
+
+// 🔧 FIX: 数据导入 - 完整实现
+document.getElementById('dataImportBtn').addEventListener('click', function() {
+    var input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.onchange = function(e) {
+        var file = e.target.files[0];
+        if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function(ev) {
+            try {
+                var imported = JSON.parse(ev.target.result);
+                if (!imported.roles && !imported.diaries && !imported.config) {
+                    showToast('❌ 无效的数据文件，请检查');
+                    return;
+                }
+
+                var confirmMsg = '即将导入数据：\n';
+                if (imported.roles) confirmMsg += '📋 ' + imported.roles.length + ' 个角色\n';
+                if (imported.diaries) confirmMsg += '📖 ' + imported.diaries.length + ' 篇日记\n';
+                if (imported.config) confirmMsg += '⚙️ 包含配置信息\n';
+                confirmMsg += '\n当前数据将被覆盖，是否继续？';
+
+                if (!confirm(confirmMsg)) return;
+
+                var importType = imported.type || 'all';
+
+                if (importType === 'settings' || imported.config) {
+                    if (imported.config) {
+                        if (imported.config.wallpaper !== undefined) CONFIG.wallpaper = imported.config.wallpaper;
+                        if (imported.config.chatBg !== undefined) CONFIG.chatBg = imported.config.chatBg;
+                        if (imported.config.userAvatar !== undefined) CONFIG.userAvatar = imported.config.userAvatar;
+                        if (imported.config.iconStyle) CONFIG.iconStyle = imported.config.iconStyle;
+                        if (imported.config.bubbleStyle) CONFIG.bubbleStyle = imported.config.bubbleStyle;
+                        if (imported.config.timeMode) CONFIG.timeMode = imported.config.timeMode;
+                        if (imported.config.theme) CONFIG.theme = imported.config.theme;
+                        if (imported.config.fontSize) CONFIG.fontSize = imported.config.fontSize;
+                        if (imported.config.fontWeight) CONFIG.fontWeight = imported.config.fontWeight;
+                        if (imported.config.heart) {
+                            if (imported.config.heart.color) CONFIG.heart.color = imported.config.heart.color;
+                            if (imported.config.heart.floatingEnabled !== undefined) CONFIG.heart.floatingEnabled = imported.config.heart.floatingEnabled;
+                            if (imported.config.heart.signature) CONFIG.heart.signature = imported.config.heart.signature;
+                        }
+                        if (CONFIG.chatBg) applyChatBg(CONFIG.chatBg);
+                        if (CONFIG.userAvatar) applyUserAvatar(CONFIG.userAvatar);
+                        applyIconStyle(CONFIG.iconStyle || 'glass');
+                        applyBubbleStyle(CONFIG.bubbleStyle || 'default');
+                        applyTheme(CONFIG.theme || 'dark');
+                        updateHeartDisplay();
+                        showToast('✅ 美化设置已导入');
+                    }
+                    if (imported.roles && Array.isArray(imported.roles) && imported.roles.length > 0) {
+                        roles = imported.roles;
+                        currentRoleId = roles[0] ? roles[0].id : null;
+                        roles.forEach(function(r) {
+                            if (!r.id) r.id = generateId();
+                            if (!r.messages) r.messages = [];
+                            if (!r.memory) r.memory = [];
+                            if (!r.heartData) r.heartData = { value: 65, restingValue: 65, peakValue: 65, signature: '今天也很想你 💕', recentTrigger: '初次相遇' };
+                            initRoleExtendedState(r);
+                        });
+                        CONFIG.lastChatVisit = {};
+                        CONFIG.lastAiMessageTime = {};
+                        CONFIG.sleepMode = {};
+                        roles.forEach(function(r) {
+                            CONFIG.lastChatVisit[r.id] = 0;
+                            CONFIG.lastAiMessageTime[r.id] = 0;
+                            CONFIG.sleepMode[r.id] = false;
+                        });
+                        showToast('✅ 已导入 ' + roles.length + ' 个角色');
+                    }
+                } else {
+                    if (imported.config) {
+                        var oldApiKey = CONFIG.apiKey;
+                        var oldRelayApiKey = CONFIG.relayApiKey;
+                        var oldTtsApiKey = CONFIG.voice.apiKey;
+                        CONFIG = imported.config;
+                        CONFIG.apiKey = oldApiKey || CONFIG.apiKey;
+                        CONFIG.relayApiKey = oldRelayApiKey || CONFIG.relayApiKey;
+                        if (CONFIG.voice) CONFIG.voice.apiKey = oldTtsApiKey || CONFIG.voice.apiKey;
+                    }
+                    if (imported.roles && Array.isArray(imported.roles)) {
+                        roles = imported.roles;
+                        roles.forEach(function(r) {
+                            if (!r.id) r.id = generateId();
+                            if (!r.messages) r.messages = [];
+                            if (!r.memory) r.memory = [];
+                            if (!r.heartData) r.heartData = { value: 65, restingValue: 65, peakValue: 65, signature: '今天也很想你 💕', recentTrigger: '初次相遇' };
+                            initRoleExtendedState(r);
+                        });
+                        currentRoleId = roles[0] ? roles[0].id : null;
+                        CONFIG.lastChatVisit = {};
+                        CONFIG.lastAiMessageTime = {};
+                        CONFIG.sleepMode = {};
+                        roles.forEach(function(r) {
+                            CONFIG.lastChatVisit[r.id] = 0;
+                            CONFIG.lastAiMessageTime[r.id] = 0;
+                            CONFIG.sleepMode[r.id] = false;
+                        });
+                    }
+                    if (imported.diaries && Array.isArray(imported.diaries)) {
+                        CONFIG.diaries = imported.diaries;
+                    }
+                    showToast('✅ 完整数据已导入');
+                }
+
+                saveAllData();
+                renderContacts();
+                renderRoleManager();
+                renderDiaryAll();
+                updateChatTitle();
+                updateHeartDisplay();
+                if (CONFIG.chatBg) applyChatBg(CONFIG.chatBg);
+                if (CONFIG.userAvatar) applyUserAvatar(CONFIG.userAvatar);
+                applyIconStyle(CONFIG.iconStyle || 'glass');
+                applyBubbleStyle(CONFIG.bubbleStyle || 'default');
+                applyTheme(CONFIG.theme || 'dark');
+                closeDataModal();
+                closeSettings();
+
+            } catch (err) {
+                console.error('导入失败:', err);
+                showToast('❌ 导入失败，文件格式错误: ' + err.message);
+            }
+        };
+        reader.readAsText(file);
+    };
+    input.click();
+});
+
+function isContactPinned(roleId) { if (!CONFIG.pinnedContacts) return false; return CONFIG.pinnedContacts.indexOf(roleId) !== -1; }
+
+function togglePinContact(roleId) {
+    if (!CONFIG.pinnedContacts) CONFIG.pinnedContacts = [];
+    var idx = CONFIG.pinnedContacts.indexOf(roleId);
+    if (idx !== -1) { CONFIG.pinnedContacts.splice(idx, 1); showToast('已取消置顶'); }
+    else { CONFIG.pinnedContacts.push(roleId); showToast('📌 已置顶联系人'); }
+    saveAllData(); renderContacts(); renderRoleManager();
+}
+
+function clearUnreadForRole(roleId) {
+    if (CONFIG.unreadCount) { CONFIG.unreadCount[roleId] = 0; saveAllData(); }
+}
+
+function getLastMessage(roleId) {
+    var role = roles.find(function(r) { return r.id === roleId; });
+    if (!role) return '暂无消息';
+    var msgs = role.messages || [];
+    if (msgs.length === 0) return '暂无消息';
+    var last = msgs[msgs.length - 1];
+    var preview = last.role === 'user' ? '你：' + (last.type === 'gift' ? '🎁 送了礼物' : last.content) : (last.type === 'gift' ? '🎁 送了礼物' : last.content);
+    return preview.length > 30 ? preview.substring(0, 30) + '…' : preview;
+}
+
+function getInitials(name) { if (!name) return '?'; return name.charAt(0).toUpperCase(); }
+
+function isVoiceTrigger(text) {
+    if (!text) return false;
+    var lower = text.toLowerCase();
+    return CONSTANTS.VOICE_KEYWORDS.some(function(kw) {
+        return lower.includes(kw);
+    });
+}
+
+async function callBailianTTS(text, role) {
+    var endpoint = getVoiceEndpoint();
+    var apiKey = getVoiceApiKey();
+    var model = getVoiceModel();
+    var voiceId = role.voiceId || '';
+    if (!apiKey) throw new Error('未配置语音 API Key，请在设置中填写');
+    if (!voiceId) throw new Error('当前角色未配置 Voice ID，请在设置中填写');
+    if (!text || text.trim().length === 0) throw new Error('没有可朗读的文本');
+    var cleanText = text.replace(/\[表情包：[^\]]+\]/g, '').trim();
+    if (!cleanText) throw new Error('文本为空（可能只有表情包）');
+    if (cleanText.length > 500) cleanText = cleanText.substring(0, 500) + '……';
+    var url = endpoint.replace(/\/+$/, '') + '/api/v1/services/audio/tts/SpeechSynthesizer';
+    var response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + apiKey,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            model: model,
+            input: { text: cleanText },
+            voice: voiceId,
+            parameters: {
+                rate: CONFIG.voice.rate || 1.0,
+                pitch: CONFIG.voice.pitch || 1.0,
+                volume: 50
+            }
+        })
+    });
+    if (!response.ok) {
+        var errText = await response.text();
+        var errMsg = '百炼 TTS 错误 (' + response.status + ')';
+        try { var j = JSON.parse(errText); errMsg = j.message || errMsg; } catch (_) {}
+        throw new Error(errMsg);
+    }
+    var audioBlob = await response.blob();
+    return URL.createObjectURL(audioBlob);
+}
+
+function speakWithBrowser(text, callback) {
+    if (!window.speechSynthesis) {
+        if (callback) callback();
+        return;
+    }
+    var cleanText = text.replace(/\[表情包：[^\]]+\]/g, '').trim();
+    if (!cleanText) { if (callback) callback(); return; }
+    window.speechSynthesis.cancel();
+    var utterance = new SpeechSynthesisUtterance(cleanText);
+    utterance.lang = 'zh-CN';
+    utterance.rate = CONFIG.voice.rate || 1.0;
+    utterance.pitch = CONFIG.voice.pitch || 1.0;
+    utterance.onend = callback;
+    utterance.onerror = callback;
+    try {
+        var voices = window.speechSynthesis.getVoices();
+        var zhVoice = voices.find(function(v) { return v.lang.startsWith('zh'); });
+        if (zhVoice) utterance.voice = zhVoice;
+    } catch (e) {}
+    window.speechSynthesis.speak(utterance);
+}
+
 // ========== 初始化 ==========
 function init() {
     try { loadAllData(); } catch (e) { console.error('加载数据失败:', e); }
@@ -5470,30 +5692,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('fetchModelsBtn').addEventListener('click', fetchModelsFromRelay);
     document.getElementById('fetchTtsModelsBtn').addEventListener('click', fetchTtsModels);
 
-    document.getElementById('testVoiceBtn').addEventListener('click', async function() {
-        var roleId = document.getElementById('voiceRoleSelector').value;
-        var role = roles.find(function(r) { return r.id === roleId; });
-        if (!role) { showToast('⚠️ 请选择角色'); return; }
-        var voiceId = document.getElementById('voiceIdInput').value.trim();
-        if (!voiceId) { showToast('⚠️ 请先填写 Voice ID'); return; }
-        role.voiceId = voiceId;
-        saveAllData();
-
-        if (CONFIG.voice.mode === 'none') {
-            showToast('🔇 语音已关闭，请在设置中开启');
-            return;
-        }
-
-        showToast('🔊 正在生成试听语音...');
-        try {
-            var audioUrl = await callBailianTTS('我已经准备好了，随时可以开始。', role);
-            var audio = new Audio(audioUrl);
-            audio.play();
-            showToast('✅ 试听中...');
-        } catch (e) {
-            showToast('❌ 试听失败: ' + e.message);
-        }
-    });
+    // testVoiceBtn 已在上面修复
 
     document.getElementById('resetPermissionBtn').addEventListener('click', function() {
         CONFIG.permission = null;
@@ -5572,42 +5771,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.target === this) closeDataModal();
     });
 
-    document.getElementById('dataExportBtn').addEventListener('click', function() {
-        var exportType = getSelectedExportType();
-        var exportData = { exportTime: new Date().toISOString(), version: '4.0', type: exportType, config: {}, roles: [], diaries: [] };
-        // 保持原有导出逻辑
-        showToast('✅ 数据已导出');
-        closeDataModal();
-    });
-
-    document.getElementById('dataImportBtn').addEventListener('click', function() {
-        var input = document.createElement('input');
-        input.type = 'file';
-        input.accept = '.json';
-        input.onchange = function(e) {
-            var file = e.target.files[0];
-            if (!file) return;
-            var reader = new FileReader();
-            reader.onload = function(ev) {
-                try {
-                    var imported = JSON.parse(ev.target.result);
-                    if (!imported.roles || !Array.isArray(imported.roles)) {
-                        showToast('❌ 无效的数据文件，请检查');
-                        return;
-                    }
-                    if (!confirm('即将导入 ' + imported.roles.length + ' 个角色的数据，当前数据将被覆盖。是否继续？')) return;
-                    // 保持原有导入逻辑
-                    showToast('✅ 成功导入数据');
-                    closeDataModal();
-                    closeSettings();
-                } catch (err) {
-                    showToast('❌ 导入失败，文件格式错误');
-                }
-            };
-            reader.readAsText(file);
-        };
-        input.click();
-    });
+    // dataExportBtn 和 dataImportBtn 已在上面修复
 
     document.getElementById('clearAllChatsBtn').addEventListener('click', function() {
         if (confirm('⚠️ 确定要清空所有角色的聊天记录吗？\n\n亲密度会大幅下降！建议使用「清理旧消息」功能。')) {
