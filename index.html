@@ -451,6 +451,150 @@
         .trim-select-row { display: flex; align-items: center; gap: 8px; margin: 6px 0 4px; }
         .trim-select-row label { font-size: 11px; color: var(--text-secondary); white-space: nowrap; }
         .trim-control-row { display: flex; align-items: center; gap: 10px; margin: 4px 0 2px; }
+        /* ⭐ 语音播放器样式 - 紧凑好看 */
+        .voice-player {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 10px 4px 6px;
+            margin-top: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            width: 100%;
+            max-width: 200px;
+            transition: all 0.3s ease;
+            cursor: default;
+            height: 30px;
+        }
+        .voice-player .play-btn {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(149, 236, 105, 0.15);
+            color: #95ec69;
+            font-size: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: 0.15s;
+        }
+        .voice-player .play-btn:hover {
+            background: rgba(149, 236, 105, 0.3);
+        }
+        .voice-player .play-btn:active {
+            transform: scale(0.85);
+        }
+        .voice-player .play-btn.playing {
+            background: rgba(255, 107, 107, 0.15);
+            color: #ff6b6b;
+        }
+        .voice-player .play-btn.playing:hover {
+            background: rgba(255, 107, 107, 0.3);
+        }
+        .voice-player .progress-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            min-width: 0;
+        }
+        .voice-player .progress-bar {
+            flex: 1;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            position: relative;
+            cursor: pointer;
+            min-width: 30px;
+        }
+        .voice-player .progress-bar .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #95ec69, #6c5ce7);
+            border-radius: 4px;
+            transition: width 0.1s linear;
+        }
+        .voice-player .progress-bar .progress-dot {
+            position: absolute;
+            top: 50%;
+            left: 0%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #95ec69;
+            box-shadow: 0 0 8px rgba(149, 236, 105, 0.2);
+            pointer-events: none;
+            transition: left 0.1s linear;
+        }
+        .voice-player .time-display {
+            font-size: 9px;
+            color: rgba(255, 255, 255, 0.2);
+            font-variant-numeric: tabular-nums;
+            flex-shrink: 0;
+            min-width: 44px;
+            text-align: right;
+            letter-spacing: 0.3px;
+        }
+        .voice-player.has-audio {
+            border-color: rgba(149, 236, 105, 0.12);
+        }
+        .voice-player .voice-status {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.15);
+            padding: 0 4px;
+            flex: 1;
+        }
+        /* ⭐ 气泡底部指示器 - 小巧精致 */
+        .bubble-footer {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 2px;
+            padding: 0 2px;
+        }
+        .bubble-footer .voice-indicator {
+            font-size: 9px;
+            color: rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            cursor: pointer;
+            transition: 0.2s;
+            user-select: none;
+            padding: 2px 4px;
+            border-radius: 10px;
+        }
+        .bubble-footer .voice-indicator:hover {
+            color: rgba(255, 255, 255, 0.35);
+            background: rgba(255, 255, 255, 0.04);
+        }
+        .bubble-footer .voice-indicator i {
+            font-size: 8px;
+        }
+        [data-theme="light"] .bubble-footer .voice-indicator {
+            color: rgba(0, 0, 0, 0.15);
+        }
+        [data-theme="light"] .bubble-footer .voice-indicator:hover {
+            color: rgba(0, 0, 0, 0.35);
+        }
+        [data-theme="light"] .voice-player {
+            background: rgba(0, 0, 0, 0.04);
+            border-color: rgba(0, 0, 0, 0.06);
+        }
+        [data-theme="light"] .voice-player .progress-bar {
+            background: rgba(0, 0, 0, 0.08);
+        }
+        [data-theme="light"] .voice-player .time-display {
+            color: rgba(0, 0, 0, 0.2);
+        }
+        [data-theme="light"] .voice-player .voice-status {
+            color: rgba(0, 0, 0, 0.15);
+        }
         @media (max-width: 460px) { .phone-frame { border-radius: 0; height: 100vh; max-height: 100vh; } body { padding: 0; } }
         @media (min-width: 431px) { .phone-frame { border-radius: 32px; height: 780px; max-height: 90vh; box-shadow: 0 20px 60px rgba(0,0,0,0.6); } body { padding: 12px; } }
     </style>
@@ -486,8 +630,7 @@
     <div class="screen-diary" id="diaryScreen"><div class="diary-header"><button class="back-btn" id="backFromDiary"><i class="fas fa-chevron-left"></i></button><div class="title"><i class="fas fa-book-open"></i> 他的日记</div><div class="diary-actions"><select class="role-selector" id="diaryRoleSelector"></select><button class="write-btn" id="writeDiaryBtn"><i class="fas fa-feather-alt"></i> 写今日</button></div></div><div class="calendar-toggle-outside" id="calendarToggle"><span class="toggle-label"><i class="fas fa-calendar-alt"></i> 日历</span><span class="toggle-icon" id="toggleIcon"><i class="fas fa-chevron-up"></i></span></div><div class="diary-calendar-nav" id="diaryCalendarNav"><div class="month-nav"><button class="month-btn" id="prevMonthBtn"><i class="fas fa-chevron-left"></i></button><span class="month-label" id="monthLabel">2026年6月</span><button class="month-btn" id="nextMonthBtn"><i class="fas fa-chevron-right"></i></button></div><div class="weekdays"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div><div class="days-grid" id="daysGrid"></div></div><div class="diary-body" id="diaryBody"></div><div class="diary-page-nav" id="diaryPageNav"><button class="page-btn" id="prevDayBtn"><i class="fas fa-chevron-left"></i> 上一篇</button><span class="page-indicator" id="pageIndicator">今天</span><button class="page-btn" id="nextDayBtn">下一篇 <i class="fas fa-chevron-right"></i></button></div></div>
     <div class="meme-picker-overlay" id="memePickerOverlay"><div class="meme-picker-panel" id="memePickerPanel"><div class="meme-picker-header"><span class="meme-picker-title" id="memePickerTitle">选择表情包</span><button class="meme-picker-close" id="memePickerClose">&times;</button></div><div class="meme-picker-body" id="memePickerBody"></div></div></div>
     <div class="image-picker-overlay" id="imagePickerOverlay"><div class="image-picker-menu"><div class="menu-title" id="pickerTitle">选择图片来源</div><div class="picker-options"><button id="pickerCamera"><span class="icon-bg"><i class="fas fa-camera"></i></span><span>拍照</span></button><button id="pickerGallery"><span class="icon-bg"><i class="fas fa-images"></i></span><span>相册</span></button></div><button class="cancel-btn" id="pickerCancel">取消</button></div></div>
-    <div class="settings-overlay" id="settingsOverlay"><div class="settings-drawer"><button class="close-drawer" id="closeSettingsBtn">×</button><h2><i class="fas fa-sliders-h"></i> 设置</h2>
-        <!-- ========== AI 接入 ========== -->
+    <div class="settings-overlay" id="settingsOverlay"><div class="settings-drawer"><button class="close-drawer" id="closeSettingsBtn">×</button><h2><i class="fas fa-sliders-h"></i> 设置</h2> <!-- AI 接入 -->
         <div class="setting-group" style="border-top:1px solid var(--border-color);padding-top:12px;margin-top:12px;">
             <label style="font-weight:600;">🤖 AI 接入</label>
         </div>
@@ -530,7 +673,7 @@
             </div>
         </div>
 
-        <!-- ========== 语音设置 ========== -->
+        <!-- 语音设置 -->
         <div class="setting-group" style="border-top:1px solid var(--border-color);padding-top:12px;margin-top:12px;">
             <label style="font-weight:600;">🔊 语音设置</label>
         </div>
@@ -569,7 +712,7 @@
             </label>
         </div>
 
-        <!-- ========== 当前角色专属声音 ========== -->
+        <!-- 当前角色专属声音 -->
         <div class="setting-group" style="border-top:1px solid var(--border-color);padding-top:12px;margin-top:12px;">
             <label style="font-weight:600;">🎤 当前角色专属声音</label>
         </div>
@@ -588,7 +731,6 @@
             <div style="font-size:10px;color:var(--text-secondary);margin-top:2px;">每个角色独立 Voice ID，切换角色自动切换音色</div>
         </div>
 
-        <!-- ========== 以下保留原有设置 ========== -->
         <hr class="module-divider" />
         <div class="temp-slider-container"><div class="temp-header"><span class="temp-label"><i class="fas fa-thermometer-half" style="color:#07c160;"></i> 温度调节</span><span class="temp-value" id="tempDisplay">0.9</span></div><input type="range" id="tempSlider" min="0.0" max="1.5" step="0.1" value="0.9" /><div class="temp-hints"><span>稳定</span><span>平衡</span><span>创意</span></div></div>
         <div class="temp-slider-container"><div class="temp-header"><span class="temp-label"><i class="fas fa-font" style="color:#07c160;"></i> 字号大小</span><span class="temp-value" id="fontSizeDisplay">中</span></div><input type="range" id="fontSizeSlider" min="0" max="3" step="1" value="1" /><div class="temp-hints"><span>小</span><span>中</span><span>大</span><span>特大</span></div></div>
@@ -598,7 +740,6 @@
         <hr class="module-divider" />
         <div class="beauty-section"><div class="beauty-title"><i class="fas fa-paint-brush"></i> 美化</div><div class="beauty-item" id="wallpaperPickerBtn"><div class="left"><i class="fas fa-desktop"></i><span>桌面壁纸</span></div><div class="right"><span id="wallpaperStatus">默认</span><div class="preview-box" id="wallpaperPreview"><img id="wallpaperPreviewImg" src="" alt="预览" style="display:none;" /></div><i class="fas fa-chevron-right"></i></div></div><div class="beauty-item" id="chatBgPickerBtn"><div class="left"><i class="fas fa-comment-alt"></i><span>聊天背景（全局默认）</span></div><div class="right"><span id="chatBgStatus">默认</span><div class="preview-box" id="chatBgPreview"><img id="chatBgPreviewImg" src="" alt="预览" style="display:none;" /></div><i class="fas fa-chevron-right"></i></div></div><div class="beauty-item" id="userAvatarPickerBtn"><div class="left"><i class="fas fa-user"></i><span>我的头像</span></div><div class="right"><span id="userAvatarStatus">默认</span><div class="preview-box" id="userAvatarPreview"><img id="userAvatarPreviewImg" src="" alt="预览" style="display:none;" /></div><i class="fas fa-chevron-right"></i></div></div></div>
         <hr class="module-divider" />
-        <!-- 删除独立的 API Key 和模型下拉框，已合并到 AI 接入中 -->
         <div class="temp-slider-container" style="border-left:3px solid #34d399;border-radius:12px;">
             <div class="temp-header"><span class="temp-label" style="font-size:13px;"><i class="fas fa-cut" style="color:#34d399;"></i> 清理旧消息</span><span class="temp-value" id="trimStatus" style="font-size:12px;color:#34d399;">保留最新</span></div>
             <div class="trim-select-row"><label for="trimRoleSelector">选择角色</label><select id="trimRoleSelector" class="trim-role-selector"><option value="">加载中...</option></select></div>
@@ -627,11 +768,8 @@
 </div> <script>
 // ============================================================
 //  🚀 梦女空间 v4.0 - 多模型 + 百炼语音版
-//  新增：百炼 CosyVoice 语音支持
-//  新增：每个角色独立 Voice ID
-//  新增：语音播放器（按需触发）
-//  删除：独立的 DeepSeek Key 输入框
-//  删除：旧的模型下拉框
+//  修复：语音播放器样式紧凑好看
+//  修复：时间戳 NaN:NaN
 // ============================================================
 
 var CONSTANTS = {
@@ -670,18 +808,15 @@ var CONSTANTS = {
     ]
 };
 
-// ========== CONFIG ==========
 var CONFIG = {
-    // AI 接入
-    accessMode: 'direct',  // 'direct' | 'relay'
-    apiKey: '',            // DeepSeek 直连 Key
+    accessMode: 'direct',
+    apiKey: '',
     model: 'deepseek-chat',
     relayEndpoint: '',
     relayApiKey: '',
     relayModel: '',
-    // 语音配置
     voice: {
-        mode: 'bailian',   // 'bailian' | 'browser' | 'none'
+        mode: 'bailian',
         endpoint: 'https://dashscope.aliyuncs.com',
         apiKey: '',
         model: 'cosyvoice-v3.5-plus',
@@ -689,7 +824,6 @@ var CONFIG = {
         rate: 1.0,
         pitch: 1.0
     },
-    // 原有配置
     wallpaper: '', chatBg: '', userAvatar: '',
     iconStyle: 'glass', bubbleStyle: 'default', timeMode: 'HH:MM', permission: null,
     temperature: 0.9, fontSize: 'medium', fontWeight: 'regular', splitEnabled: true,
@@ -710,9 +844,8 @@ var backgroundCheckInterval = null, diaryAutoInterval = null, storageUpdateInter
 var sleepTimers = {}, longpressMenuOpen = false, isSending = false, lastMessageCount = -1;
 var _saveTimer = null, _idCounter = 0, _lastVisibilityCheck = 0;
 var _regenerating = {};
-var audioPlayers = {}; // 存储每个消息的音频播放器状态
+var audioPlayers = {};
 
-// ========== 工具函数 ==========
 function generateId() { _idCounter++; return 'id_' + Date.now() + '_' + _idCounter + '_' + Math.random().toString(36).substr(2, 6); }
 function getCurrentRole() { return roles.find(function(r) { return r.id === currentRoleId; }) || roles[0] || null; }
 function getRolesList() { return roles || []; }
@@ -734,7 +867,6 @@ function showToast(msg) {
 }
 
 function getVoiceApiKey() {
-    // 优先使用语音独立 Key，否则复用接入模式的 Key
     if (CONFIG.voice.apiKey && CONFIG.voice.apiKey.trim()) return CONFIG.voice.apiKey.trim();
     if (CONFIG.accessMode === 'direct') return CONFIG.apiKey;
     return CONFIG.relayApiKey;
@@ -803,7 +935,6 @@ function updateIntimacy(role) {
     return role.extendedState.intimacy;
 }
 
-// ========== 数据持久化 ==========
 function saveAllData() {
     try {
         var configToSave = JSON.parse(JSON.stringify(CONFIG));
@@ -825,7 +956,7 @@ function deepCloneRole(role) {
         persona: role.persona || '', background: role.background || '', style: role.style || '',
         extra: role.extra || '', messages: [], memory: [], heartData: null,
         createdAt: role.createdAt || new Date().toISOString(), extendedState: null,
-        voiceId: role.voiceId || ''  // 每个角色独立 Voice ID
+        voiceId: role.voiceId || ''
     };
     if (Array.isArray(role.messages)) {
         clone.messages = role.messages.map(function(m) {
@@ -902,7 +1033,6 @@ function loadAllData() {
         if (!CONFIG.timeDividerThreshold) CONFIG.timeDividerThreshold = 10 * 60 * 1000;
         if (!CONFIG.sleepMode) CONFIG.sleepMode = {};
         if (!CONFIG.floatingHeartPosition) CONFIG.floatingHeartPosition = { x: null, y: null };
-        // 新增：语音配置兼容
         if (!CONFIG.voice) CONFIG.voice = {};
         if (!CONFIG.voice.mode) CONFIG.voice.mode = 'bailian';
         if (!CONFIG.voice.endpoint) CONFIG.voice.endpoint = 'https://dashscope.aliyuncs.com';
@@ -911,7 +1041,6 @@ function loadAllData() {
         if (CONFIG.voice.autoSpeak === undefined) CONFIG.voice.autoSpeak = true;
         if (!CONFIG.voice.rate) CONFIG.voice.rate = 1.0;
         if (!CONFIG.voice.pitch) CONFIG.voice.pitch = 1.0;
-        // 接入模式兼容
         if (!CONFIG.accessMode) CONFIG.accessMode = 'direct';
         if (!CONFIG.relayEndpoint) CONFIG.relayEndpoint = '';
         if (!CONFIG.relayApiKey) CONFIG.relayApiKey = '';
@@ -945,7 +1074,6 @@ function loadAllData() {
         currentRoleId = savedData.currentRoleId || roles[0].id;
         migrateOldData();
     } else {
-        // 默认角色
         CONFIG = {
             accessMode: 'direct', apiKey: '', model: 'deepseek-chat',
             relayEndpoint: '', relayApiKey: '', relayModel: '',
@@ -1090,19 +1218,33 @@ function getTimeDiff(time1, time2) {
     return Math.abs(d2.getTime() - d1.getTime());
 }
 
+// ⭐ 修复：formatTime 处理空值和无效日期
 function formatTime(timeStr, mode) {
     if (mode === 'hidden') return '';
-    if (!timeStr) return '';
+    if (!timeStr) {
+        var now = new Date();
+        return String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+    }
     try {
         var date = new Date(timeStr);
         if (isNaN(date.getTime())) {
-            if (mode === 'HH:MM') return timeStr.slice(0, 5);
+            var now2 = new Date();
+            if (mode === 'HH:MM' || mode === undefined || mode === null) {
+                return String(now2.getHours()).padStart(2, '0') + ':' + String(now2.getMinutes()).padStart(2, '0');
+            }
             return timeStr;
         }
-        if (mode === 'HH:MM') return date.toTimeString().slice(0, 5);
-        if (mode === 'YYYY-MM-DD HH:MM') return date.toISOString().slice(0, 10) + ' ' + date.toTimeString().slice(0, 5);
+        if (mode === 'HH:MM' || mode === undefined || mode === null) {
+            return date.toTimeString().slice(0, 5);
+        }
+        if (mode === 'YYYY-MM-DD HH:MM') {
+            return date.toISOString().slice(0, 10) + ' ' + date.toTimeString().slice(0, 5);
+        }
         return timeStr;
-    } catch (_) { return timeStr; }
+    } catch (_) {
+        var now3 = new Date();
+        return String(now3.getHours()).padStart(2, '0') + ':' + String(now3.getMinutes()).padStart(2, '0');
+    }
 }
 
 function createDefaultRole(name) {
@@ -1146,35 +1288,25 @@ function getLastMessage(roleId) {
 
 function getInitials(name) { if (!name) return '?'; return name.charAt(0).toUpperCase(); }
 
-// ========== 检测语音关键词 ==========
 function isVoiceTrigger(text) {
     if (!text) return false;
     var lower = text.toLowerCase();
     return CONSTANTS.VOICE_KEYWORDS.some(function(kw) {
         return lower.includes(kw);
     });
-}
-
-// ========== 百炼 TTS 调用 ==========
+} // ========== 百炼 TTS 调用 ==========
 async function callBailianTTS(text, role) {
     var endpoint = getVoiceEndpoint();
     var apiKey = getVoiceApiKey();
     var model = getVoiceModel();
     var voiceId = role.voiceId || '';
-
     if (!apiKey) throw new Error('未配置语音 API Key，请在设置中填写');
     if (!voiceId) throw new Error('当前角色未配置 Voice ID，请在设置中填写');
     if (!text || text.trim().length === 0) throw new Error('没有可朗读的文本');
-
-    // 清理文本
     var cleanText = text.replace(/\[表情包：[^\]]+\]/g, '').trim();
     if (!cleanText) throw new Error('文本为空（可能只有表情包）');
-
-    // 限制长度，百炼有上限
     if (cleanText.length > 500) cleanText = cleanText.substring(0, 500) + '……';
-
     var url = endpoint.replace(/\/+$/, '') + '/api/v1/services/audio/tts/SpeechSynthesizer';
-
     var response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -1192,19 +1324,16 @@ async function callBailianTTS(text, role) {
             }
         })
     });
-
     if (!response.ok) {
         var errText = await response.text();
         var errMsg = '百炼 TTS 错误 (' + response.status + ')';
         try { var j = JSON.parse(errText); errMsg = j.message || errMsg; } catch (_) {}
         throw new Error(errMsg);
     }
-
     var audioBlob = await response.blob();
     return URL.createObjectURL(audioBlob);
 }
 
-// ========== 浏览器 TTS（降级备选） ==========
 function speakWithBrowser(text, callback) {
     if (!window.speechSynthesis) {
         if (callback) callback();
@@ -1231,8 +1360,6 @@ function speakWithBrowser(text, callback) {
 function createVoicePlayer(msgId, audioUrl, duration) {
     var container = document.querySelector('.message-row[data-msgid="' + msgId + '"] .bubble-container');
     if (!container) return;
-
-    // 移除已有播放器
     var existing = container.querySelector('.voice-player');
     if (existing) existing.remove();
 
@@ -1252,7 +1379,7 @@ function createVoicePlayer(msgId, audioUrl, duration) {
                 <div class="progress-fill" style="width:0%;"></div>
                 <div class="progress-dot" style="left:0%;"></div>
             </div>
-            <span class="time-display">00:00 / ${formatTime(durationSec)}</span>
+            <span class="time-display">00:00 / ${formatTimeDisplay(durationSec)}</span>
         </div>
     `;
 
@@ -1270,7 +1397,7 @@ function createVoicePlayer(msgId, audioUrl, duration) {
         fill.style.width = pct + '%';
         dot.style.left = pct + '%';
         var current = (pct / 100) * durationSec;
-        timeDisplay.textContent = formatTime(current) + ' / ' + formatTime(durationSec);
+        timeDisplay.textContent = formatTimeDisplay(current) + ' / ' + formatTimeDisplay(durationSec);
     }
 
     function playAudio() {
@@ -1279,15 +1406,12 @@ function createVoicePlayer(msgId, audioUrl, duration) {
             playBtn.innerHTML = '<i class="fas fa-pause"></i>';
             playBtn.classList.add('playing');
             isPlaying = true;
-            // 更新消息状态
             updateFooterStatus(msgId, true);
-            // 进度更新
             function tick() {
                 if (!isPlaying || audio.paused) return;
                 var pct = (audio.currentTime / durationSec) * 100;
                 updateProgress(pct);
                 if (pct >= 100) {
-                    // 播放结束
                     isPlaying = false;
                     playBtn.innerHTML = '<i class="fas fa-play"></i>';
                     playBtn.classList.remove('playing');
@@ -1309,13 +1433,11 @@ function createVoicePlayer(msgId, audioUrl, duration) {
         }
     }
 
-    // 播放/暂停
     playBtn.addEventListener('click', function(e) {
         e.stopPropagation();
         playAudio();
     });
 
-    // 进度条点击跳转
     progressBar.addEventListener('click', function(e) {
         e.stopPropagation();
         var rect = this.getBoundingClientRect();
@@ -1325,7 +1447,6 @@ function createVoicePlayer(msgId, audioUrl, duration) {
         updateProgress(pct);
     });
 
-    // 音频结束
     audio.addEventListener('ended', function() {
         isPlaying = false;
         playBtn.innerHTML = '<i class="fas fa-play"></i>';
@@ -1335,7 +1456,6 @@ function createVoicePlayer(msgId, audioUrl, duration) {
         if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
     });
 
-    // 错误处理
     audio.addEventListener('error', function() {
         showToast('⚠️ 语音播放失败');
         playBtn.innerHTML = '<i class="fas fa-play"></i>';
@@ -1344,13 +1464,15 @@ function createVoicePlayer(msgId, audioUrl, duration) {
         if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
     });
 
-    // 存储引用以便清理
     audioPlayers[msgId] = { audio: audio, player: player, animFrame: animFrame };
-
-    // 自动播放（如果是刚生成的）
     setTimeout(function() { playAudio(); }, 300);
-
     return player;
+}
+
+function formatTimeDisplay(seconds) {
+    var m = Math.floor(seconds / 60);
+    var s = Math.floor(seconds % 60);
+    return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
 }
 
 function updateFooterStatus(msgId, isPlaying) {
@@ -1359,21 +1481,14 @@ function updateFooterStatus(msgId, isPlaying) {
     var footer = row.querySelector('.bubble-footer .voice-indicator');
     if (!footer) return;
     if (isPlaying) {
-        footer.innerHTML = '<i class="fas fa-waveform"></i> 播放中...';
+        footer.innerHTML = '<i class="fas fa-waveform"></i> 播放中';
         footer.style.color = 'rgba(149,236,105,0.5)';
     } else {
-        footer.innerHTML = '<i class="fas fa-volume-up"></i> 语音已生成 ✓';
+        footer.innerHTML = '<i class="fas fa-volume-up"></i> 语音已生成';
         footer.style.color = 'rgba(255,255,255,0.15)';
     }
 }
 
-function formatTime(seconds) {
-    var m = Math.floor(seconds / 60);
-    var s = Math.floor(seconds % 60);
-    return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
-}
-
-// ========== 清理语音播放器 ==========
 function cleanupVoicePlayer(msgId) {
     if (audioPlayers[msgId]) {
         var ap = audioPlayers[msgId];
@@ -1386,7 +1501,6 @@ function cleanupVoicePlayer(msgId) {
         if (ap.player) ap.player.remove();
         delete audioPlayers[msgId];
     }
-    // 清理消息中的音频 URL（释放内存）
     var role = getCurrentRole();
     if (role && role.messages) {
         var msg = role.messages.find(function(m) { return m.id === msgId; });
@@ -1398,25 +1512,21 @@ function cleanupVoicePlayer(msgId) {
     }
 }
 
-// ========== 生成语音（按需触发） ==========
 async function generateVoiceForMessage(msgId, role) {
     if (!role) return;
     var msg = role.messages.find(function(m) { return m.id === msgId; });
     if (!msg) return;
     if (msg.hasAudio && msg.audioUrl) {
-        // 已有语音，直接播放
         createVoicePlayer(msgId, msg.audioUrl, msg.audioDuration);
         return;
     }
     if (!msg.content || msg.content.trim().length === 0) return;
     if (CONFIG.voice.mode === 'none') return;
-
     try {
         var audioUrl;
         if (CONFIG.voice.mode === 'bailian') {
             audioUrl = await callBailianTTS(msg.content, role);
         } else if (CONFIG.voice.mode === 'browser') {
-            // 浏览器语音只播放不生成 URL
             speakWithBrowser(msg.content);
             return;
         } else {
@@ -1424,7 +1534,6 @@ async function generateVoiceForMessage(msgId, role) {
         }
         msg.hasAudio = true;
         msg.audioUrl = audioUrl;
-        // 估算时长（实际时长从 audio 元素获取）
         var audio = new Audio(audioUrl);
         audio.addEventListener('loadedmetadata', function() {
             msg.audioDuration = audio.duration || 10;
@@ -1436,7 +1545,6 @@ async function generateVoiceForMessage(msgId, role) {
             createVoicePlayer(msgId, audioUrl, 10);
             debouncedSaveAllData();
         });
-        // 如果加载超时，直接显示
         setTimeout(function() {
             if (!msg.audioDuration) {
                 msg.audioDuration = 10;
@@ -1447,14 +1555,12 @@ async function generateVoiceForMessage(msgId, role) {
     } catch (e) {
         console.error('生成语音失败:', e);
         showToast('🔊 语音生成失败: ' + e.message);
-        // 降级到浏览器语音
         if (CONFIG.voice.mode === 'bailian') {
             speakWithBrowser(msg.content);
         }
     }
 }
 
-// ========== 重置消息语音状态（重新生成时调用） ==========
 function resetMessageAudio(msgId) {
     cleanupVoicePlayer(msgId);
     var role = getCurrentRole();
@@ -1467,18 +1573,18 @@ function resetMessageAudio(msgId) {
             msg.audioDuration = 0;
         }
     }
-    // 移除播放器
     var row = document.querySelector('.message-row[data-msgid="' + msgId + '"]');
     if (row) {
         var player = row.querySelector('.voice-player');
         if (player) player.remove();
         var footer = row.querySelector('.bubble-footer .voice-indicator');
         if (footer) {
-            footer.innerHTML = '<i class="fas fa-play"></i> 点击「朗读」生成语音';
+            footer.innerHTML = '<i class="fas fa-play"></i> 点击朗读';
             footer.style.color = 'rgba(255,255,255,0.1)';
         }
     }
-} // ========== addMessageToRole ==========
+}
+
 function addMessageToRole(roleId, role, content, type, giftData) {
     type = type || 'text';
     var r = roles.find(function(ro) { return ro.id === roleId; });
@@ -1526,7 +1632,6 @@ function deleteMessageAndMemory(roleId, messageId) {
     if (!role) return;
     var msgIndex = role.messages.findIndex(function(m) { return m.id === messageId; });
     if (msgIndex === -1) return;
-    // 清理语音资源
     cleanupVoicePlayer(messageId);
     var msg = role.messages[msgIndex];
     if (msg && msg.audioUrl) {
@@ -1664,7 +1769,6 @@ function renderMessages() {
     var fragment = document.createDocumentFragment();
     var threshold = CONFIG.timeDividerThreshold || 10 * 60 * 1000;
 
-    // 添加开始分隔
     var firstDivider = document.createElement('div');
     firstDivider.className = 'time-divider';
     firstDivider.innerHTML = '<span class="divider-line"></span><span class="divider-text">✦ 开始对话 ✦</span><span class="divider-line"></span>';
@@ -1723,11 +1827,9 @@ function renderMessages() {
     updateChatTitle();
     setTimeout(function() { markVisibleMessagesAsRead(); }, 100);
 
-    // 检查最新的 AI 消息是否需要自动朗读
     if (CONFIG.voice.autoSpeak !== false && msgs.length > 0) {
         var last = msgs[msgs.length - 1];
         if (last.role === 'assistant' && last.type !== 'gift' && last.hasAudio && last.audioUrl) {
-            // 已有语音，自动播放
             setTimeout(function() {
                 createVoicePlayer(last.id, last.audioUrl, last.audioDuration);
             }, 500);
@@ -1768,7 +1870,6 @@ function createMessageRow(msg, role) {
 
     var timeStr = formatTime(msg.time, CONFIG.timeMode || 'HH:MM');
 
-    // 操作按钮
     var actionsHtml = '';
     if (msg.role === 'assistant' && msg.type !== 'gift') {
         actionsHtml = '<div class="msg-actions"><button class="action-btn regenerate-btn" data-msgid="' + msg.id + '" title="重新生成"><i class="fas fa-sync-alt"></i></button><button class="action-btn delete-btn" data-msgid="' + msg.id + '" title="删除"><i class="fas fa-trash-alt"></i></button></div>';
@@ -1776,17 +1877,12 @@ function createMessageRow(msg, role) {
         actionsHtml = '<div class="msg-actions"><button class="action-btn delete-btn" data-msgid="' + msg.id + '" title="删除"><i class="fas fa-trash-alt"></i></button></div>';
     }
 
-    // 语音播放器区域（仅在 AI 消息且已生成语音时显示）
-    var playerHtml = '';
     var footerHtml = '';
     if (msg.role === 'assistant' && msg.type !== 'gift') {
         if (msg.hasAudio && msg.audioUrl) {
-            // 有语音 → 显示播放器（由 createVoicePlayer 动态创建）
-            // 这里先留空，由 renderMessages 后的逻辑创建
-            footerHtml = '<div class="bubble-footer"><span class="voice-indicator"><i class="fas fa-volume-up"></i> 语音已生成 ✓</span></div>';
+            footerHtml = '<div class="bubble-footer"><span class="voice-indicator"><i class="fas fa-volume-up"></i> 语音已生成</span></div>';
         } else {
-            // 无语音 → 显示「朗读」按钮
-            footerHtml = '<div class="bubble-footer"><span class="voice-indicator" style="cursor:pointer;" onclick="triggerVoiceForMessage(\'' + msg.id + '\')"><i class="fas fa-play"></i> 点击「朗读」生成语音</span></div>';
+            footerHtml = '<div class="bubble-footer"><span class="voice-indicator" style="cursor:pointer;" onclick="triggerVoiceForMessage(\'' + msg.id + '\')"><i class="fas fa-play"></i> 点击朗读</span></div>';
         }
     }
 
@@ -1799,14 +1895,11 @@ function createMessageRow(msg, role) {
     return row;
 }
 
-// ========== 触发语音生成（用户点击「朗读」按钮） ==========
 function triggerVoiceForMessage(msgId) {
     var role = getCurrentRole();
     if (!role) { showToast('⚠️ 未找到当前角色'); return; }
     var msg = role.messages.find(function(m) { return m.id === msgId; });
     if (!msg) { showToast('⚠️ 未找到消息'); return; }
-
-    // 检查语音配置
     if (CONFIG.voice.mode === 'none') {
         showToast('🔇 语音已关闭，请在设置中开启');
         return;
@@ -1822,15 +1915,13 @@ function triggerVoiceForMessage(msgId) {
             return;
         }
     }
-
     showToast('🔊 正在生成语音...');
     generateVoiceForMessage(msgId, role).then(function() {
-        // 更新 footer 状态
         var row = document.querySelector('.message-row[data-msgid="' + msgId + '"]');
         if (row) {
             var footer = row.querySelector('.bubble-footer .voice-indicator');
             if (footer) {
-                footer.innerHTML = '<i class="fas fa-volume-up"></i> 语音已生成 ✓';
+                footer.innerHTML = '<i class="fas fa-volume-up"></i> 语音已生成';
                 footer.style.color = 'rgba(255,255,255,0.15)';
                 footer.style.cursor = 'default';
                 footer.onclick = null;
@@ -1842,7 +1933,6 @@ function triggerVoiceForMessage(msgId) {
     });
 }
 
-// ========== applyAvatars ==========
 function applyAvatars() {
     var role = getCurrentRole();
     if (!role) return;
@@ -1936,102 +2026,6 @@ function markVisibleMessagesAsRead() {
     renderContacts();
 }
 
-// ========== 发送消息 ==========
-function handleSend() {
-    if (isSending) { showToast('⏳ 正在发送中，请稍后'); return; }
-    var input = document.getElementById('messageInput');
-    var text = input.value.trim();
-    if (!text) return;
-
-    var apiKey = CONFIG.accessMode === 'direct' ? CONFIG.apiKey : CONFIG.relayApiKey;
-    if (!apiKey) {
-        showToast('🔑 请先在设置中配置 API Key');
-        openSettings();
-        return;
-    }
-    if (CONFIG.accessMode === 'relay' && !CONFIG.relayEndpoint) {
-        showToast('🔑 中转模式请填写 API Endpoint');
-        openSettings();
-        return;
-    }
-
-    var finalMessage = text;
-    if (quotedMsg) {
-        var quotedContent = quotedMsg.content.replace(/\n/g, '\n> ');
-        finalMessage = '> ' + quotedContent + '\n\n' + text;
-        quotedMsg = null;
-        document.getElementById('quoteBar').classList.remove('active');
-    }
-
-    var role = getCurrentRole();
-    if (!role) { showToast('⚠️ 未找到当前角色'); return; }
-
-    isSending = true;
-    input.value = '';
-    input.disabled = true;
-    document.getElementById('sendBtn').disabled = true;
-    showToast('💬 正在发送...');
-
-    // 检测是否需要生成语音
-    var needVoice = isVoiceTrigger(text) && CONFIG.voice.mode !== 'none';
-
-    addMessageToRole(role.id, 'user', finalMessage);
-    renderMessages();
-    showTyping();
-
-    callAI(finalMessage, role).then(function(reply) {
-        hideTyping();
-        reply = detectAndProcessGift(role.id, reply);
-        var segments = CONFIG.splitEnabled !== false ? splitReplyIntoMessages(reply) : [reply];
-        var idx = 0;
-
-        function sendNext() {
-            if (idx >= segments.length) {
-                if (document.getElementById('contactsScreen').classList.contains('open')) renderContacts();
-                var currentRole = getCurrentRole();
-                if (currentRole && document.getElementById('chatScreen').classList.contains('open')) {
-                    clearUnreadForRole(currentRole.id);
-                    readMessages = {};
-                    setTimeout(function() { markVisibleMessagesAsRead(); }, 300);
-                }
-                showToast('✅ 发送成功');
-                return;
-            }
-            var msgId = addMessageToRole(role.id, 'assistant', segments[idx]);
-            renderMessages();
-
-            // 如果用户触发了语音，为最新的 AI 消息生成语音
-            if (needVoice && msgId && idx === 0) {
-                var msg = role.messages.find(function(m) { return m.id === msgId; });
-                if (msg) {
-                    setTimeout(function() {
-                        generateVoiceForMessage(msgId, role).catch(function(e) {
-                            console.error('语音生成失败:', e);
-                        });
-                    }, 800);
-                }
-            }
-
-            document.getElementById('messageContainer').scrollTop = document.getElementById('messageContainer').scrollHeight;
-            idx++;
-            setTimeout(sendNext, 600);
-        }
-        sendNext();
-    }).catch(function(e) {
-        hideTyping();
-        console.error('❌ 发送消息失败:', e);
-        addMessageToRole(role.id, 'assistant', '💔 ' + e.message);
-        renderMessages();
-        showToast('❌ 发送失败: ' + e.message);
-    }).finally(function() {
-        input.disabled = false;
-        document.getElementById('sendBtn').disabled = false;
-        input.focus();
-        isSending = false;
-    });
-}
-
-// ========== setupMessageEventDelegation ==========
 function setupMessageEventDelegation() {
     var container = document.getElementById('messageContainer');
     container.addEventListener('click', function(e) {
@@ -2060,7 +2054,6 @@ function setupMessageEventDelegation() {
     });
 }
 
-// ========== regenerateMessage ==========
 function regenerateMessage(roleId, messageId) {
     if (_regenerating[messageId]) { showToast('⏳ 正在重新生成中...'); return; }
     _regenerating[messageId] = true;
@@ -2069,18 +2062,13 @@ function regenerateMessage(roleId, messageId) {
     var msgIndex = role.messages.findIndex(function(m) { return m.id === messageId; });
     if (msgIndex === -1) { showToast('⚠️ 未找到该消息'); _regenerating[messageId] = false; return; }
     if (role.messages[msgIndex].role !== 'assistant') { showToast('⚠️ 只能重新生成 AI 的回复'); _regenerating[messageId] = false; return; }
-
     var userMsgIndex = -1;
     for (var i = msgIndex - 1; i >= 0; i--) {
         if (role.messages[i].role === 'user') { userMsgIndex = i; break; }
     }
     if (userMsgIndex === -1) { showToast('⚠️ 未找到对应的用户消息'); _regenerating[messageId] = false; return; }
-
     var userMessage = role.messages[userMsgIndex].content;
-
-    // 清除旧语音
     resetMessageAudio(messageId);
-
     if (Array.isArray(role.memory)) {
         role.memory = role.memory.filter(function(mem) {
             if (!mem.sourceMessageId) return true;
@@ -2091,20 +2079,16 @@ function regenerateMessage(roleId, messageId) {
     saveAllData();
     renderMessages();
     showTyping();
-
     callAI(userMessage, role).then(function(reply) {
         _regenerating[messageId] = false;
         hideTyping();
         reply = detectAndProcessGift(role.id, reply);
         var segments = CONFIG.splitEnabled !== false ? splitReplyIntoMessages(reply) : [reply];
         var idx = 0;
-
         function sendNext() {
             if (idx >= segments.length) { renderContacts(); return; }
             var newMsgId = addMessageToRole(role.id, 'assistant', segments[idx]);
             renderMessages();
-            // 如果原消息有语音标记，重新生成语音（但需要用户再次触发）
-            // 我们只保留文字，不自动生成语音
             document.getElementById('messageContainer').scrollTop = document.getElementById('messageContainer').scrollHeight;
             idx++;
             setTimeout(sendNext, 600);
@@ -2117,7 +2101,89 @@ function regenerateMessage(roleId, messageId) {
         addMessageToRole(role.id, 'assistant', '💔 ' + e.message);
         renderMessages();
     });
-} // ========== 构建 System Prompt ==========
+} // ========== 发送消息 ==========
+function handleSend() {
+    if (isSending) { showToast('⏳ 正在发送中，请稍后'); return; }
+    var input = document.getElementById('messageInput');
+    var text = input.value.trim();
+    if (!text) return;
+    var apiKey = CONFIG.accessMode === 'direct' ? CONFIG.apiKey : CONFIG.relayApiKey;
+    if (!apiKey) {
+        showToast('🔑 请先在设置中配置 API Key');
+        openSettings();
+        return;
+    }
+    if (CONFIG.accessMode === 'relay' && !CONFIG.relayEndpoint) {
+        showToast('🔑 中转模式请填写 API Endpoint');
+        openSettings();
+        return;
+    }
+    var finalMessage = text;
+    if (quotedMsg) {
+        var quotedContent = quotedMsg.content.replace(/\n/g, '\n> ');
+        finalMessage = '> ' + quotedContent + '\n\n' + text;
+        quotedMsg = null;
+        document.getElementById('quoteBar').classList.remove('active');
+    }
+    var role = getCurrentRole();
+    if (!role) { showToast('⚠️ 未找到当前角色'); return; }
+    isSending = true;
+    input.value = '';
+    input.disabled = true;
+    document.getElementById('sendBtn').disabled = true;
+    showToast('💬 正在发送...');
+    var needVoice = isVoiceTrigger(text) && CONFIG.voice.mode !== 'none';
+    addMessageToRole(role.id, 'user', finalMessage);
+    renderMessages();
+    showTyping();
+    callAI(finalMessage, role).then(function(reply) {
+        hideTyping();
+        reply = detectAndProcessGift(role.id, reply);
+        var segments = CONFIG.splitEnabled !== false ? splitReplyIntoMessages(reply) : [reply];
+        var idx = 0;
+        function sendNext() {
+            if (idx >= segments.length) {
+                if (document.getElementById('contactsScreen').classList.contains('open')) renderContacts();
+                var currentRole = getCurrentRole();
+                if (currentRole && document.getElementById('chatScreen').classList.contains('open')) {
+                    clearUnreadForRole(currentRole.id);
+                    readMessages = {};
+                    setTimeout(function() { markVisibleMessagesAsRead(); }, 300);
+                }
+                showToast('✅ 发送成功');
+                return;
+            }
+            var msgId = addMessageToRole(role.id, 'assistant', segments[idx]);
+            renderMessages();
+            if (needVoice && msgId && idx === 0) {
+                var msg = role.messages.find(function(m) { return m.id === msgId; });
+                if (msg) {
+                    setTimeout(function() {
+                        generateVoiceForMessage(msgId, role).catch(function(e) {
+                            console.error('语音生成失败:', e);
+                        });
+                    }, 800);
+                }
+            }
+            document.getElementById('messageContainer').scrollTop = document.getElementById('messageContainer').scrollHeight;
+            idx++;
+            setTimeout(sendNext, 600);
+        }
+        sendNext();
+    }).catch(function(e) {
+        hideTyping();
+        console.error('❌ 发送消息失败:', e);
+        addMessageToRole(role.id, 'assistant', '💔 ' + e.message);
+        renderMessages();
+        showToast('❌ 发送失败: ' + e.message);
+    }).finally(function() {
+        input.disabled = false;
+        document.getElementById('sendBtn').disabled = false;
+        input.focus();
+        isSending = false;
+    });
+}
+
 function buildSystemPrompt(role) {
     var parts = [];
     if (CONFIG.aiMemeEnabled !== false && memes.length > 0) {
@@ -2194,7 +2260,6 @@ function splitReplyIntoMessages(text) {
     return segments;
 }
 
-// ========== 核心 AI 调用（双模式） ==========
 function callAI(userMessage, role) {
     var mode = CONFIG.accessMode || 'direct';
     if (mode === 'direct') {
@@ -2204,7 +2269,6 @@ function callAI(userMessage, role) {
     }
 }
 
-// 直连模式
 function callDeepSeekDirect(userMessage, role) {
     var apiKey = CONFIG.apiKey;
     if (!apiKey) throw new Error('请先设置 DeepSeek API Key（设置 → AI接入 → 直连模式）');
@@ -2252,7 +2316,6 @@ function callDeepSeekDirect(userMessage, role) {
     });
 }
 
-// 中转模式
 function callRelayAPI(userMessage, role) {
     var endpoint = CONFIG.relayEndpoint || 'https://shufulei.net/v1';
     var apiKey = CONFIG.relayApiKey || CONFIG.apiKey;
@@ -2303,7 +2366,6 @@ function callRelayAPI(userMessage, role) {
     });
 }
 
-// ========== 送礼功能 ==========
 function getMallProductsFromStorage() {
     try {
         var raw = localStorage.getItem('mall_products_cache');
@@ -2407,7 +2469,6 @@ function detectAndProcessGift(roleId, reply) {
     return reply;
 }
 
-// ========== 心跳系统 ==========
 function updateHeartDisplay() {
     var heartValue = CONFIG.heart.value || 65;
     var heartLevel = CONFIG.heart.level || getLevel(heartValue);
@@ -2631,7 +2692,6 @@ function startHeartBeatFluctuation() {
     }, 30000);
 }
 
-// ========== 睡眠模式 ==========
 function detectSleepMode(roleId, content) {
     var role = roles.find(function(r) { return r.id === roleId; });
     if (!role) return;
@@ -2671,7 +2731,6 @@ function detectSleepMode(roleId, content) {
     }
 }
 
-// ========== 主动消息系统 ==========
 function updateContextMemory(role, userMessage, aiReply) {
     if (!role || !role.extendedState) return;
     var keywords = ['工作', '学习', '生活', '心情', '家人', '朋友', '身体', '健康', '快乐', '难过', '累', '开心', '忙'];
@@ -2923,7 +2982,9 @@ document.addEventListener('visibilitychange', function() {
             setTimeout(function() { checkAllRolesForActiveMessages(); }, 3000);
         }
     }
-}); // ========== 长按菜单 ==========
+}); // ========== 以下保留原有功能 ==========
+
+// ========== 长按菜单 ==========
 function setupLongPress() {
     var container = document.getElementById('messageContainer');
     var longpressTimer = null;
@@ -3824,7 +3885,7 @@ function startDiaryAutoCheck() {
     console.log('📖 日记自动书写系统已启动（每小时检查一次）');
 }
 
-// ========== 表情包系统（IndexedDB） ==========
+// ========== 表情包系统 ==========
 var DEFAULT_CATEGORIES = [
     { id: 'cat_happy', name: '表达开心', icon: '😊' },
     { id: 'cat_sad', name: '表达难过', icon: '😢' },
@@ -3988,7 +4049,7 @@ function updateStorageDisplay() {
     });
 }
 
-// ========== 中转站模型拉取 ==========
+// ========== 模型拉取 ==========
 async function fetchModelsFromRelay() {
     var endpoint = document.getElementById('relayEndpoint').value.trim();
     var apiKey = document.getElementById('relayApiKey').value.trim();
@@ -4054,7 +4115,6 @@ async function fetchModelsFromRelay() {
     }
 }
 
-// ========== 语音模型拉取 ==========
 async function fetchTtsModels() {
     var endpoint = document.getElementById('ttsEndpoint').value.trim();
     var apiKey = document.getElementById('ttsApiKey').value.trim();
@@ -4208,7 +4268,6 @@ function openMall() { window.open('mall.html', '_blank'); }
 function openPhone() { window.open('phone.html', '_blank'); }
 
 function openSettings() {
-    // AI 接入
     document.getElementById('accessMode').value = CONFIG.accessMode || 'direct';
     document.getElementById('directApiKey').value = CONFIG.apiKey || '';
     document.getElementById('directModel').value = CONFIG.model || 'deepseek-chat';
@@ -4217,7 +4276,6 @@ function openSettings() {
     document.getElementById('relayModelCustom').value = CONFIG.relayModel || '';
     toggleAccessMode(CONFIG.accessMode || 'direct');
 
-    // 语音设置
     document.getElementById('ttsMode').value = CONFIG.voice.mode || 'bailian';
     document.getElementById('ttsEndpoint').value = CONFIG.voice.endpoint || 'https://dashscope.aliyuncs.com';
     document.getElementById('ttsApiKey').value = CONFIG.voice.apiKey || '';
@@ -4225,14 +4283,12 @@ function openSettings() {
     document.getElementById('autoSpeak').checked = CONFIG.voice.autoSpeak !== false;
     toggleTtsMode(CONFIG.voice.mode || 'bailian');
 
-    // Voice ID 角色选择器
     renderVoiceRoleSelector();
     var currentRole = getCurrentRole();
     if (currentRole) {
         document.getElementById('voiceIdInput').value = currentRole.voiceId || '';
     }
 
-    // 其他设置
     renderRoleManager();
     updatePermissionStatusUI();
     loadTemperature();
@@ -4897,7 +4953,7 @@ function getSelectedRoleIds() {
     return ids;
 }
 
-// ========== ⭐ 个性化样式（完整版） ==========
+// ========== 个性化样式 ==========
 function renderStylePicker() {
     var iconGrid = document.getElementById('styleOptionGrid');
     if (!iconGrid) return;
@@ -4939,7 +4995,6 @@ function renderStylePicker() {
         iconGrid.appendChild(option);
     });
 
-    // 气泡样式
     var bubbleGrid = document.getElementById('bubbleOptionGrid');
     if (bubbleGrid) {
         var BUBBLE_STYLES = [
@@ -4982,7 +5037,6 @@ function renderStylePicker() {
         });
     }
 
-    // 时间显示模式
     var timeGrid = document.getElementById('timeModeGrid');
     if (timeGrid) {
         var TIME_MODES = [
@@ -5010,7 +5064,6 @@ function renderStylePicker() {
         });
     }
 
-    // 心跳悬浮窗开关
     var floatingGrid = document.getElementById('floatingSwitchGrid');
     if (floatingGrid) {
         var floatingOptions = [{ id: 'on', name: '开启悬浮窗' }, { id: 'off', name: '关闭悬浮窗' }];
@@ -5050,7 +5103,6 @@ function renderStylePicker() {
         });
     }
 
-    // 心跳颜色
     var colorGrid = document.getElementById('heartColorGrid');
     if (colorGrid) {
         var colorOptions = [
@@ -5083,7 +5135,6 @@ function renderStylePicker() {
         });
     }
 
-    // AI 表情包开关
     var aiMemeGrid = document.getElementById('aiMemeSwitchGrid');
     if (aiMemeGrid) {
         var aiMemeOptions = [{ id: 'on', name: 'AI 可发表情包' }, { id: 'off', name: 'AI 不发表情包' }];
@@ -5108,7 +5159,6 @@ function renderStylePicker() {
         });
     }
 
-    // 深色/浅色模式
     var themeGrid = document.getElementById('themeModeGrid');
     if (themeGrid) {
         var themeOptions = [
@@ -5137,7 +5187,6 @@ function renderStylePicker() {
     }
 }
 
-// ========== applyIconStyle ==========
 function applyIconStyle(styleId) {
     var oldStyle = document.getElementById('dynamicIconStyle');
     if (oldStyle) oldStyle.remove();
@@ -5356,7 +5405,6 @@ function init() {
 
 // ========== DOM 事件绑定 ==========
 document.addEventListener('DOMContentLoaded', function() {
-    // 桌面图标
     document.querySelectorAll('.app-icon[data-app]').forEach(function(btn) {
         btn.addEventListener('click', function() {
             var app = this.dataset.app;
@@ -5372,7 +5420,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // 返回按钮
     document.getElementById('backFromContacts').addEventListener('click', closeContacts);
     document.getElementById('backFromChat').addEventListener('click', closeChat);
     document.getElementById('backFromMeme').addEventListener('click', closeMeme);
@@ -5382,7 +5429,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.target === this) closeSettings();
     });
 
-    // 保存设置
     document.getElementById('saveSettingsBtn').addEventListener('click', function() {
         CONFIG.accessMode = document.getElementById('accessMode').value;
         CONFIG.apiKey = document.getElementById('directApiKey').value.trim();
