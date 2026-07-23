@@ -5805,18 +5805,18 @@ async function callBailianTTS(text, role) {
     var apiKey = getVoiceApiKey();
     var voiceId = role.voiceId || '';
     
-    if (!apiKey) throw new Error('未配置语音 API Key');
-    if (!voiceId) throw new Error('当前角色未配置 Voice ID');
+    if (!apiKey) throw new Error('未配置语音 API Key，请在设置中填写');
+    if (!voiceId) throw new Error('当前角色未配置 Voice ID，请在设置中填写');
     if (!text || text.trim().length === 0) throw new Error('没有可朗读的文本');
     
     var cleanText = text.replace(/\[表情包：[^\]]+\]/g, '').trim();
-    if (!cleanText) throw new Error('文本为空');
+    if (!cleanText) throw new Error('文本为空（可能只有表情包）');
     if (cleanText.length > 500) cleanText = cleanText.substring(0, 500) + '……';
     
-    // ✅ 改用百炼的 OpenAI 兼容接口
+    // ===== 关键修改：改用 OpenAI 兼容接口 =====
+    // 百炼的 OpenAI 兼容模式地址
     var url = endpoint.replace(/\/+$/, '') + '/compatible-mode/v1/audio/speech';
     
-    // ✅ 使用 OpenAI 格式的请求体
     var response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -5824,9 +5824,13 @@ async function callBailianTTS(text, role) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            model: 'cosyvoice-v3.5-plus',  // 或者你的模型名
+            // ✅ 模型名：用你截图里复刻的声音对应的模型
+            // 如果是 CosyVoice 复刻，用 'cosyvoice-v3.5-plus'
+            model: 'cosyvoice-v3.5-plus',
             input: cleanText,
+            // ✅ Voice ID：你复刻的声音 ID
             voice: voiceId,
+            // OpenAI 格式参数
             response_format: 'mp3',
             speed: CONFIG.voice.rate || 1.0
         })
