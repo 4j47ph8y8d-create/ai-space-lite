@@ -5543,15 +5543,32 @@ function deleteMessageAndMemory(roleId, messageId) {
 
     showToast('🔊 正在生成试听语音...');
     try {
+        // 直接调用 callBailianTTS，它会返回一个 Blob URL
         var audioUrl = await callBailianTTS('我已经准备好了，随时可以开始。', role);
+        
+        // 停止之前的试听音频
         if (_testAudio) {
             _testAudio.pause();
             _testAudio.src = '';
             _testAudio.load();
         }
+        
+        // 用返回的 Blob URL 创建音频并播放
         _testAudio = new Audio(audioUrl);
-        _testAudio.play();
-        showToast('✅ 试听中...');
+        _testAudio.oncanplaythrough = function() {
+            _testAudio.play();
+            showToast('✅ 试听中...');
+        };
+        _testAudio.onerror = function() {
+            showToast('❌ 试听失败：音频无法播放');
+        };
+        // 如果 3 秒后还没开始播放，提示错误
+        setTimeout(function() {
+            if (_testAudio && _testAudio.paused) {
+                showToast('⚠️ 试听加载超时，请检查网络');
+            }
+        }, 3000);
+        
     } catch (e) {
         showToast('❌ 试听失败: ' + e.message);
     }
