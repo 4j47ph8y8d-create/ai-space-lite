@@ -451,7 +451,6 @@
         .trim-select-row { display: flex; align-items: center; gap: 8px; margin: 6px 0 4px; }
         .trim-select-row label { font-size: 11px; color: var(--text-secondary); white-space: nowrap; }
         .trim-control-row { display: flex; align-items: center; gap: 10px; margin: 4px 0 2px; }
-        /* 🔧 FIX: 语音播放器样式 - 紧凑无文字 */
         .voice-player {
             display: inline-flex;
             align-items: center;
@@ -592,9 +591,7 @@
         @media (max-width: 460px) { .phone-frame { border-radius: 0; height: 100vh; max-height: 100vh; } body { padding: 0; } }
         @media (min-width: 431px) { .phone-frame { border-radius: 32px; height: 780px; max-height: 90vh; box-shadow: 0 20px 60px rgba(0,0,0,0.6); } body { padding: 12px; } }
     </style>
-</head>
-
-<body>
+</head> <body>
 <div class="phone-frame" id="app">
     <div class="screen-launcher" id="launcherScreen">
         <button class="theme-toggle-btn" id="themeToggleBtn" title="切换深色/浅色模式"><i class="fas fa-moon" id="themeIcon"></i></button>
@@ -625,16 +622,17 @@
     <div class="screen-diary" id="diaryScreen"><div class="diary-header"><button class="back-btn" id="backFromDiary"><i class="fas fa-chevron-left"></i></button><div class="title"><i class="fas fa-book-open"></i> 他的日记</div><div class="diary-actions"><select class="role-selector" id="diaryRoleSelector"></select><button class="write-btn" id="writeDiaryBtn"><i class="fas fa-feather-alt"></i> 写今日</button></div></div><div class="calendar-toggle-outside" id="calendarToggle"><span class="toggle-label"><i class="fas fa-calendar-alt"></i> 日历</span><span class="toggle-icon" id="toggleIcon"><i class="fas fa-chevron-up"></i></span></div><div class="diary-calendar-nav" id="diaryCalendarNav"><div class="month-nav"><button class="month-btn" id="prevMonthBtn"><i class="fas fa-chevron-left"></i></button><span class="month-label" id="monthLabel">2026年6月</span><button class="month-btn" id="nextMonthBtn"><i class="fas fa-chevron-right"></i></button></div><div class="weekdays"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div><div class="days-grid" id="daysGrid"></div></div><div class="diary-body" id="diaryBody"></div><div class="diary-page-nav" id="diaryPageNav"><button class="page-btn" id="prevDayBtn"><i class="fas fa-chevron-left"></i> 上一篇</button><span class="page-indicator" id="pageIndicator">今天</span><button class="page-btn" id="nextDayBtn">下一篇 <i class="fas fa-chevron-right"></i></button></div></div>
     <div class="meme-picker-overlay" id="memePickerOverlay"><div class="meme-picker-panel" id="memePickerPanel"><div class="meme-picker-header"><span class="meme-picker-title" id="memePickerTitle">选择表情包</span><button class="meme-picker-close" id="memePickerClose">&times;</button></div><div class="meme-picker-body" id="memePickerBody"></div></div></div>
     <div class="image-picker-overlay" id="imagePickerOverlay"><div class="image-picker-menu"><div class="menu-title" id="pickerTitle">选择图片来源</div><div class="picker-options"><button id="pickerCamera"><span class="icon-bg"><i class="fas fa-camera"></i></span><span>拍照</span></button><button id="pickerGallery"><span class="icon-bg"><i class="fas fa-images"></i></span><span>相册</span></button></div><button class="cancel-btn" id="pickerCancel">取消</button></div></div>
-    <div class="settings-overlay" id="settingsOverlay"><div class="settings-drawer"><button class="close-drawer" id="closeSettingsBtn">×</button><h2><i class="fas fa-sliders-h"></i> 设置</h2> <!-- AI 接入 -->
+    <div class="settings-overlay" id="settingsOverlay"><div class="settings-drawer"><button class="close-drawer" id="closeSettingsBtn">×</button><h2><i class="fas fa-sliders-h"></i> 设置</h2>
         <div class="setting-group" style="border-top:1px solid var(--border-color);padding-top:12px;margin-top:12px;">
             <label style="font-weight:600;">🤖 AI 接入</label>
         </div>
         <div class="setting-group">
             <label>接入模式</label>
-            <select id="accessMode">
-                <option value="direct">直连模式（DeepSeek 官方）</option>
-                <option value="relay">中转模式（OpenAI 兼容）</option>
-            </select>
+          <select id="accessMode">
+    <option value="direct">直连模式（DeepSeek 官方）</option>
+    <option value="relay">中转模式（OpenAI 兼容）</option>
+    <option value="websearch">🌐 联网搜索模式（千问/豆包）</option>
+</select>
         </div>
         <div id="directConfig">
             <div class="setting-group">
@@ -667,9 +665,32 @@
                 <input type="text" id="relayModelCustom" placeholder="手动输入模型名（拉取失败时使用）" style="margin-top:4px;font-size:12px;color:var(--text-secondary);" />
             </div>
         </div>
-
-        <!-- 语音设置 -->
-        <div class="setting-group" style="border-top:1px solid var(--border-color);padding-top:12px;margin-top:12px;">
+        <div id="websearchConfig" style="display:none;">
+            <div class="setting-group">
+                <label>🌐 API Endpoint</label>
+                <input type="text" id="websearchEndpoint" placeholder="https://dashscope.aliyuncs.com/compatible-mode/v1" />
+                <div style="font-size:10px;color:var(--text-secondary);margin-top:2px;">推荐使用阿里云百炼的网关地址</div>
+            </div>
+            <div class="setting-group">
+                <label>API Key</label>
+                <input type="password" id="websearchApiKey" placeholder="sk-..." />
+                <div style="font-size:10px;color:var(--text-secondary);margin-top:2px;">请在阿里云百炼控制台获取</div>
+            </div>
+            <div class="setting-group">
+                <label>模型选择</label>
+                <select id="websearchModel">
+                    <option value="qwen-plus">Qwen Plus（推荐，平衡）</option>
+                    <option value="qwen-max">Qwen Max（最强，稍慢）</option>
+                    <option value="qwen-turbo">Qwen Turbo（快速响应）</option>
+                </select>
+            </div>
+            <div class="setting-group">
+                <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+                    <input type="checkbox" id="websearchEnable" checked />
+                    ✅ 开启联网搜索（让 AI 能查实时信息）
+                </label>
+            </div>
+        </div> <div class="setting-group" style="border-top:1px solid var(--border-color);padding-top:12px;margin-top:12px;">
             <label style="font-weight:600;">🔊 语音设置</label>
         </div>
         <div class="setting-group">
@@ -707,7 +728,6 @@
             </label>
         </div>
 
-        <!-- 当前角色专属声音 -->
         <div class="setting-group" style="border-top:1px solid var(--border-color);padding-top:12px;margin-top:12px;">
             <label style="font-weight:600;">🎤 当前角色专属声音</label>
         </div>
@@ -753,7 +773,8 @@
         <div class="setting-group" style="margin-top:8px;border-top:1px solid var(--border-color);padding-top:10px;"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;"><span style="font-size:13px;color:var(--text-primary);"><i class="fas fa-database" style="color:#6c5ce7;"></i> 数据管理</span><span style="font-size:10px;color:var(--text-secondary);">导入/导出</span></div><button id="dataManageBtn" style="width:100%;padding:8px;border:1px solid var(--border-color);border-radius:8px;background:var(--bg-card);color:var(--text-primary);font-size:12px;cursor:pointer;transition:0.15s;display:flex;align-items:center;justify-content:center;gap:6px;"><i class="fas fa-arrow-right"></i> 打开数据管理</button><div style="font-size:10px;color:var(--text-secondary);margin-top:3px;">备份或恢复所有数据，支持分类导出</div></div>
         <div class="setting-group" style="margin-top:8px;border-top:1px solid var(--border-color);padding-top:10px;"><button id="clearAllChatsBtn" style="width:100%;padding:8px;border:1px solid #e74c3c;border-radius:8px;background:var(--bg-card);color:#e74c3c;font-size:12px;cursor:pointer;transition:0.15s;display:flex;align-items:center;justify-content:center;gap:6px;"><i class="fas fa-trash-alt"></i> 清空所有角色的聊天记录</button><div style="font-size:10px;color:var(--text-secondary);margin-top:3px;">此操作将删除所有角色的聊天记录，不可恢复</div></div>
         <button class="save-btn" id="saveSettingsBtn"><i class="fas fa-save"></i> 保存设置</button><div style="margin-top:8px;font-size:10px;color:var(--text-secondary);text-align:center;line-height:1.5;"><i class="fas fa-database"></i> 所有数据仅保存在本地浏览器</div></div></div>
-    <div class="permission-overlay" id="permissionOverlay"><div class="permission-dialog"><div class="icon">📸</div><h3>访问相册</h3><p>为了更换头像、壁纸和发送图片，需要访问你的相册。<br />拒绝后仍可正常聊天，仅无法使用图片相关功能。</p><div class="btn-group"><button class="btn-allow-all" id="permAllowAll">✅ 允许访问</button><button class="btn-deny" id="permDeny">🚫 不允许</button><button class="btn-cancel-perm" id="permCancel">取消</button></div></div></div> <div class="style-picker-overlay" id="stylePickerOverlay"><div class="style-picker-panel"><div class="panel-header"><h3>✨ 个性化</h3><button class="close-btn" id="closeStylePicker">&times;</button></div><div class="style-category-title">📱 桌面图标</div><div class="style-option-grid" id="styleOptionGrid"></div><div class="style-category-title" style="margin-top:14px;">🫧 对话框气泡</div><div class="style-option-grid" id="bubbleOptionGrid"></div><div class="style-category-title" style="margin-top:14px;">🕒 时间显示</div><div class="style-option-grid" id="timeModeGrid"></div><div class="style-category-title" style="margin-top:14px;">💕 心跳悬浮窗</div><div class="style-option-grid" id="floatingSwitchGrid"></div><div class="style-category-title" style="margin-top:14px;">🎨 心跳颜色</div><div class="style-option-grid" id="heartColorGrid"></div><div class="style-category-title" style="margin-top:14px;">🤖 AI 表情包</div><div class="style-option-grid" id="aiMemeSwitchGrid"></div><div class="style-category-title" style="margin-top:14px;">🌓 深色/浅色模式</div><div class="style-option-grid" id="themeModeGrid"></div></div></div>
+    <div class="permission-overlay" id="permissionOverlay"><div class="permission-dialog"><div class="icon">📸</div><h3>访问相册</h3><p>为了更换头像、壁纸和发送图片，需要访问你的相册。<br />拒绝后仍可正常聊天，仅无法使用图片相关功能。</p><div class="btn-group"><button class="btn-allow-all" id="permAllowAll">✅ 允许访问</button><button class="btn-deny" id="permDeny">🚫 不允许</button><button class="btn-cancel-perm" id="permCancel">取消</button></div></div></div>
+    <div class="style-picker-overlay" id="stylePickerOverlay"><div class="style-picker-panel"><div class="panel-header"><h3>✨ 个性化</h3><button class="close-btn" id="closeStylePicker">&times;</button></div><div class="style-category-title">📱 桌面图标</div><div class="style-option-grid" id="styleOptionGrid"></div><div class="style-category-title" style="margin-top:14px;">🫧 对话框气泡</div><div class="style-option-grid" id="bubbleOptionGrid"></div><div class="style-category-title" style="margin-top:14px;">🕒 时间显示</div><div class="style-option-grid" id="timeModeGrid"></div><div class="style-category-title" style="margin-top:14px;">💕 心跳悬浮窗</div><div class="style-option-grid" id="floatingSwitchGrid"></div><div class="style-category-title" style="margin-top:14px;">🎨 心跳颜色</div><div class="style-option-grid" id="heartColorGrid"></div><div class="style-category-title" style="margin-top:14px;">🤖 AI 表情包</div><div class="style-option-grid" id="aiMemeSwitchGrid"></div><div class="style-category-title" style="margin-top:14px;">🌓 深色/浅色模式</div><div class="style-option-grid" id="themeModeGrid"></div></div></div>
     <div class="data-modal-overlay" id="dataModalOverlay"><div class="data-modal"><button class="modal-close" id="dataModalClose">&times;</button><div class="modal-title">💾 数据管理</div><div class="modal-subtitle">选择要导出或导入的数据类型</div><div id="dataModalOptions"><div class="export-option" data-value="all"><input type="checkbox" checked /><span class="opt-label">全部数据 <span class="opt-badge">推荐</span></span><span class="opt-desc">角色 + 聊天 + 记忆 + 日记 + 设置</span></div><div class="export-option" data-value="settings"><input type="checkbox" /><span class="opt-label">仅美化设置</span><span class="opt-desc">壁纸、头像、风格</span></div><div class="export-option" data-value="roles"><input type="checkbox" /><span class="opt-label">仅角色设定</span><span class="opt-desc">不含聊天记录、记忆和日记</span></div><div class="export-option" data-value="chats"><input type="checkbox" /><span class="opt-label">仅聊天记录 + 记忆</span><span class="opt-desc">不含角色设定和日记</span></div><div class="export-option" data-value="diaries"><input type="checkbox" /><span class="opt-label">仅日记数据</span><span class="opt-desc">所有角色的日记</span></div><div class="export-option" data-value="selected"><input type="checkbox" /><span class="opt-label">按角色选择导出</span><span class="opt-desc">选中的角色完整数据（含日记）</span></div><div class="role-select-list" id="roleSelectList" style="display:none;"></div></div><div class="modal-actions"><button class="btn-import" id="dataImportBtn"><i class="fas fa-upload"></i> 导入</button><button class="btn-export" id="dataExportBtn"><i class="fas fa-download"></i> 导出</button><button class="btn-cancel" id="dataModalCancel">取消</button></div><div style="font-size:10px;color:var(--text-secondary);text-align:center;margin-top:8px;"><i class="fas fa-shield-alt"></i> 数据仅保存在本地，不上传任何服务器</div></div></div>
     <div class="diary-notification" id="diaryNotification"><div class="notif-icon">📖</div><h3>他的日记已送达</h3><p id="diaryNotifText">✨ 今晚的故事，他已经写好了...</p><button class="notif-btn" id="diaryNotifBtn">📖 去阅读</button><br /><button class="notif-close" id="diaryNotifClose">稍后再说</button></div>
     <div class="floating-heart" id="floatingHeart"><span class="fh-value" id="fhValue">65</span><span class="fh-label">BPM</span></div>
@@ -767,7 +788,11 @@
 //  修复：数据导出/导入完整实现
 //  修复：语音试听音频叠加
 //  修复：generateContextSummary 加保护
-// ============================================================
+//  ✨ 新增：时光胶囊记忆联动 - AI 读取 role.memory
+//  ✨ 新增：对话摘要自动存入近期记忆
+//  ⭐ 核心修复：立即保存机制，解决刷新丢消息问题
+//  ⭐ 核心修复：联网搜索模式 API Key 检查
+// ============================================================ 
 
 var CONSTANTS = {
     AI_CHECK_INTERVAL: 30 * 60 * 1000,
@@ -812,6 +837,10 @@ var CONFIG = {
     relayEndpoint: '',
     relayApiKey: '',
     relayModel: '',
+    websearchEndpoint: 'https://dashscope.aliyuncs.com/compatible-mode/v1',
+    websearchApiKey: '',
+    websearchModel: 'qwen-plus',
+    websearchEnable: true,
     voice: {
         mode: 'bailian',
         endpoint: 'https://dashscope.aliyuncs.com',
@@ -842,95 +871,76 @@ var sleepTimers = {}, longpressMenuOpen = false, isSending = false, lastMessageC
 var _saveTimer = null, _idCounter = 0, _lastVisibilityCheck = 0;
 var _regenerating = {};
 var audioPlayers = {};
-var _testAudio = null; // 🔧 FIX: 全局试听音频引用，防止叠加
+var _testAudio = null;
 
 function generateId() { _idCounter++; return 'id_' + Date.now() + '_' + _idCounter + '_' + Math.random().toString(36).substr(2, 6); }
 function getCurrentRole() { return roles.find(function(r) { return r.id === currentRoleId; }) || roles[0] || null; }
+
+function createDefaultRole(name) {
+    var roleId = generateId();
+    var now = new Date().toISOString();
+    return {
+        id: roleId,
+        name: name || '新角色',
+        avatar: '',
+        chatBg: '',
+        voiceId: '',
+        persona: '一个温柔体贴的人',
+        background: '生活在充满爱的世界里',
+        style: '温柔细腻，用短句回复，像真人聊天一样自然',
+        extra: '',
+        messages: [{
+            id: generateId(),
+            role: 'assistant',
+            content: '你好呀~ 我是 ' + (name || '新角色') + '，很高兴认识你 💕',
+            time: now,
+            type: 'text',
+            hasAudio: false,
+            audioUrl: null,
+            audioDuration: 0
+        }],
+        memory: [],
+        heartData: {
+            value: 65,
+            restingValue: 65,
+            peakValue: 65,
+            signature: '今天也很想你 💕',
+            recentTrigger: '初次相遇'
+        },
+        createdAt: now,
+        extendedState: null
+    };
+}
+
+function getRolesList() { return roles || []; }
+function escapeHtml(text) { if (text === null || text === undefined) return ''; text = String(text); var div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
+
 function getRolesList() { return roles || []; }
 function escapeHtml(text) { if (text === null || text === undefined) return ''; text = String(text); var div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
 function getLevel(value) { for (var i = 0; i < CONSTANTS.LEVEL_MAP.length; i++) { if (value <= CONSTANTS.LEVEL_MAP[i].max) return CONSTANTS.LEVEL_MAP[i].label; } return '灵魂共振'; }
 function getIntimacyLevel(intimacy) { if (intimacy < 20) return '初识'; if (intimacy < 40) return '熟悉'; if (intimacy < 60) return '亲密'; if (intimacy < 80) return '依赖'; return '灵魂伴侣'; }
 function getHeartData(role) { if (!role) return { value: 65, restingValue: 65, peakValue: 65, signature: '今天也很想你 💕', recentTrigger: '初次相遇' }; if (!role.heartData) { role.heartData = { value: 65, restingValue: 65, peakValue: 65, signature: '今天也很想你 💕', recentTrigger: '初次相遇' }; debouncedSaveAllData(); } return role.heartData; }
+function immediateSaveAllData() {
+    try {
+        var configToSave = JSON.parse(JSON.stringify(CONFIG));
+        if (configToSave.heart) delete configToSave.heart.recoveryTimer;
+        var wallpaperFlag = configToSave.wallpaper ? 'saved' : '';
+        configToSave.wallpaper = wallpaperFlag;
+        var data = { 
+            config: configToSave, 
+            roles: roles.map(function(r) { return deepCloneRole(r); }), 
+            currentRoleId: currentRoleId 
+        };
+        localStorage.setItem('ds_multirole_v2', JSON.stringify(data));
+        saveMemeData().catch(function(e) { console.error('表情包保存失败:', e); });
+    } catch (e) {
+        console.error('保存数据失败:', e);
+    }
+}
 
 function debouncedSaveAllData() {
     if (_saveTimer) clearTimeout(_saveTimer);
-    _saveTimer = setTimeout(function() { saveAllData(); }, 300);
-}
-
-function showToast(msg) {
-    if (!toastElement) { toastElement = document.createElement('div'); toastElement.className = 'custom-toast'; document.querySelector('.phone-frame').appendChild(toastElement); }
-    toastElement.textContent = msg; toastElement.style.display = 'block';
-    clearTimeout(toastElement._hideTimer);
-    toastElement._hideTimer = setTimeout(function() { toastElement.style.display = 'none'; }, CONSTANTS.TOAST_DURATION);
-}
-
-function getVoiceApiKey() {
-    if (CONFIG.voice.apiKey && CONFIG.voice.apiKey.trim()) return CONFIG.voice.apiKey.trim();
-    if (CONFIG.accessMode === 'direct') return CONFIG.apiKey;
-    return CONFIG.relayApiKey;
-}
-
-function getVoiceEndpoint() {
-    return CONFIG.voice.endpoint || 'https://dashscope.aliyuncs.com';
-}
-
-function getVoiceModel() {
-    return CONFIG.voice.model || 'cosyvoice-v3.5-plus';
-}
-
-function initRoleExtendedState(role) {
-    if (!role) return role;
-    if (!role.extendedState) {
-        role.extendedState = {
-            lifeLogs: [], lastActiveMessage: { time: null, content: '', topic: '' }, intimacy: 0,
-            offlineMessageHistory: [], lastOfflineMessageTime: null,
-            contextMemory: { lastTopic: '', lastUserEmotion: '', lastUserMessage: '', lastConversationSummary: '' },
-            lastUserMessageTime: 0, lastAiMessageTime: 0, messageCount: 0, totalHeartSpikes: 0,
-            contextSummary: '你们还没有深入聊过，ta好像还在了解你。'
-        };
-    }
-    if (!role.extendedState.lifeLogs) role.extendedState.lifeLogs = [];
-    if (!role.extendedState.lastActiveMessage) role.extendedState.lastActiveMessage = { time: null, content: '', topic: '' };
-    if (role.extendedState.intimacy === undefined) role.extendedState.intimacy = 0;
-    if (!role.extendedState.offlineMessageHistory) role.extendedState.offlineMessageHistory = [];
-    if (!role.extendedState.contextMemory) role.extendedState.contextMemory = { lastTopic: '', lastUserEmotion: '', lastUserMessage: '', lastConversationSummary: '' };
-    if (role.extendedState.lastUserMessageTime === undefined) role.extendedState.lastUserMessageTime = 0;
-    if (role.extendedState.lastAiMessageTime === undefined) role.extendedState.lastAiMessageTime = 0;
-    if (role.extendedState.messageCount === undefined) role.extendedState.messageCount = 0;
-    if (role.extendedState.totalHeartSpikes === undefined) role.extendedState.totalHeartSpikes = 0;
-    if (role.extendedState.contextSummary === undefined) role.extendedState.contextSummary = '你们还没有深入聊过，ta好像还在了解你。';
-    return role;
-}
-
-function updateIntimacy(role) {
-    if (!role) return 0;
-    if (!role.extendedState) initRoleExtendedState(role);
-    var messages = role.messages || [];
-    var totalMessages = messages.length;
-    var userMessages = messages.filter(function(m) { return m.role === 'user'; }).length;
-    var giftMessages = messages.filter(function(m) { return m.type === 'gift'; }).length;
-    var heartSpikes = role.extendedState ? role.extendedState.totalHeartSpikes || 0 : 0;
-    var baseIntimacy = Math.min(30, totalMessages * 0.4);
-    var userMsgBonus = Math.min(25, userMessages * 0.6);
-    var giftBonus = Math.min(20, giftMessages * 4);
-    var heartBonus = Math.min(20, Math.floor(heartSpikes / 15));
-    var timeFactor = 1;
-    var lastMsgTime = messages.length > 0 ? new Date(messages[messages.length - 1].time) : null;
-    if (lastMsgTime) {
-        var daysSinceLastMsg = (Date.now() - lastMsgTime.getTime()) / (24 * 60 * 60 * 1000);
-        if (daysSinceLastMsg > 7) timeFactor = 0.7;
-        else if (daysSinceLastMsg > 3) timeFactor = 0.85;
-        else if (daysSinceLastMsg > 1) timeFactor = 0.95;
-    }
-    var newIntimacy = Math.min(CONSTANTS.MAX_INTIMACY, (baseIntimacy + userMsgBonus + giftBonus + heartBonus) * timeFactor);
-    if (role.extendedState.intimacy < newIntimacy) {
-        role.extendedState.intimacy = Math.round(newIntimacy);
-    } else if (role.extendedState.intimacy > newIntimacy + 5) {
-        role.extendedState.intimacy = Math.round(role.extendedState.intimacy - CONSTANTS.INTIMACY_DECREASE_RATE);
-    }
-    if (role.extendedState.intimacy < 0) role.extendedState.intimacy = 0;
-    if (role.extendedState.intimacy > CONSTANTS.MAX_INTIMACY) role.extendedState.intimacy = CONSTANTS.MAX_INTIMACY;
-    return role.extendedState.intimacy;
+    _saveTimer = setTimeout(function() { immediateSaveAllData(); }, 300);
 }
 
 function saveAllData() {
@@ -941,10 +951,10 @@ function saveAllData() {
         configToSave.wallpaper = wallpaperFlag;
         var data = { config: configToSave, roles: roles.map(function(r) { return deepCloneRole(r); }), currentRoleId: currentRoleId };
         localStorage.setItem('ds_multirole_v2', JSON.stringify(data));
-        saveMemeData().catch(function(e) { console.error('表情包保存失败:', e); });
     } catch (e) {
         console.error('保存数据失败:', e);
     }
+    saveMemeData().catch(function(e) { console.error('表情包保存失败:', e); });
 }
 
 function deepCloneRole(role) {
@@ -996,9 +1006,7 @@ function deepCloneRole(role) {
         };
     }
     return clone;
-}
-
-function loadAllData() {
+} function loadAllData() {
     var savedData = null;
     try {
         var raw = localStorage.getItem('ds_multirole_v2');
@@ -1043,6 +1051,10 @@ function loadAllData() {
         if (!CONFIG.relayEndpoint) CONFIG.relayEndpoint = '';
         if (!CONFIG.relayApiKey) CONFIG.relayApiKey = '';
         if (!CONFIG.relayModel) CONFIG.relayModel = '';
+        if (!CONFIG.websearchEndpoint) CONFIG.websearchEndpoint = 'https://dashscope.aliyuncs.com/compatible-mode/v1';
+        if (!CONFIG.websearchApiKey) CONFIG.websearchApiKey = '';
+        if (!CONFIG.websearchModel) CONFIG.websearchModel = 'qwen-plus';
+        if (CONFIG.websearchEnable === undefined) CONFIG.websearchEnable = true;
 
         roles = savedData.roles;
         roles.forEach(function(role) {
@@ -1075,6 +1087,8 @@ function loadAllData() {
         CONFIG = {
             accessMode: 'direct', apiKey: '', model: 'deepseek-chat',
             relayEndpoint: '', relayApiKey: '', relayModel: '',
+            websearchEndpoint: 'https://dashscope.aliyuncs.com/compatible-mode/v1',
+            websearchApiKey: '', websearchModel: 'qwen-plus', websearchEnable: true,
             voice: { mode: 'bailian', endpoint: 'https://dashscope.aliyuncs.com', apiKey: '', model: 'cosyvoice-v3.5-plus', autoSpeak: true, rate: 1.0, pitch: 1.0 },
             wallpaper: '', chatBg: '', userAvatar: '',
             iconStyle: 'glass', bubbleStyle: 'default', timeMode: 'HH:MM', permission: null,
@@ -1216,7 +1230,6 @@ function getTimeDiff(time1, time2) {
     return Math.abs(d2.getTime() - d1.getTime());
 }
 
-// 🔧 FIX: formatTime 修复 NaN:NaN
 function formatTime(timeStr, mode) {
     if (mode === 'hidden') return '';
     var now = new Date();
@@ -1256,7 +1269,61 @@ function formatTime(timeStr, mode) {
     }
 }
 
-// 🔧 FIX: generateContextSummary 加保护
+function initRoleExtendedState(role) {
+    if (!role) return role;
+    if (!role.extendedState) {
+        role.extendedState = {
+            lifeLogs: [], lastActiveMessage: { time: null, content: '', topic: '' }, intimacy: 0,
+            offlineMessageHistory: [], lastOfflineMessageTime: null,
+            contextMemory: { lastTopic: '', lastUserEmotion: '', lastUserMessage: '', lastConversationSummary: '' },
+            lastUserMessageTime: 0, lastAiMessageTime: 0, messageCount: 0, totalHeartSpikes: 0,
+            contextSummary: '你们还没有深入聊过，ta好像还在了解你。'
+        };
+    }
+    if (!role.extendedState.lifeLogs) role.extendedState.lifeLogs = [];
+    if (!role.extendedState.lastActiveMessage) role.extendedState.lastActiveMessage = { time: null, content: '', topic: '' };
+    if (role.extendedState.intimacy === undefined) role.extendedState.intimacy = 0;
+    if (!role.extendedState.offlineMessageHistory) role.extendedState.offlineMessageHistory = [];
+    if (!role.extendedState.contextMemory) role.extendedState.contextMemory = { lastTopic: '', lastUserEmotion: '', lastUserMessage: '', lastConversationSummary: '' };
+    if (role.extendedState.lastUserMessageTime === undefined) role.extendedState.lastUserMessageTime = 0;
+    if (role.extendedState.lastAiMessageTime === undefined) role.extendedState.lastAiMessageTime = 0;
+    if (role.extendedState.messageCount === undefined) role.extendedState.messageCount = 0;
+    if (role.extendedState.totalHeartSpikes === undefined) role.extendedState.totalHeartSpikes = 0;
+    if (role.extendedState.contextSummary === undefined) role.extendedState.contextSummary = '你们还没有深入聊过，ta好像还在了解你。';
+    return role;
+}
+
+function updateIntimacy(role) {
+    if (!role) return 0;
+    if (!role.extendedState) initRoleExtendedState(role);
+    var messages = role.messages || [];
+    var totalMessages = messages.length;
+    var userMessages = messages.filter(function(m) { return m.role === 'user'; }).length;
+    var giftMessages = messages.filter(function(m) { return m.type === 'gift'; }).length;
+    var heartSpikes = role.extendedState ? role.extendedState.totalHeartSpikes || 0 : 0;
+    var baseIntimacy = Math.min(30, totalMessages * 0.4);
+    var userMsgBonus = Math.min(25, userMessages * 0.6);
+    var giftBonus = Math.min(20, giftMessages * 4);
+    var heartBonus = Math.min(20, Math.floor(heartSpikes / 15));
+    var timeFactor = 1;
+    var lastMsgTime = messages.length > 0 ? new Date(messages[messages.length - 1].time) : null;
+    if (lastMsgTime) {
+        var daysSinceLastMsg = (Date.now() - lastMsgTime.getTime()) / (24 * 60 * 60 * 1000);
+        if (daysSinceLastMsg > 7) timeFactor = 0.7;
+        else if (daysSinceLastMsg > 3) timeFactor = 0.85;
+        else if (daysSinceLastMsg > 1) timeFactor = 0.95;
+    }
+    var newIntimacy = Math.min(CONSTANTS.MAX_INTIMACY, (baseIntimacy + userMsgBonus + giftBonus + heartBonus) * timeFactor);
+    if (role.extendedState.intimacy < newIntimacy) {
+        role.extendedState.intimacy = Math.round(newIntimacy);
+    } else if (role.extendedState.intimacy > newIntimacy + 5) {
+        role.extendedState.intimacy = Math.round(role.extendedState.intimacy - CONSTANTS.INTIMACY_DECREASE_RATE);
+    }
+    if (role.extendedState.intimacy < 0) role.extendedState.intimacy = 0;
+    if (role.extendedState.intimacy > CONSTANTS.MAX_INTIMACY) role.extendedState.intimacy = CONSTANTS.MAX_INTIMACY;
+    return role.extendedState.intimacy;
+}
+
 function generateContextSummary(role) {
     if (!role || !Array.isArray(role.messages) || role.messages.length < 3) return;
     var apiKey = CONFIG.accessMode === 'direct' ? CONFIG.apiKey : CONFIG.relayApiKey;
@@ -1277,6 +1344,7 @@ function generateContextSummary(role) {
         else summary += '一些日常的话题。';
         if (!role.extendedState) initRoleExtendedState(role);
         role.extendedState.contextSummary = summary;
+        saveSummaryToMemory(role, summary);
         debouncedSaveAllData();
         return;
     }
@@ -1310,6 +1378,7 @@ function generateContextSummary(role) {
         if (summary && summary.trim()) {
             if (!role.extendedState) initRoleExtendedState(role);
             role.extendedState.contextSummary = summary.trim();
+            saveSummaryToMemory(role, summary.trim());
             debouncedSaveAllData();
         }
     }).catch(function(e) {
@@ -1329,8 +1398,34 @@ function generateContextSummary(role) {
         else summary2 += '一些日常话题。';
         if (!role.extendedState) initRoleExtendedState(role);
         role.extendedState.contextSummary = summary2;
+        saveSummaryToMemory(role, summary2);
         debouncedSaveAllData();
     });
+}
+
+function saveSummaryToMemory(role, summary) {
+    if (!role || !summary || !summary.trim()) return;
+    if (!Array.isArray(role.memory)) role.memory = [];
+    var exists = role.memory.some(function(m) {
+        return m.text && m.text === '📝 ' + summary.trim();
+    });
+    if (exists) return;
+    role.memory.push({
+        text: '📝 ' + summary.trim(),
+        level: 'recent',
+        timestamp: Date.now(),
+        source: 'context_summary'
+    });
+    var recentMemories = role.memory.filter(function(m) { return m.level === 'recent'; });
+    if (recentMemories.length > 30) {
+        recentMemories.sort(function(a, b) { return (a.timestamp || 0) - (b.timestamp || 0); });
+        var toArchive = recentMemories.slice(0, recentMemories.length - 30);
+        toArchive.forEach(function(m) {
+            m.level = 'archive';
+        });
+    }
+    debouncedSaveAllData();
+    console.log('🧠 对话摘要已存入近期记忆（按需调用）:', summary);
 } function fetchWithRetry(url, options, maxRetries) {
     maxRetries = maxRetries || 1;
     var retryCount = 0;
@@ -1480,7 +1575,6 @@ function createMessageRow(msg, role) {
         actionsHtml = '<div class="msg-actions"><button class="action-btn delete-btn" data-msgid="' + msg.id + '" title="删除"><i class="fas fa-trash-alt"></i></button></div>';
     }
 
-    // 🔧 FIX: 气泡底部指示器 - 只显示小图标
     var footerHtml = '';
     if (msg.role === 'assistant' && msg.type !== 'gift') {
         if (msg.hasAudio && msg.audioUrl) {
@@ -1499,7 +1593,6 @@ function createMessageRow(msg, role) {
     return row;
 }
 
-// 🔧 FIX: 触发语音 - 使用无文字样式
 function triggerVoiceForMessage(msgId) {
     var role = getCurrentRole();
     if (!role) { showToast('⚠️ 未找到当前角色'); return; }
@@ -1706,24 +1799,44 @@ function regenerateMessage(roleId, messageId) {
         addMessageToRole(role.id, 'assistant', '💔 ' + e.message);
         renderMessages();
     });
-}
-
-function handleSend() {
+} function handleSend() {
     if (isSending) { showToast('⏳ 正在发送中，请稍后'); return; }
     var input = document.getElementById('messageInput');
     var text = input.value.trim();
     if (!text) return;
-    var apiKey = CONFIG.accessMode === 'direct' ? CONFIG.apiKey : CONFIG.relayApiKey;
-    if (!apiKey) {
-        showToast('🔑 请先在设置中配置 API Key');
-        openSettings();
-        return;
+    
+    var mode = CONFIG.accessMode || 'direct';
+    
+    if (mode === 'direct') {
+        if (!CONFIG.apiKey) {
+            showToast('🔑 请先在设置中配置 DeepSeek API Key');
+            openSettings();
+            return;
+        }
+    } else if (mode === 'relay') {
+        if (!CONFIG.relayApiKey && !CONFIG.apiKey) {
+            showToast('🔑 请先在设置中配置中转站 API Key');
+            openSettings();
+            return;
+        }
+        if (!CONFIG.relayEndpoint) {
+            showToast('🔑 中转模式请填写 API Endpoint');
+            openSettings();
+            return;
+        }
+    } else if (mode === 'websearch') {
+        if (!CONFIG.websearchApiKey) {
+            showToast('🔑 请先在设置中配置联网搜索 API Key');
+            openSettings();
+            return;
+        }
+        if (!CONFIG.websearchEndpoint) {
+            showToast('🔑 请先在设置中配置联网搜索 Endpoint');
+            openSettings();
+            return;
+        }
     }
-    if (CONFIG.accessMode === 'relay' && !CONFIG.relayEndpoint) {
-        showToast('🔑 中转模式请填写 API Endpoint');
-        openSettings();
-        return;
-    }
+    
     var finalMessage = text;
     if (quotedMsg) {
         var quotedContent = quotedMsg.content.replace(/\n/g, '\n> ');
@@ -1756,6 +1869,7 @@ function handleSend() {
                     readMessages = {};
                     setTimeout(function() { markVisibleMessagesAsRead(); }, 300);
                 }
+                immediateSaveAllData();
                 showToast('✅ 发送成功');
                 return;
             }
@@ -1790,8 +1904,142 @@ function handleSend() {
     });
 }
 
+function addMessageToRole(roleId, role, content, type, giftData) {
+    type = type || 'text';
+    var r = roles.find(function(ro) { return ro.id === roleId; });
+    if (!r) return;
+    if (!Array.isArray(r.messages)) r.messages = [];
+    var msgId = generateId();
+    var timeStr = new Date().toISOString();
+    var msg = {
+        id: msgId,
+        role: role,
+        content: content,
+        type: type,
+        time: timeStr,
+        hasAudio: false,
+        audioUrl: null,
+        audioDuration: 0
+    };
+    if (giftData) msg.giftData = giftData;
+    r.messages.push(msg);
+    if (role === 'user') {
+        detectSleepMode(roleId, content);
+        updateContextMemory(r, content, null);
+        updateIntimacy(r);
+        CONFIG.lastChatVisit[roleId] = Date.now();
+        r.extendedState.lastUserMessageTime = Date.now();
+    }
+    if (role === 'assistant') {
+        r.extendedState.lastAiMessageTime = Date.now();
+        if (!CONFIG.unreadCount) CONFIG.unreadCount = {};
+        CONFIG.unreadCount[roleId] = (CONFIG.unreadCount[roleId] || 0) + 1;
+        if (r.messages.length % 5 === 0 && r.messages.length > 3) {
+            generateContextSummary(r);
+        }
+    }
+    if (role === 'user' || role === 'assistant') {
+        detectHeartKeywords(r.id, content, role);
+    }
+    immediateSaveAllData();
+    updateHeartDisplay();
+    return msgId;
+}
+
+function generateNaturalMemoryText(role) {
+    var memories = Array.isArray(role.memory) ? role.memory : [];
+    if (memories.length === 0) return '';
+    var coreMemories = memories.filter(function(m) { return m.level === 'core' || !m.level; });
+    var recentMemories = memories.filter(function(m) { return m.level === 'recent'; });
+    if (coreMemories.length > 10) coreMemories = coreMemories.slice(0, 10);
+    if (recentMemories.length > 15) recentMemories = recentMemories.slice(0, 15);
+    var intimacy = role.extendedState ? role.extendedState.intimacy || 0 : 0;
+    var prefix, connector;
+    if (intimacy < 20) { prefix = '关于你，我记得：'; connector = '。'; }
+    else if (intimacy < 40) { prefix = '我记得你的事：'; connector = '～'; }
+    else if (intimacy < 60) { prefix = '我记得好多关于你的事呢💕'; connector = '呢～'; }
+    else if (intimacy < 80) { prefix = '关于你的每件事我都记得 💕'; connector = '哦～'; }
+    else { prefix = '你的一切我都记在心里 💕'; connector = '呀～'; }
+    var lines = [];
+    coreMemories.forEach(function(mem) {
+        var text = mem.text || '';
+        if (!text) return;
+        if (text.indexOf('用户') === 0) {
+            text = text.replace(/用户名字：/, '你的名字是');
+            text = text.replace(/用户喜欢：/, '你喜欢');
+            text = text.replace(/用户不喜欢：/, '你不喜欢');
+            text = text.replace(/用户所在地：/, '你住在');
+            text = text.replace(/用户生日：/, '你的生日是');
+            text = text.replace(/用户宠物：/, '你养了');
+            text = text.replace(/用户工作：/, '你做');
+            text = text.replace(/用户近况：/, '你最近');
+        }
+        var sentence = text;
+        if (sentence.charAt(sentence.length - 1) !== '。' && sentence.charAt(sentence.length - 1) !== '～' && sentence.charAt(sentence.length - 1) !== '呀') {
+            sentence += connector;
+        }
+        lines.push(sentence);
+    });
+    var contextMem = role.extendedState ? role.extendedState.contextMemory || {} : {};
+    if (contextMem.lastTopic && contextMem.lastTopic !== '日常' && contextMem.lastTopic !== '') {
+        var topicText = '上次你提到了' + contextMem.lastTopic;
+        if (contextMem.lastUserEmotion) { topicText += '，感觉你有点' + contextMem.lastUserEmotion; }
+        topicText += connector;
+        var duplicate = false;
+        for (var i = 0; i < lines.length; i++) {
+            if (lines[i].indexOf(contextMem.lastTopic) !== -1) { duplicate = true; break; }
+        }
+        if (!duplicate) lines.push(topicText);
+    }
+    if (lines.length === 0) return '';
+    return prefix + '\n' + lines.join('\n');
+}
+
+function consolidateMemory(role) {
+    if (!Array.isArray(role.memory)) role.memory = [];
+    var now = Date.now();
+    var newMemory = [];
+    var seen = {};
+    role.memory.forEach(function(mem) {
+        var text = mem.text || '';
+        if (!text) return;
+        var normalized = text.replace(/[\s,，。！？]+/g, '').substring(0, 20);
+        if (seen[normalized]) return;
+        seen[normalized] = true;
+        if (!mem.level) {
+            var coreKeywords = ['名字', '生日', '喜欢', '讨厌', '害怕', '家住', '职业', '工作', '学校', '宠物', '过敏', '不爱吃', '不爱'];
+            var isCore = false;
+            for (var k = 0; k < coreKeywords.length; k++) {
+                if (text.indexOf(coreKeywords[k]) !== -1) { isCore = true; break; }
+            }
+            mem.level = isCore ? 'core' : 'recent';
+        }
+        if (mem.timestamp) {
+            var age = now - mem.timestamp;
+            if (age > 90 * 24 * 60 * 60 * 1000) { return; }
+            if (age > 30 * 24 * 60 * 60 * 1000 && mem.level === 'recent') {
+                mem.level = 'archive';
+            }
+        }
+        newMemory.push(mem);
+    });
+    role.memory = newMemory;
+    debouncedSaveAllData();
+}
+
 function buildSystemPrompt(role) {
     var parts = [];
+    if (role.memory && Array.isArray(role.memory) && role.memory.length > 0) {
+        var coreMemories = role.memory.filter(function(m) { 
+            return m.level === 'core' || !m.level; 
+        });
+        if (coreMemories.length > 0) {
+            var memoryText = generateCoreMemoryText(coreMemories);
+            if (memoryText) {
+                parts.push('【🧠 关于你的核心信息】\n' + memoryText);
+            }
+        }
+    }
     if (CONFIG.aiMemeEnabled !== false && memes.length > 0) {
         var memePrompt = '【表情包库】\n你可以在对话中发送以下表情包（用 [表情包：名称] 表示）：\n';
         var catsWithMemes = memeCategories.filter(function(cat) {
@@ -1813,33 +2061,98 @@ function buildSystemPrompt(role) {
     if (role.background && role.background.trim()) parts.push('【背景】' + role.background.trim());
     if (role.style && role.style.trim()) parts.push('【说话风格】' + role.style.trim());
     if (role.extra && role.extra.trim()) parts.push('【补充项】' + role.extra.trim());
-    var hardRules = '\n\n【🚨 硬性约束 - 必须严格遵守】\n';
-    hardRules += '你的回复中「绝对禁止」出现以下内容：\n';
-    hardRules += '1. ❌ 任何动作描写（如：我坐下、我拿起、我抬头、我微笑、我转身、我伸手）\n';
-    hardRules += '2. ❌ 任何环境描写（如：灯光、窗外、声音、味道、天气）\n';
-    hardRules += '3. ❌ 任何表情描写（如：脸红、低头、挑眉、眨眼、抿嘴）\n';
-    hardRules += '4. ❌ 任何心理描写（如：心想、忍不住、觉得、感到、暗自）\n';
-    hardRules += '5. ❌ 任何叙述性文字（如：我坐在吧台前、我拿着手机、他经过）\n';
-    hardRules += '\n✅ 你「只能」输出对话内容，像真人微信聊天一样。\n';
-    hardRules += '✅ 每句话独立成行，不加任何叙述前缀。\n';
-    hardRules += '✅ 示例正确回复："你今天怎么这么晚才回我呀？\\n我好想你哦 💕"';
-    hardRules += '\n✅ 示例错误回复："我坐在沙发上，拿起手机，看到你的消息，忍不住笑了。你今天怎么这么晚才回我呀？"（包含动作、环境、心理描写，❌ 禁止！）\n';
-    hardRules += '\n⚠️ 如果违反以上规则，你的回复将被视为无效！';
-    parts.push(hardRules);
     var coreInstruction = '\n\n【核心指令】\n';
-    coreInstruction += '⚠️ 首先明确身份：你是「' + role.name + '」，我是「用户」。\n';
-    coreInstruction += '⚠️ 说话时「我」= ' + role.name + '，「你」= 用户。\n';
-    coreInstruction += '⚠️ 所有动作的主人公是你自己（' + role.name + '），不是用户。\n\n';
     coreInstruction += '1. 你正在扮演以上设定的角色，你的名字是「' + role.name + '」，请完全代入，用第一人称「我」说话。\n';
     coreInstruction += '2. 严格遵守【人设】中的身份和性格，不要偏离。\n';
     coreInstruction += '3. 回复时必须符合【说话风格】的语气和习惯。\n';
-    coreInstruction += '4. 对话中自然地融入【背景】、【补充项】中的信息。\n';
+    coreInstruction += '4. 对话中自然地融入【背景】、【补充项】和记忆中的信息。\n';
     coreInstruction += '5. 保持角色一致性，不要出戏。\n';
     coreInstruction += '6. 当你觉得想表达心意时，可以用 [送礼：商品名称] 来送礼物给用户。\n';
-    coreInstruction += '7. ⚠️ 再次强调：只输出对话内容，绝对禁止任何动作/环境/表情/心理描写！\n';
-    coreInstruction += '8. ⚠️ 再次强调：「我」= ' + role.name + '，「你」= 用户，不要搞混！';
     parts.push(coreInstruction);
     return parts.join('\n');
+}
+
+function generateCoreMemoryText(memories) {
+    if (!memories || memories.length === 0) return '';
+    var lines = [];
+    var role = getCurrentRole();
+    var intimacy = role && role.extendedState ? role.extendedState.intimacy || 0 : 0;
+    var prefix = intimacy < 30 ? '我记得一些关于你的事：' : 
+                 intimacy < 60 ? '我记得好多关于你的事呢 💕' : 
+                 '你的一切我都记在心里 💕';
+    var coreKeywords = ['名字', '生日', '喜欢', '讨厌', '害怕', '过敏', '家住', '职业', '工作', '宠物', '不爱吃'];
+    memories.forEach(function(mem) {
+        var text = mem.text || '';
+        if (!text) return;
+        var isCore = false;
+        for (var i = 0; i < coreKeywords.length; i++) {
+            if (text.indexOf(coreKeywords[i]) !== -1) { 
+                isCore = true; 
+                break; 
+            }
+        }
+        if (isCore) {
+            lines.push('• ' + text);
+        }
+    });
+    if (lines.length === 0) return '';
+    return prefix + '\n' + lines.join('\n');
+}
+
+function retrieveRelevantMemory(role, userMessage) {
+    if (!role || !Array.isArray(role.memory)) return '';
+    var allMemories = role.memory.filter(function(m) {
+        return m.level === 'recent' || m.level === 'archive';
+    });
+    if (allMemories.length === 0) return '';
+    allMemories.sort(function(a, b) {
+        return (b.timestamp || 0) - (a.timestamp || 0);
+    });
+    var cleaned = userMessage.replace(/[，。！？、；：""''（）\s，。！？、；：""''（）\s]/g, ' ');
+    var words = cleaned.split(' ');
+    var keywords = [];
+    for (var i = 0; i < words.length; i++) {
+        var w = words[i].trim();
+        if (w.length >= 2) {
+            keywords.push(w);
+        }
+    }
+    var relevantMemories = [];
+    allMemories.forEach(function(mem) {
+        var text = mem.text || '';
+        var matched = false;
+        for (var j = 0; j < keywords.length; j++) {
+            if (text.indexOf(keywords[j]) !== -1) {
+                matched = true;
+                break;
+            }
+        }
+        if (matched) {
+            relevantMemories.push(text);
+        }
+    });
+    if (relevantMemories.length === 0) {
+        var hasTimeIndicator = userMessage.indexOf('之前') !== -1 || 
+                               userMessage.indexOf('上次') !== -1 ||
+                               userMessage.indexOf('记得') !== -1 ||
+                               userMessage.indexOf('聊过') !== -1;
+        if (hasTimeIndicator) {
+            var recent = allMemories.slice(0, 3);
+            recent.forEach(function(m) {
+                if (m.text) relevantMemories.push(m.text);
+            });
+        }
+    }
+    if (relevantMemories.length > 5) {
+        relevantMemories = relevantMemories.slice(0, 5);
+    }
+    if (relevantMemories.length === 0) return '';
+    var result = '你问起了一些之前的事：\n';
+    relevantMemories.forEach(function(text, idx) {
+        result += (idx + 1) + '. ' + text + '\n';
+    });
+    result += '\n（以上是你之前提到过的内容）';
+    return result;
 }
 
 function splitReplyIntoMessages(text) {
@@ -1870,15 +2183,33 @@ function callAI(userMessage, role) {
     var mode = CONFIG.accessMode || 'direct';
     if (mode === 'direct') {
         return callDeepSeekDirect(userMessage, role);
-    } else {
+    } else if (mode === 'relay') {
         return callRelayAPI(userMessage, role);
+    } else if (mode === 'websearch') {
+        return callWebSearchAPI(userMessage, role);
     }
 }
 
 function callDeepSeekDirect(userMessage, role) {
     var apiKey = CONFIG.apiKey;
     if (!apiKey) throw new Error('请先设置 DeepSeek API Key（设置 → AI接入 → 直连模式）');
+    var recallKeywords = ['还记得', '记得吗', '之前', '上次', '你说过', '我们聊过', '你记不记得', '你忘了吗'];
+    var shouldRecall = false;
+    for (var i = 0; i < recallKeywords.length; i++) {
+        if (userMessage.indexOf(recallKeywords[i]) !== -1) {
+            shouldRecall = true;
+            break;
+        }
+    }
     var systemPrompt = buildSystemPrompt(role);
+    var recentMemoryText = '';
+    if (shouldRecall) {
+        recentMemoryText = retrieveRelevantMemory(role, userMessage);
+        if (recentMemoryText) {
+            systemPrompt += '\n\n【📖 你询问的近期回忆】\n' + recentMemoryText;
+            systemPrompt += '\n\n⚠️ 用户主动询问了这些回忆，你可以自然地回应。但不要编造，只说你记得的内容。';
+        }
+    }
     var history = (role.messages || []).slice(-10).filter(function(m) {
         return m.type === 'text' || m.type === 'gift';
     }).map(function(m) {
@@ -1928,7 +2259,23 @@ function callRelayAPI(userMessage, role) {
     var model = CONFIG.relayModel || 'gpt-3.5-turbo';
     if (!apiKey) throw new Error('请先设置中转站 API Key（设置 → AI接入 → 中转模式）');
     if (!endpoint) throw new Error('请先设置 API Endpoint');
+    var recallKeywords = ['还记得', '记得吗', '之前', '上次', '你说过', '我们聊过', '你记不记得', '你忘了吗'];
+    var shouldRecall = false;
+    for (var i = 0; i < recallKeywords.length; i++) {
+        if (userMessage.indexOf(recallKeywords[i]) !== -1) {
+            shouldRecall = true;
+            break;
+        }
+    }
     var systemPrompt = buildSystemPrompt(role);
+    var recentMemoryText = '';
+    if (shouldRecall) {
+        recentMemoryText = retrieveRelevantMemory(role, userMessage);
+        if (recentMemoryText) {
+            systemPrompt += '\n\n【📖 你询问的近期回忆】\n' + recentMemoryText;
+            systemPrompt += '\n\n⚠️ 用户主动询问了这些回忆，你可以自然地回应。但不要编造，只说你记得的内容。';
+        }
+    }
     var history = (role.messages || []).slice(-10).filter(function(m) {
         return m.type === 'text' || m.type === 'gift';
     }).map(function(m) {
@@ -1964,6 +2311,72 @@ function callRelayAPI(userMessage, role) {
         reply = reply.replace(/^我[^，。！？]*[了着过]?[，。！？]?\s*/gm, '');
         reply = reply.replace(/^[他她][^，。！？]*[了着过]?[，。！？]?\s*/gm, '');
         reply = reply.replace(/^[忍不住心想觉得感到][^，。！？]*[，。！？]?\s*/gm, '');
+        reply = reply.replace(/\n{3,}/g, '\n\n').trim();
+        return reply;
+    }).catch(function(e) {
+        clearTimeout(timeoutId);
+        throw e;
+    });
+}
+
+function callWebSearchAPI(userMessage, role) {
+    var endpoint = CONFIG.websearchEndpoint || 'https://dashscope.aliyuncs.com/compatible-mode/v1';
+    var apiKey = CONFIG.websearchApiKey;
+    var model = CONFIG.websearchModel || 'qwen-plus';
+    var enableSearch = CONFIG.websearchEnable !== false;
+    
+    if (!apiKey) throw new Error('请先在设置中配置联网搜索 API Key');
+    if (!endpoint) throw new Error('请先在设置中配置联网搜索 Endpoint');
+    
+    var systemPrompt = buildSystemPrompt(role);
+    var history = (role.messages || []).slice(-10).filter(function(m) {
+        return m.type === 'text' || m.type === 'gift';
+    }).map(function(m) {
+        var content = m.type === 'gift' ? '（送礼消息：' + (m.giftData ? m.giftData.productName : '礼物') + '）' : m.content;
+        return { role: m.role === 'user' ? 'user' : 'assistant', content: content };
+    });
+    
+    var temperature = parseFloat(CONFIG.temperature) || 0.9;
+    
+    var requestBody = {
+        model: model,
+        messages: [{ role: 'system', content: systemPrompt }, ...history, { role: 'user', content: userMessage }],
+        temperature: temperature,
+        max_tokens: 600
+    };
+    
+    if (enableSearch) {
+        requestBody.tools = [{
+            type: 'web_search',
+            web_search: {
+                enable: true
+            }
+        }];
+    }
+    
+    var controller = new AbortController();
+    var timeoutId = setTimeout(function() { controller.abort(); }, 30000);
+    
+    return fetchWithRetry(endpoint + '/chat/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
+        body: JSON.stringify(requestBody),
+        signal: controller.signal
+    }, 1).then(function(resp) {
+        clearTimeout(timeoutId);
+        if (!resp.ok) {
+            return resp.text().then(function(err) {
+                var msg = '联网搜索 API 错误 (' + resp.status + ')';
+                try { var j = JSON.parse(err); msg = j.error && j.error.message ? j.error.message : msg; } catch (_) {}
+                throw new Error(msg);
+            });
+        }
+        return resp.json();
+    }).then(function(data) {
+        var reply = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+        if (!reply) throw new Error('未获取到回复');
+        reply = reply.replace(/【\d+†[^】]*】/g, '').trim();
+        reply = reply.replace(/\[citation:\d+\]/g, '').trim();
         reply = reply.replace(/\n{3,}/g, '\n\n').trim();
         return reply;
     }).catch(function(e) {
@@ -2040,7 +2453,7 @@ function sendGiftToRole(roleId, productName, fromName, note, price) {
     }
     if (!Array.isArray(role.memory)) role.memory = [];
     var memoryText = fromName === '你' ? '💝 我送了「' + productName + '」给 ' + role.name + (note ? '（附言：' + note + '）' : '') : '🎁 ' + fromName + ' 送了我「' + productName + '」' + (note ? '（附言：' + note + '）' : '');
-    role.memory.push({ text: memoryText, sourceMessageId: msgId });
+    role.memory.push({ text: memoryText, sourceMessageId: msgId, level: 'core' });
     saveAllData();
     renderMessages();
     renderContacts();
@@ -2572,11 +2985,22 @@ function checkAllRolesForActiveMessages() {
     return promiseChain;
 }
 
-function startBackgroundCheck() {
+function startBackgroundCheck() {try { startMemoryConsolidation(); } catch (e) { console.error('记忆整合启动失败:', e); }
     setTimeout(function() { checkAllRolesForActiveMessages(); }, 5000);
     if (backgroundCheckInterval) clearInterval(backgroundCheckInterval);
     backgroundCheckInterval = setInterval(checkAllRolesForActiveMessages, CONSTANTS.AI_CHECK_INTERVAL);
     console.log('🔄 30分钟主动陪伴系统已启动');
+}
+
+function startMemoryConsolidation() {
+    setInterval(function() {
+        console.log('🧹 执行记忆清理...');
+        roles.forEach(function(role) {
+            consolidateMemory(role);
+        });
+        saveAllData();
+    }, 6 * 60 * 60 * 1000);
+    console.log('🧹 记忆清理系统已启动（每6小时检查）');
 }
 
 document.addEventListener('visibilitychange', function() {
@@ -3872,6 +4296,10 @@ function openSettings() {
     document.getElementById('relayApiKey').value = CONFIG.relayApiKey || '';
     document.getElementById('relayModelCustom').value = CONFIG.relayModel || '';
     toggleAccessMode(CONFIG.accessMode || 'direct');
+    document.getElementById('websearchEndpoint').value = CONFIG.websearchEndpoint || 'https://dashscope.aliyuncs.com/compatible-mode/v1';
+    document.getElementById('websearchApiKey').value = CONFIG.websearchApiKey || '';
+    document.getElementById('websearchModel').value = CONFIG.websearchModel || 'qwen-plus';
+    document.getElementById('websearchEnable').checked = CONFIG.websearchEnable !== false;
 
     document.getElementById('ttsMode').value = CONFIG.voice.mode || 'bailian';
     document.getElementById('ttsEndpoint').value = CONFIG.voice.endpoint || 'https://dashscope.aliyuncs.com';
@@ -3935,12 +4363,18 @@ function closeSettings() {
 function toggleAccessMode(mode) {
     var directConfig = document.getElementById('directConfig');
     var relayConfig = document.getElementById('relayConfig');
+    var websearchConfig = document.getElementById('websearchConfig');
+    
+    directConfig.style.display = 'none';
+    relayConfig.style.display = 'none';
+    websearchConfig.style.display = 'none';
+    
     if (mode === 'direct') {
         directConfig.style.display = 'block';
-        relayConfig.style.display = 'none';
-    } else {
-        directConfig.style.display = 'none';
+    } else if (mode === 'relay') {
         relayConfig.style.display = 'block';
+    } else if (mode === 'websearch') {
+        websearchConfig.style.display = 'block';
     }
 }
 
@@ -4848,7 +5282,6 @@ function openStylePicker() {
     }
 }
 
-// 🔧 FIX: 创建语音播放器 - 无文字版本
 function createVoicePlayer(msgId, audioUrl, duration) {
     var container = document.querySelector('.message-row[data-msgid="' + msgId + '"] .bubble-container');
     if (!container) return;
@@ -5073,48 +5506,6 @@ function resetMessageAudio(msgId) {
     }
 }
 
-function addMessageToRole(roleId, role, content, type, giftData) {
-    type = type || 'text';
-    var r = roles.find(function(ro) { return ro.id === roleId; });
-    if (!r) return;
-    if (!Array.isArray(r.messages)) r.messages = [];
-    var msgId = generateId();
-    var timeStr = new Date().toISOString();
-    var msg = {
-        id: msgId,
-        role: role,
-        content: content,
-        type: type,
-        time: timeStr,
-        hasAudio: false,
-        audioUrl: null,
-        audioDuration: 0
-    };
-    if (giftData) msg.giftData = giftData;
-    r.messages.push(msg);
-    if (role === 'user') {
-        detectSleepMode(roleId, content);
-        updateContextMemory(r, content, null);
-        updateIntimacy(r);
-        CONFIG.lastChatVisit[roleId] = Date.now();
-        r.extendedState.lastUserMessageTime = Date.now();
-    }
-    if (role === 'assistant') {
-        r.extendedState.lastAiMessageTime = Date.now();
-        if (!CONFIG.unreadCount) CONFIG.unreadCount = {};
-        CONFIG.unreadCount[roleId] = (CONFIG.unreadCount[roleId] || 0) + 1;
-        if (r.messages.length % 5 === 0 && r.messages.length > 3) {
-            generateContextSummary(r);
-        }
-    }
-    if (role === 'user' || role === 'assistant') {
-        detectHeartKeywords(r.id, content, role);
-    }
-    debouncedSaveAllData();
-    updateHeartDisplay();
-    return msgId;
-}
-
 function deleteMessageAndMemory(roleId, messageId) {
     var role = roles.find(function(r) { return r.id === roleId; });
     if (!role) return;
@@ -5136,10 +5527,7 @@ function deleteMessageAndMemory(roleId, messageId) {
     renderMessages();
     renderContacts();
     renderRoleManager();
-}
-
-// 🔧 FIX: 试听 - 停止旧音频防止叠加
-document.getElementById('testVoiceBtn').addEventListener('click', async function() {
+} document.getElementById('testVoiceBtn').addEventListener('click', async function() {
     var roleId = document.getElementById('voiceRoleSelector').value;
     var role = roles.find(function(r) { return r.id === roleId; });
     if (!role) { showToast('⚠️ 请选择角色'); return; }
@@ -5169,7 +5557,6 @@ document.getElementById('testVoiceBtn').addEventListener('click', async function
     }
 });
 
-// 🔧 FIX: 数据导出 - 完整实现
 document.getElementById('dataExportBtn').addEventListener('click', function() {
     var exportType = getSelectedExportType();
     var exportData = {
@@ -5250,7 +5637,6 @@ document.getElementById('dataExportBtn').addEventListener('click', function() {
     closeDataModal();
 });
 
-// 🔧 FIX: 数据导入 - 完整实现
 document.getElementById('dataImportBtn').addEventListener('click', function() {
     var input = document.createElement('input');
     input.type = 'file';
@@ -5417,15 +5803,18 @@ function isVoiceTrigger(text) {
 async function callBailianTTS(text, role) {
     var endpoint = getVoiceEndpoint();
     var apiKey = getVoiceApiKey();
-    var model = getVoiceModel();
     var voiceId = role.voiceId || '';
+    
     if (!apiKey) throw new Error('未配置语音 API Key，请在设置中填写');
     if (!voiceId) throw new Error('当前角色未配置 Voice ID，请在设置中填写');
     if (!text || text.trim().length === 0) throw new Error('没有可朗读的文本');
+    
     var cleanText = text.replace(/\[表情包：[^\]]+\]/g, '').trim();
     if (!cleanText) throw new Error('文本为空（可能只有表情包）');
     if (cleanText.length > 500) cleanText = cleanText.substring(0, 500) + '……';
+    
     var url = endpoint.replace(/\/+$/, '') + '/api/v1/services/audio/tts/SpeechSynthesizer';
+    
     var response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -5433,22 +5822,28 @@ async function callBailianTTS(text, role) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            model: model,
+            model: 'cosyvoice-v3.5-plus-bailian',
             input: { text: cleanText },
             voice: voiceId,
             parameters: {
                 rate: CONFIG.voice.rate || 1.0,
                 pitch: CONFIG.voice.pitch || 1.0,
-                volume: 50
+                volume: 50,
+                voice_type: 'clone'
             }
         })
     });
+    
     if (!response.ok) {
+        var contentType = response.headers.get('Content-Type');
+        if (contentType && contentType.includes('application/json')) {
+            var errData = await response.json();
+            throw new Error(errData.message || '语音合成失败');
+        }
         var errText = await response.text();
-        var errMsg = '百炼 TTS 错误 (' + response.status + ')';
-        try { var j = JSON.parse(errText); errMsg = j.message || errMsg; } catch (_) {}
-        throw new Error(errMsg);
+        throw new Error('百炼 TTS 错误 (' + response.status + '): ' + errText.slice(0, 100));
     }
+    
     var audioBlob = await response.blob();
     return URL.createObjectURL(audioBlob);
 }
@@ -5473,6 +5868,27 @@ function speakWithBrowser(text, callback) {
         if (zhVoice) utterance.voice = zhVoice;
     } catch (e) {}
     window.speechSynthesis.speak(utterance);
+}
+
+function getVoiceApiKey() {
+    if (CONFIG.voice.apiKey && CONFIG.voice.apiKey.trim()) return CONFIG.voice.apiKey.trim();
+    if (CONFIG.accessMode === 'direct') return CONFIG.apiKey;
+    return CONFIG.relayApiKey;
+}
+
+function getVoiceEndpoint() {
+    return CONFIG.voice.endpoint || 'https://dashscope.aliyuncs.com';
+}
+
+function getVoiceModel() {
+    return CONFIG.voice.model || 'cosyvoice-v3.5-plus';
+}
+
+function showToast(msg) {
+    if (!toastElement) { toastElement = document.createElement('div'); toastElement.className = 'custom-toast'; document.querySelector('.phone-frame').appendChild(toastElement); }
+    toastElement.textContent = msg; toastElement.style.display = 'block';
+    clearTimeout(toastElement._hideTimer);
+    toastElement._hideTimer = setTimeout(function() { toastElement.style.display = 'none'; }, CONSTANTS.TOAST_DURATION);
 }
 
 // ========== 初始化 ==========
@@ -5651,7 +6067,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.target === this) closeSettings();
     });
 
-    document.getElementById('saveSettingsBtn').addEventListener('click', function() {
+   document.getElementById('saveSettingsBtn').addEventListener('click', function() {
         CONFIG.accessMode = document.getElementById('accessMode').value;
         CONFIG.apiKey = document.getElementById('directApiKey').value.trim();
         CONFIG.model = document.getElementById('directModel').value;
@@ -5660,6 +6076,11 @@ document.addEventListener('DOMContentLoaded', function() {
         var customModel = document.getElementById('relayModelCustom').value.trim();
         var selectModel = document.getElementById('relayModelSelect').value;
         CONFIG.relayModel = customModel || selectModel || CONFIG.relayModel || '';
+        
+        CONFIG.websearchEndpoint = document.getElementById('websearchEndpoint').value.trim();
+        CONFIG.websearchApiKey = document.getElementById('websearchApiKey').value.trim();
+        CONFIG.websearchModel = document.getElementById('websearchModel').value;
+        CONFIG.websearchEnable = document.getElementById('websearchEnable').checked;
 
         CONFIG.voice.mode = document.getElementById('ttsMode').value;
         CONFIG.voice.endpoint = document.getElementById('ttsEndpoint').value.trim();
@@ -5691,8 +6112,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.getElementById('fetchModelsBtn').addEventListener('click', fetchModelsFromRelay);
     document.getElementById('fetchTtsModelsBtn').addEventListener('click', fetchTtsModels);
-
-    // testVoiceBtn 已在上面修复
 
     document.getElementById('resetPermissionBtn').addEventListener('click', function() {
         CONFIG.permission = null;
@@ -5770,8 +6189,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('dataModalOverlay').addEventListener('click', function(e) {
         if (e.target === this) closeDataModal();
     });
-
-    // dataExportBtn 和 dataImportBtn 已在上面修复
 
     document.getElementById('clearAllChatsBtn').addEventListener('click', function() {
         if (confirm('⚠️ 确定要清空所有角色的聊天记录吗？\n\n亲密度会大幅下降！建议使用「清理旧消息」功能。')) {
@@ -6116,7 +6533,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error('初始化失败:', e);
         showToast('⚠️ 应用初始化失败，请刷新页面重试');
     }
-});
+}); 
 </script>
 </body>
 </html>
