@@ -4140,56 +4140,81 @@ async function fetchModelsFromRelay() {
 async function fetchTtsModels() {
     var endpoint = document.getElementById('ttsEndpoint').value.trim();
     var apiKey = document.getElementById('ttsApiKey').value.trim();
+    
+    // 如果语音 API Key 为空，复用主 Key
     if (!apiKey) apiKey = getVoiceApiKey();
+    
     if (!endpoint || !apiKey) {
         showToast('⚠️ 请先填写语音 Endpoint 和 API Key');
         return;
     }
-    if (!endpoint.startsWith('http://') && !endpoint.startsWith('https://')) {
-        showToast('⚠️ Endpoint 格式不正确');
-        return;
-    }
+    
+    // 🔥 确保 endpoint 格式正确
     var normalizedEndpoint = endpoint.replace(/\/+$/, '');
     showToast('🔄 正在拉取语音模型列表...');
+    
     try {
-        var controller = new AbortController();
-        var timeoutId = setTimeout(function() { controller.abort(); }, 15000);
-        var response = await fetch(normalizedEndpoint + '/models', {
-            headers: { 'Authorization': 'Bearer ' + apiKey },
-            signal: controller.signal
+        // 🔥 用业务空间专属域名拉取模型
+        var response = await fetch(normalizedEndpoint + '/api/v1/models', {
+            method: 'GET',
+            headers: { 
+                'Authorization': 'Bearer ' + apiKey,
+                'Content-Type': 'application/json'
+            }
         });
-        clearTimeout(timeoutId);
+        
+        console.log('📡 拉取模型响应状态:', response.status);
+        
         if (!response.ok) {
             var errText = await response.text();
+            console.error('❌ 拉取失败:', errText);
             throw new Error('拉取失败 (' + response.status + '): ' + errText.slice(0, 100));
         }
+        
         var data = await response.json();
+        console.log('📡 模型列表:', data);
+        
         var models = data.data || [];
         if (models.length === 0) {
-            showToast('⚠️ 未获取到语音模型，请手动输入');
+            showToast('⚠️ 未获取到任何模型');
             return;
         }
+        
+        // 🔥 筛选 TTS 相关模型
         var ttsModels = models.filter(function(m) {
-            var id = m.id || '';
-            return id.includes('tts') || id.includes('speech') || id.includes('audio') || id.includes('cosyvoice');
+            var id = m.model_id || m.id || '';
+            return id.includes('cosyvoice') || id.includes('tts') || id.includes('speech');
         });
-        if (ttsModels.length === 0) ttsModels = models.slice(0, 10);
+        
+        if (ttsModels.length === 0) {
+            // 如果没有 TTS 模型，显示所有模型
+            ttsModels = models;
+            showToast('⚠️ 未找到 TTS 模型，显示全部');
+        }
+        
         var select = document.getElementById('ttsModelSelect');
         select.innerHTML = '';
+        
         ttsModels.forEach(function(m) {
             var opt = document.createElement('option');
-            opt.value = m.id;
-            opt.textContent = m.id + (m.owned_by ? ' (' + m.owned_by + ')' : '');
+            var id = m.model_id || m.id;
+            opt.value = id;
+            opt.textContent = id + (m.description ? ' (' + m.description + ')' : '');
             select.appendChild(opt);
         });
-        showToast('✅ 已拉取 ' + ttsModels.length + ' 个语音模型');
+        
+        // 🔥 同步更新到自定义输入框
         if (ttsModels.length > 0) {
-            CONFIG.voice.model = ttsModels[0].id;
-            document.getElementById('ttsModelCustom').value = '';
+            var firstModel = ttsModels[0].model_id || ttsModels[0].id;
+            document.getElementById('ttsModelCustom').value = firstModel;
+            CONFIG.voice.model = firstModel;
             saveAllData();
         }
+        
+        showToast('✅ 已拉取 ' + ttsModels.length + ' 个语音模型');
+        
     } catch (e) {
-        console.error('语音模型拉取失败:', e);
+        console.error('❌ 语音模型拉取失败:', e);
         showToast('⚠️ 拉取失败: ' + e.message + '，请手动输入模型名');
     }
 }
@@ -5803,38 +5828,46 @@ function isVoiceTrigger(text) {
 async function callBailianTTS(text, role) {
     var endpoint = getVoiceEndpoint();
     var apiKey = getVoiceApiKey();
-    var model = getVoiceModel();
     var voiceId = role.voiceId || '';
     
-    console.log('🔊 TTS 调试:', { endpoint, hasKey: !!apiKey, model, voiceId, textLen: text?.length });
+    console.log('🔊 TTS 调试:', { endpoint, hasKey: !!apiKey, voiceId });
     
-    if (!apiKey) throw new Error('未配置语音 API Key，请在设置中填写');
-    if (!voiceId) throw new Error('当前角色未配置 Voice ID，请在设置中填写');
+    if (!apiKey) throw new Error('未配置语音 API Key');
+    if (!voiceId) throw new Error('当前角色未配置 Voice ID');
     if (!text || text.trim().length === 0) throw new Error('没有可朗读的文本');
     
     var cleanText = text.replace(/\[表情包：[^\]]+\]/g, '').trim();
-    if (!cleanText) throw new Error('文本为空（可能只有表情包）');
+    if (!cleanText) throw new Error('文本为空');
     if (cleanText.length > 500) cleanText = cleanText.substring(0, 500) + '……';
     
-    // 🔥 改用 OpenAI 兼容接口（更稳定，Service Worker 友好）
-    var url = endpoint.replace(/\/+$/, '') + '/compatible-mode/v1/audio/speech';
+    // 🔥 使用业务空间专属域名
+    var url = endpoint.replace(/\/+$/, '') + '/api/v1/services/audio/tts/speech-synthesizer';
     console.log('🔊 请求 URL:', url);
+    
+    var requestBody = {
+        model: 'cosyvoice-v3.5-plus',
+        input: {
+            text: cleanText
+        },
+        voice: {
+            voice_id: voiceId
+        },
+        parameters: {
+            rate: CONFIG.voice.rate || 1.0,
+            pitch: CONFIG.voice.pitch || 1.0,
+            volume: 50
+        }
+    };
+    console.log('🔊 请求体:', JSON.stringify(requestBody, null, 2));
     
     try {
         var response = await fetch(url, {
             method: 'POST',
             headers: {
                 'Authorization': 'Bearer ' + apiKey,
-                'Content-Type': 'application/json',
-                'Cache-Control': 'no-cache'  // 🔥 绕过 Service Worker 缓存
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                model: model,
-                input: cleanText,
-                voice: voiceId,
-                response_format: 'mp3',
-                speed: CONFIG.voice.rate || 1.0
-            })
+            body: JSON.stringify(requestBody)
         });
         
         console.log('🔊 响应状态:', response.status);
@@ -5845,34 +5878,18 @@ async function callBailianTTS(text, role) {
             var errMsg = 'TTS 错误 (' + response.status + ')';
             try {
                 var j = JSON.parse(errText);
-                errMsg = j.error?.message || j.message || errMsg;
+                errMsg = j.message || j.error?.message || j.code || errMsg;
             } catch (_) {}
             throw new Error(errMsg);
         }
         
         var audioBlob = await response.blob();
-        console.log('🔊 语音生成成功，大小:', audioBlob.size, 'bytes');
+        console.log('🔊 成功！音频大小:', audioBlob.size);
         return URL.createObjectURL(audioBlob);
         
-    } catch (fetchError) {
-        console.error('❌ Fetch 失败:', fetchError);
-        // 🔥 如果兼容接口也失败，尝试用浏览器语音降级
-        if (window.speechSynthesis) {
-            console.log('🔊 降级到浏览器语音');
-            return new Promise((resolve, reject) => {
-                var utterance = new SpeechSynthesisUtterance(cleanText);
-                utterance.lang = 'zh-CN';
-                utterance.rate = CONFIG.voice.rate || 1.0;
-                utterance.onend = () => {
-                    // 浏览器语音无法返回音频 URL，用静音占位
-                    var blob = new Blob([''], { type: 'audio/mp3' });
-                    resolve(URL.createObjectURL(blob));
-                };
-                utterance.onerror = () => reject(new Error('浏览器语音失败'));
-                window.speechSynthesis.speak(utterance);
-            });
-        }
-        throw fetchError;
+    } catch (err) {
+        console.error('❌ TTS 失败:', err);
+        throw err;
     }
 }
 
