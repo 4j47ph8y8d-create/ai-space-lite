@@ -5803,7 +5803,10 @@ function isVoiceTrigger(text) {
 async function callBailianTTS(text, role) {
     var endpoint = getVoiceEndpoint();
     var apiKey = getVoiceApiKey();
+    var model = getVoiceModel();
     var voiceId = role.voiceId || '';
+    
+    console.log('🔊 TTS 调试:', { endpoint, hasKey: !!apiKey, model, voiceId, textLen: text?.length });
     
     if (!apiKey) throw new Error('未配置语音 API Key，请在设置中填写');
     if (!voiceId) throw new Error('当前角色未配置 Voice ID，请在设置中填写');
@@ -5813,39 +5816,64 @@ async function callBailianTTS(text, role) {
     if (!cleanText) throw new Error('文本为空（可能只有表情包）');
     if (cleanText.length > 500) cleanText = cleanText.substring(0, 500) + '……';
     
-    var url = endpoint.replace(/\/+$/, '') + '/api/v1/services/audio/tts/SpeechSynthesizer';
+    // 🔥 改用 OpenAI 兼容接口（更稳定，Service Worker 友好）
+    var url = endpoint.replace(/\/+$/, '') + '/compatible-mode/v1/audio/speech';
+    console.log('🔊 请求 URL:', url);
     
-    var response = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Authorization': 'Bearer ' + apiKey,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            model: 'cosyvoice-v3.5-plus-bailian',
-            input: { text: cleanText },
-            voice: voiceId,
-            parameters: {
-                rate: CONFIG.voice.rate || 1.0,
-                pitch: CONFIG.voice.pitch || 1.0,
-                volume: 50,
-                voice_type: 'clone'
-            }
-        })
-    });
-    
-    if (!response.ok) {
-        var contentType = response.headers.get('Content-Type');
-        if (contentType && contentType.includes('application/json')) {
-            var errData = await response.json();
-            throw new Error(errData.message || '语音合成失败');
+    try {
+        var response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + apiKey,
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-cache'  // 🔥 绕过 Service Worker 缓存
+            },
+            body: JSON.stringify({
+                model: model,
+                input: cleanText,
+                voice: voiceId,
+                response_format: 'mp3',
+                speed: CONFIG.voice.rate || 1.0
+            })
+        });
+        
+        console.log('🔊 响应状态:', response.status);
+        
+        if (!response.ok) {
+            var errText = await response.text();
+            console.error('❌ 错误响应:', errText);
+            var errMsg = 'TTS 错误 (' + response.status + ')';
+            try {
+                var j = JSON.parse(errText);
+                errMsg = j.error?.message || j.message || errMsg;
+            } catch (_) {}
+            throw new Error(errMsg);
         }
-        var errText = await response.text();
-        throw new Error('百炼 TTS 错误 (' + response.status + '): ' + errText.slice(0, 100));
+        
+        var audioBlob = await response.blob();
+        console.log('🔊 语音生成成功，大小:', audioBlob.size, 'bytes');
+        return URL.createObjectURL(audioBlob);
+        
+    } catch (fetchError) {
+        console.error('❌ Fetch 失败:', fetchError);
+        // 🔥 如果兼容接口也失败，尝试用浏览器语音降级
+        if (window.speechSynthesis) {
+            console.log('🔊 降级到浏览器语音');
+            return new Promise((resolve, reject) => {
+                var utterance = new SpeechSynthesisUtterance(cleanText);
+                utterance.lang = 'zh-CN';
+                utterance.rate = CONFIG.voice.rate || 1.0;
+                utterance.onend = () => {
+                    // 浏览器语音无法返回音频 URL，用静音占位
+                    var blob = new Blob([''], { type: 'audio/mp3' });
+                    resolve(URL.createObjectURL(blob));
+                };
+                utterance.onerror = () => reject(new Error('浏览器语音失败'));
+                window.speechSynthesis.speak(utterance);
+            });
+        }
+        throw fetchError;
     }
-    
-    var audioBlob = await response.blob();
-    return URL.createObjectURL(audioBlob);
 }
 
 function speakWithBrowser(text, callback) {
