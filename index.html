@@ -5814,8 +5814,11 @@ async function callBailianTTS(text, role) {
     if (!cleanText) throw new Error('文本为空（可能只有表情包）');
     if (cleanText.length > 500) cleanText = cleanText.substring(0, 500) + '……';
     
-    // ✅ 关键修改：使用 CosyVoice 专用接口，而不是 SpeechSynthesizer
+    // ===== 百炼 CosyVoice HTTP 接口 =====
     var url = endpoint.replace(/\/+$/, '') + '/api/v1/services/audio/tts/CosyVoice';
+    
+    console.log('🔊 请求 URL:', url);
+    console.log('🔊 Voice ID:', voiceId);
     
     var response = await fetch(url, {
         method: 'POST',
@@ -5828,8 +5831,7 @@ async function callBailianTTS(text, role) {
             input: {
                 text: cleanText
             },
-            // CosyVoice 接口的 voice 参数格式
-            voice: voiceId,  // ← 直接传字符串，不是对象
+            voice: voiceId,   // 直接传字符串
             parameters: {
                 rate: CONFIG.voice.rate || 1.0,
                 pitch: CONFIG.voice.pitch || 1.0,
@@ -5840,6 +5842,7 @@ async function callBailianTTS(text, role) {
     
     if (!response.ok) {
         var errText = await response.text();
+        console.error('❌ 错误响应:', errText);
         var errMsg = '百炼 TTS 错误 (' + response.status + ')';
         try { var j = JSON.parse(errText); errMsg = j.message || j.error?.message || errMsg; } catch (_) {}
         throw new Error(errMsg);
